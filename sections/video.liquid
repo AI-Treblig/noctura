@@ -1,0 +1,232 @@
+{% capture video_banner %}
+{% assign section_st = section.settings %}  
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+  {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>  	
+    <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %}" > 
+
+         <div class="video_bnr pr">
+                {% capture video_data %}
+                  {%- liquid
+                      assign poster = section_st.poster | default: section_st.video.preview_image
+                      assign poster_size = poster | image_url: width: poster.width
+                      assign psratio = '56.25'
+                      if poster
+                         assign psratio = 1 | divided_by: poster.aspect_ratio | times: 100
+                      endif
+                      assign muted = section_st.muted
+                      assign loop = false
+                      if section_st.autoplay == true
+                         assign muted = true
+                         assign loop = true
+                      endif 										
+                  -%}
+                  <div class="vd-wrap" style="--ratio:{{ psratio }}%;">
+                    {% # theme-check-disable RemoteAsset,DeprecateBgsizes %}
+                    {% if section_st.video_url == blank and section_st.video == blank %}
+                      <iframe class="db" src="//www.youtube.com/embed/_9VUPq3SxOc?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                    {% elsif section_st.video_url != blank %}
+                      {% if section_st.video_url.type == "youtube" %}
+                          <iframe class="db lazyload" data-src="//www.youtube.com/embed/{{ section_st.video_url.id }}?controls=0&autoplay=1&rel=0&showinfo=0" width="850" height="480" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+                      {% endif %}
+                      {% if section_st.video_url.type == "vimeo" %}
+                          <iframe class="db lazyload" data-src="//player.vimeo.com/video/{{ section_st.video_url.id }}?background=1&byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                      {% endif %}
+                    {% elsif section_st.video != blank %}
+                        {{ section_st.video | video_tag: image_size:poster_size, loop:loop, autoplay:section_st.autoplay, muted:muted, controls:section_st.controls, poster:poster_size, class:'w_100 db' }} 
+                    {% endif %}
+                    {% # theme-check-enable DeprecateBgsizes,DeprecateBgsizes %}
+                  </div>
+                {% endcapture %}
+     
+                <a href="{{ section_st.video_url }}?controls=0&autoplay=1&rel=0&showinfo=0" class="video_pop popup-link pr" data-popup="vd{{ section.id }}" aria-haspopup="dialog">
+                   <div class="vd-wrap brad" style="--ratio:{{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;--rounded:{{ section_st.vbr }}px;">
+                      {% if poster %}
+                          {{ poster | image_url: width: poster.width | image_tag: class:'imgFt ctimg', widths:"200,400,600,800,1000,1200,1400,1600,2000" }}
+                      {% else %}
+                          <p class="db pd30">Please upload video poster image.</p>
+                      {% endif %}
+                      <svg class="at-icon pa play-btn" style="--icns:50px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 504c137 0 248-111 248-248S393 8 256 8 8 119 8 256s111 248 248 248zM40 256c0-118.7 96.1-216 216-216 118.7 0 216 96.1 216 216 0 118.7-96.1 216-216 216-118.7 0-216-96.1-216-216zm331.7-18l-176-107c-15.8-8.8-35.7 2.5-35.7 21v208c0 18.4 19.8 29.8 35.7 21l176-101c16.4-9.1 16.4-32.8 0-42zM192 335.8V176.9c0-4.7 5.1-7.6 9.1-5.1l134.5 81.7c3.9 2.4 3.8 8.1-.1 10.3L201 341c-4 2.3-9-.6-9-5.2z"/></svg>             
+                   </div>                       
+                </a>
+                <div id="vd{{ section.id }}" class="tinglebox pp-hide vd">{{ video_data | replace: "vd-wrap","vd-wrap1" }}</div>
+                                  
+          </div>         
+    </div>
+</div>
+{% endcapture %}
+{{ video_banner | strip_newlines | remove: "  " | remove: "	" }}
+                          
+<script type="text/javascript">
+    window.addEventListener('DOMContentLoaded',function(){               
+        $('.video_pop').magnificPopup({ type: 'iframe', mainClass: 'mfp-zoom-in', removalDelay: 160, preloader: false, fixedContentPos: false });                                                                   
+    });
+</script>
+<style> .video_bnr {font-size:0px;}.video_bnr video { width:100%;}</style>                                
+{% schema %}
+{
+    "name": "Video Popup",
+    "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [        
+                {
+                    "type": "video_url",
+                    "id": "video_url",
+                    "label": "Video link",
+                    "accept": ["youtube", "vimeo"]                   
+                },		        		               
+                {
+                    "type": "image_picker",
+                    "id": "poster",
+                    "label": "Poster Image"
+                },    
+               {
+                    "type": "video",
+                    "id": "video",
+                    "label": "MP4 video (optional)"
+                },
+                {
+                    "type":"checkbox",
+                    "id":"controls",
+                    "label":"Enable controls?",
+                    "default": false,
+                    "info":"Show video play/pause buttons"
+                },
+                {
+                    "type":"checkbox",
+                    "id":"autoplay",
+                    "label":"Enable autoplay?",
+                    "default": false,
+                    "info":"Autoplay will not work on Mobile with SOUND"
+                },
+                {
+                    "type":"checkbox",
+                    "id":"muted",
+                    "label":"Enable sound?",
+                    "default": false,
+                    "info":"Autoplay will not work on Mobile with SOUND"
+                },
+                {
+                    "type": "range",
+                    "id": "vbr",
+                    "min": 0,
+                    "max": 30,
+                    "step": 1,
+                    "label": "Rounded corner",
+                    "unit": "px",
+                    "default": 0
+                },                                    
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+      {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": true           
+        },		
+         {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No Padding?",
+            "default": false,
+            "info":"Remove left/right padding for fullwidth"
+        },
+       {
+            "type": "range",
+            "id": "rounded",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+        },    
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background Image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image Overlay",
+            "default": "#3d4246"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay Opacity",
+            "unit": "%",
+            "default": 0
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom",
+			"unit": "px",
+			"default":30
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        }                   
+    ],
+    "presets": [
+        {
+            "name": "Video Popup" ,
+            "category": "Video"
+        }
+    ]
+}
+{% endschema %}
