@@ -1,0 +1,143 @@
+{%- liquid
+    assign cnt_width = settings.cnt_width | append: 'px'
+    if section_st.sw
+        assign cnt_width = '100vw'
+    endif
+
+	assign zoom_img = '2000'
+	assign enable_zoom = section_st.przoom
+
+	assign class_name = ""
+
+	if section_st.prstyle == "2"
+		assign class_name = "fl-md f-wrap-md f-jcsb"
+	elsif section_st.prstyle == "3"
+        assign class_name = "f-wrap-md"
+	elsif section_st.prstyle == "4"
+		assign class_name = "fl-md f-wrap-md"
+	endif
+-%}
+{% if section_st.prstyle == "1" and section_st.prthumbs != "bottom" %}
+    {% capture img_style %}--imgw:calc(100% - 70px);{% if section_st.prthumbs == "left" %}--od:1;{% endif %}{% endcapture %}
+{% else %}
+    {% capture img_style %}--imgw:100%;{% endcapture %}
+{% endif %}
+{%- liquid
+    assign column = 100.00 | divided_by: pimgsize | times: 1
+    assign divide_colunm = 1.00 | divided_by: column | round: 2
+%}
+{%- capture sizes -%}
+  (min-width:1024px) calc(({{ cnt_width }} - 30px * {{ column | minus: 1 }}) * {{ divide_colunm }}), calc(100vw - 30px)
+{%- endcapture -%}
+{% for mcolor in all_color %}
+{% assign cl_name = mcolor | handleize %}
+<media-gallery-group id="pis{{ section_id }}{{ cl_name }}" data-color="{{ mcolor }}" data-section="{{ section_id }}" data-target="{{ featured_img.id }}" data-style="{{ section_st.prstyle }}" class="fl f-jcsb f-col mgroup{% if settings.thumbnail_pos != "bottom" %} f-row-md{% endif %}{% if svriant != mcolor%} hide{% else %} active{% endif %}">
+    <div class="pr_lg_img{% if product.media.size == 1 %} w_100{% endif %}" style="{{ img_style }}">
+    			<div id="pis{{ section.id }}" class="primgSlider swiper p{{ section_st.prstyle }}" 
+                     data-swiper='{ "slidesPerView":"auto", "loopedSlides":4, "loop":true, "centeredSlides":"center", "navigation":{ "nextEl":".swiper-button-next","prevEl":".swiper-button-prev" },
+                        "thumbs":{ "swiper":{ "el":".pr_thumbs{{ section.id }}{{ cl_name }}", "slidesPerView":"auto", "direction":"{% if section_st.prthumbs != "bottom" %}vertical{% else %}horizontal{% endif %}", "spaceBetween":10, "navigation":{ "nextEl":".swiper-button-next.thumb", "prevEl":".swiper-button-prev.thumb" }}}}'>
+                    <div class="swiper-wrapper {{ class_name }}">
+    			{% for media in product.media %}
+    				{%- assign img_index = forloop.index0 -%}
+    				{% case media.media_type %}
+    					{% when 'image' %}
+                            {% if mcolor == media.alt %}
+    						<a data-id="{{ media.id }}" data-pswp-width="{{ media.width }}" data-pswp-height="{{ media.height }}" class="swiper-slide pr_photo p{{ section_st.prstyle }}{% if section_st.prlightbox %} pswipe{% endif %}{% if enable_zoom %} przoom{% endif %}"
+                             {% if section_st.prlightbox %} href="{{ media | image_url: width: media.width }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                             {% if enable_zoom %}data-zoom="{{ media | image_url: width:zoom_img }}"{% endif %} data-slide="{{ img_index }}">
+    							{% if settings.pimg_maxHt != blank %}<span class="imgWrapper" style="max-width:{{ settings.pimg_maxHt | times: media.aspect_ratio }}px;">{% endif %}
+                                    {{ media | image_url: width:media.preview_image.width | image_tag: loading:'lazy', sizes: sizes, widths: '400,550,700,800,1000,1200', class: 'imgAt' }}
+    							{% if settings.pimg_maxHt != blank %}</span>{% endif %}
+    						</a>
+                            {% endif %}
+    					{% when 'external_video' %}
+    						<div class="swiper-slide pr_photo p{{ section_st.prstyle }} videoSlide" data-media-id="{{ media.id }}" data-slide="{{ img_index }}">
+    							<div class="vd-wrap">{{ media | external_video_tag }}</div>
+    						</div>
+    					{% when 'video' %}
+    						<div class="swiper-slide pr_photo p{{ section_st.prstyle }} videoSlide" data-media-id="{{ media.id }}" data-slide="{{ img_index }}">
+    							{%- assign video_thumb = media | image_url: width: '800' -%}
+    							{{ media | video_tag: poster: video_thumb, controls: true, muted: true, loop: true, playsinline: true, webkit-playsinline: true }}
+    						</div>
+    					{% when 'model' %}
+                            <product-model class="swiper-slide pr_photo p{{ section_st.prstyle }} pmd swiper-no-swiping deferred-media media media--transparent no-js-hidden" data-media-id="{{ media.id }}" data-slide="{{ img_index }}">
+                                <div class="pr" style="padding-bottom:100%;">
+                                    <button id="Deferred-Poster-Modal-{{ media.id }}" class="deferred-media__poster" type="button">
+                                      <span class="deferred-media__poster-button fl f-aic f-jcc">
+                                          <span class="hidden_txt">{{ 'products.product.play_model' | t }}</span>
+                                          <svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M239.1 7.5l-208 78c-18.7 7-31.1 25-31.1 45v225.1c0 18.2 10.3 34.8 26.5 42.9l208 104c13.5 6.8 29.4 6.8 42.9 0l208-104c16.3-8.1 26.5-24.8 26.5-42.9V130.5c0-20-12.4-37.9-31.1-44.9l-208-78C262 3.4 250 3.4 239.1 7.5zm16.9 45l208 78v.3l-208 84.5-208-84.5v-.3l208-78zM48 182.6l184 74.8v190.2l-184-92v-173zm232 264.9V257.4l184-74.8v172.9l-184 92z"/></svg>
+                                      </span>
+                                      {{ media.preview_image | image_url: width: media.preview_image.width | image_tag: loading:'lazy', sizes: sizes, widths: '350, 600, 900, 1200', class: 'imgFl' }}
+                                    </button>
+                                    <template>{{ media | media_tag: sizes: sizes, toggleable: true }}</template>
+                                </div>
+    						</product-model>
+    					{% else %}
+    						<div class="swiper-slide pr_photo p{{ section_st.prstyle }}" style="padding-top:100%;" data-media-id="{{ media.id }}">{{ media | media_tag }}</div>
+    					{% endcase %}
+    				{% endfor %}
+                    </div>
+                    <div class="swarw swiper-button-next"></div>
+                    <div class="swarw swiper-button-prev"></div>
+    			</div>
+    
+                {%- # theme-check-disable VariableName -%}
+    			{% assign first_3d_model = product.media | where: "media_type", "model" | first %}
+    			{%- if first_3d_model -%}
+    		        <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
+                    <link id="ModelViewerOverride" rel="stylesheet" href="{{ 'model-viewer-ui.css' | asset_url }}" media="print" onload="this.media='all'">
+    				<button aria-label="{{ 'products.product.view_in_space_label' | t }}" class="btn w_100 hide product-single__view-in-space" data-shopify-xr data-shopify-model3d-id="{{ first_3d_model.id }}" data-shopify-title="{{ product.title | escape }}" data-shopify-xr-hidden>
+    					<span class='product-single__view-in-space-text'>{{ 'products.product.view_in_space' | t }}</span>
+    				</button>
+    			{%- endif -%}
+                {%- # theme-check-enable VariableName -%}
+    
+    			{%- if settings.pr_lbl -%}
+                  <div class="fl pr_lbl pa zi2">
+                    {%- if settings.lbl_sale and product.compare_at_price > product.price -%}
+                      <span class="lbl sale">
+                          {% if settings.lbl_sale_type == "1" %}
+                            {{ 'products.product.on_sale' | t}}
+                          {% else %}
+                            -{{ product.compare_at_price_min | minus: product.price | times: 100 | divided_by: product.compare_at_price_min }}%
+                          {% endif %}
+                      </span>
+                    {%- endif -%}
+                    {% for label in product.metafields.custom.labels.value %}
+                      <span class="lbl {{ label.label | handleize }}">{{ label.label }}</span>
+                    {% endfor %}
+                    {% if settings.soldout_lbl and product.available == false -%}<label class="lbl sold-out"><span>{{ 'products.product.sold_out' | t}}</span></label>{%- endif -%}
+                  </div>
+                  {%- endif -%}
+    		</div>
+            <div class="thumbs_nav of_hidden {{ section_st.prthumbs }} pr{% if section_st.prstyle == "2" or section_st.prstyle == "3" or section_st.prstyle == "4" or section_st.prstyle == "5" %} hide{% endif %}{% if product.media.size == 1 %} hide{% endif %}">
+                <div class="pr_thumbs swiper pr_thumbs{{ section.id }}{{ cl_name }}" data-view="{% if section_st.prthumbs == "bottom" %}7{% else %}4{% endif %}">
+                    <div class="swiper-wrapper">
+                    {% for media in product.media %}
+                        {%- assign img_index = forloop.index0 -%}
+                        {% if media.media_type == 'image' %}
+                            {% if mcolor == media.alt %}
+                              <div class="swiper-slide pr_thumbs_item{% if media.media_type == 'video' or media.media_type == 'external_video' or media.media_type == 'model' %} vd{% endif %}" data-slide="{{ img_index }}">
+                                  <span class="grid_img pr_thumb pr_thumb{{ section.id }} of_hidden" data-mediaid="{{ media.id }}">
+                                      {{ media | image_url: width:200 | image_tag: loading:'lazy', sizes:'80px', widths:'100,200', class: 'imgFt' }}
+                                      {% if media.media_type == 'video' or media.media_type == 'external_video'  %}<svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6zM48 453.5v-395c0-4.6 5.1-7.5 9.1-5.2l334.2 197.5c3.9 2.3 3.9 8 0 10.3L57.1 458.7c-4 2.3-9.1-.6-9.1-5.2z"/></svg>{% endif %}
+                                      {% if media.media_type == 'model' or media.media_type == 'external_video'  %}<svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M239.1 7.5l-208 78c-18.7 7-31.1 25-31.1 45v225.1c0 18.2 10.3 34.8 26.5 42.9l208 104c13.5 6.8 29.4 6.8 42.9 0l208-104c16.3-8.1 26.5-24.8 26.5-42.9V130.5c0-20-12.4-37.9-31.1-44.9l-208-78C262 3.4 250 3.4 239.1 7.5zm16.9 45l208 78v.3l-208 84.5-208-84.5v-.3l208-78zM48 182.6l184 74.8v190.2l-184-92v-173zm232 264.9V257.4l184-74.8v172.9l-184 92z"/></svg>{% endif %}
+                                  </span>
+                              </div>
+                            {% endif %}
+                          {% else %}
+                            <div class="swiper-slide pr_thumbs_item{% if media.media_type == 'video' or media.media_type == 'external_video' or media.media_type == 'model' %} vd{% endif %}" data-slide="{{ img_index }}">
+                                  <span class="grid_img pr_thumb pr_thumb{{ section.id }} of_hidden" data-mediaid="{{ media.id }}">
+                                      {{ media | image_url: width:200 | image_tag: loading:'lazy', sizes:'80px', widths:'100,200', class: 'imgFt' }}
+                                      {% if media.media_type == 'video' or media.media_type == 'external_video'  %}<svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6zM48 453.5v-395c0-4.6 5.1-7.5 9.1-5.2l334.2 197.5c3.9 2.3 3.9 8 0 10.3L57.1 458.7c-4 2.3-9.1-.6-9.1-5.2z"/></svg>{% endif %}
+                                      {% if media.media_type == 'model' or media.media_type == 'external_video'  %}<svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M239.1 7.5l-208 78c-18.7 7-31.1 25-31.1 45v225.1c0 18.2 10.3 34.8 26.5 42.9l208 104c13.5 6.8 29.4 6.8 42.9 0l208-104c16.3-8.1 26.5-24.8 26.5-42.9V130.5c0-20-12.4-37.9-31.1-44.9l-208-78C262 3.4 250 3.4 239.1 7.5zm16.9 45l208 78v.3l-208 84.5-208-84.5v-.3l208-78zM48 182.6l184 74.8v190.2l-184-92v-173zm232 264.9V257.4l184-74.8v172.9l-184 92z"/></svg>{% endif %}
+                                  </span>
+                              </div>
+                          {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+</media-gallery-group>
+{% endfor %}
+<script src="{{ 'media-gallery-group.js' | asset_url }}" defer></script>

@@ -1,0 +1,24 @@
+<li class="lvl-1{% if link.active or link.child_active %} active{% endif %}">
+  {%- assign label_1 = link.title |  split: '[label' | last | split: ']' | first | prepend: "nm_lbl" -%}
+  <a href="{{ link.url }}" class="snav lvl-1" {% if link.title contains '[new]' %} target="_blank" {% endif %} >{{ link.title | split: '[' | first }}{% if link.title contains '[label' %}<span class="lbl {{ label_1 }}">{{ settings[label_1] }}</span>{% endif %}{%- if link.links != blank -%}<svg class="at-icon arw right ml_auto"><use xlink:href="#icon-arrow"></use></svg>{%- endif -%}</a>
+  {%- if link.links != blank -%}
+  <ul class="ddmenu">
+    {%- for childlink in link.links -%}
+    <li class="lvl-2{% if childlink.active or childlink.child_active %} active{% endif %}">
+      {%- assign label_2 = childlink.title |  split: '[label' | last  | split: ']' | first | prepend: "nm_lbl" -%}
+      <a href="{{ childlink.url }}" {% if childlink.title contains '[new]' %} target="_blank" {% endif %} class="snav lvl-2">{{ childlink.title | split: '[' | first }}{% if childlink.title contains '[label' %}<span class="lbl {{ label_2 }}">{{ settings[label_2] }}</span>{% endif %}{%- if childlink.links != blank -%}<svg class="at-icon arw right ml_auto"><use xlink:href="#icon-arrow"></use></svg>{%- endif -%}</a>
+      {%- if childlink.links != blank -%}
+      <ul class="ddmenu">
+        {%- for lvl3link in childlink.links -%}
+        <li class="lvl-3 {% if lvl3link.active %}active{% endif %}">
+          {%- assign label_3 = lvl3link.title |  split: '[label' | last  | split: ']' | first | prepend: "nm_lbl" -%}
+          <a href="{{ lvl3link.url }}" {% if lvl3link.title contains '[new]' %} target="_blank" {% endif %} class="snav lvl-3">{{ lvl3link.title | split: '[' | first }}{% if lvl3link.title contains '[label' %}<span class="lbl {{ label_3 }}">{{ settings[label_3] }}</span>{% endif %}</a>
+        </li>
+        {%- endfor -%}
+      </ul>
+      {%- endif -%}
+    </li>
+    {%- endfor -%}
+  </ul>
+  {%- endif -%}
+</li>

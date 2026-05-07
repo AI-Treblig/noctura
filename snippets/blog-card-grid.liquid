@@ -1,0 +1,40 @@
+<div class="wrap-blog pr of_hidden {{ section_st.blog_align }}{% if section_st.grids == '2' %} fl f-col f-row-md{% endif %} {{ section_st.blog_alignv }}" style="--rounded:{{ section_st.bbrad }}px">   
+    {% if article.image %}
+      <div class="pr{% if section_st.grids == '2' %} w_100 fl1{% endif %}">
+        <a class="db" href="{{ article.url }}" style="padding-bottom:{{ section_st.img_ratio }}%;--rounded:{{ section_st.bbrad }}px;" title="{{ article.title | escape }}">
+            {{ article.image | image_url: width: article.image.width | image_tag: loading:'lazy', width:article.image.width, height: article.image.height, class:'imgFt brad' , sizes: sizes, widths: "320,460,600,780,900" }}
+        </a>
+      </div>
+    {% endif %} 
+    <div class="blogInr {{ section_st.blog_align }}{% if  section_st.grids == '2' %} fl1{% else %} mt30 mb30{% endif %}">
+        {% if section_st.tags and article.tags.size > 0 %}
+          <div class="blogTags fl f-wrap {{ section_st.blog_align }} gap mb10" style="--gap:10px">
+            {% for tag in article.tags %}<a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% endfor %}
+          </div>
+        {% endif %}  
+        <{{ section_st.htag }} class="blogTtl rgTxt {{ section_st.tff }} mb10{% if section_st.tcase %} ttu{% endif %}"><a href="{{ article.url }}">{{ article.title }}</a></{{ section_st.htag }}>
+        {% if section_st.date or section_st.author or section_st.comment %}
+            <ul class="fl mb20 artDet {{ section_st.blog_align }} f-wrap{% if section_st.post_case %} ttu{% endif %}" style="--icns:14px;">
+                {% if section_st.date %}
+                    <li><time class="fl f-ais" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                    <span class="sep-{{ section_st.post_sep }}">{% if section_st.post_sep == '1' %}{% render 'icon-date' %} {% elsif section_st.post_sep == '2'%} 〡 {% elsif section_st.post_sep == '3' %} ● {% elsif section_st.post_sep == '4' %} ━ {% endif %}</span>
+                    {{ article.published_at | date: format: 'month_day_year' }}</time></li>
+                {% endif %}
+                {% if section_st.author %}
+                    <li class="fl">
+                    <span class="sep-{{section_st.post_sep }}">{% if section_st.post_sep == '1' %}{% render 'icon-user' %} {% elsif section_st.post_sep == '2'%} 〡 {% elsif section_st.post_sep == '3' %} ● {% elsif section_st.post_sep == '4' %} ━ {% endif %}</span>
+                    {{ 'blogs.article.by_author' | t }} <span class="ml5">{{ article.author }}</span></li>
+                {% endif %}
+                {% if section_st.comment and article.comments_count > 0 %}
+                    <li class="cmnt fl"><a href="{{ article.url }}#comments">>
+                  <span class="sep-{{ section_st.post_sep }}">{% if section_st.post_sep == '1' %}{% render 'icon-comment' %} {% elsif section_st.post_sep == '2'%} 〡 {% elsif section_st.post_sep == '3' %} ● {% elsif section_st.post_sep == '4' %} ━ {% endif %}</span>
+                    {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}</a></li>
+                {% endif %}
+            </ul>
+        {% endif %}       
+        {% if section_st.desc %}
+            <div class="rte mb20">{% if article.excerpt.size > 0 %}{{ article.excerpt }}{% else %}{{ article.content | strip_html | truncatewords: section_st.dwords }}{% endif %}</div>
+        {% endif %}
+        {% if section_st.more %}<a href="{{ article.url }}"  title="{{ article.title }}"><u>{{ 'blogs.article.read_more' | t }}</u></a>{% endif %}        
+    </div>
+</div>

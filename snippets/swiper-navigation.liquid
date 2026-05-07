@@ -1,0 +1,7 @@
+{%- if section_st.arrow or section_st.arrowm -%}
+<div class="swarw swiper-button-next swn{{ id }}{% unless section_st.arrowm %} hide-sm{% endunless %}{% unless section_st.arrow %} hide-md hide-lg{% endunless %}"></div>
+<div class="swarw swiper-button-prev swp{{ id }}{% unless section_st.arrowm %} hide-sm{% endunless %}{% unless section_st.arrow %} hide-md hide-lg{% endunless %}"></div>
+{%- endif -%}
+{%- if section_st.dot or section_st.dotm -%}
+<div class="swiper-pagination swpg{{ id }} fl f-wrap f-jcc tc{% unless section_st.dotm %} hide-sm{% endunless %}{% unless section_st.dot %} hide-md hide-lg{% endunless %}"></div>
+{%- endif -%}

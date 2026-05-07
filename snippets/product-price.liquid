@@ -1,0 +1,37 @@
+{%- liquid
+    assign compare_at_price = product.compare_at_price
+    assign price = product.price | default: 1999
+    assign price_varies = product.price_varies   
+    assign money_price = price | money
+    assign min_price = product.price_min | money
+    assign max_price = product.price_max | money
+    if settings.curCode
+        assign money_price = price | money_with_currency
+        assign min_price = product.price_min | money_with_currency
+        assign max_price = product.price_max | money_with_currency
+    endif
+-%}
+<div class="price {{ class }}">
+{%- if compare_at_price > price -%}
+  {%- if price_varies -%}
+    <span class="hidden_txt">{{ 'products.product.regular_price' | t }}</span>  
+    <span class="pr_price sale">{{ money_price }}</span>
+      <s class="pr_price">{{ compare_at_price | money }}</s>
+  {%- else -%}
+    <span class="hidden_txt">{{ 'products.product.regular_price' | t }}</span>  
+    <span class="pr_price sale">{{ money_price }}</span>
+      <s class="pr_price">{{ compare_at_price | money }}</s>
+  {%- endif -%}
+{%- else -%}
+  {%- if price_varies -%}
+        {%- if settings.price_style == 'default' -%}
+        	<span class="pr_price">{% if settings.price_lbl %}{{ settings.price_lbl_txt }}{% endif %} {{ money_price }}</span>
+		{%- else -%}
+			 <span class="pr_price">{% if settings.price_lbl %}{{ settings.price_lbl_txt }}{% endif %} {{ min_price }} - {{ max_price }}</span>
+		{%- endif -%}
+    {%- else -%}
+      <span class="hidden_txt">{{ 'products.product.regular_price' | t }}</span>
+      <span class="pr_price">{{ money_price }}</span>
+  {%- endif -%}
+{%- endif -%}
+</div>

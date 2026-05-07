@@ -1,0 +1,67 @@
+{%- capture arrow -%}
+    {% if settings.mmsub %}
+      <svg class="at-icon arw ml_auto"><use class="mns" xlink:href="#icon-plus"></use><use xlink:href="#icon-minus"></use></svg>
+    {% else %}
+      <svg class="at-icon arw right ml_auto"><use xlink:href="#icon-arrow"></use></svg>
+    {% endif %}
+{%- endcapture -%}
+{%- capture arrowbk -%}<svg class="at-icon arw left mr20"><use xlink:href="#icon-arrow"></use></svg>{%- endcapture -%}
+<li{% if link.active or link.child_active %} class="active"{% endif %}>
+    {%- assign label_1 = link.title |  split: '[label' | last | split: ']' | first | prepend: "nm_lbl" -%}
+    <a href="{{ link.url }}" class="{% if link.links != blank %}hasSub{% endif %}"{% if link.title contains '[new]' %} target="_blank"{% endif %}>
+        {% assign collection = link.object %}
+        {% if secSt.sicnm and collection.metafields.custom.icon != blank %}
+            {% assign collection = link.object %}
+            {% assign img = collection.metafields.custom.icon | default:collection.image | default: collection.featured_image %}
+            <div class="icn mr10 pr">{{ img | image_url: width: secSt.icnm | image_tag: loading:'lazy', class:'imgFt', widths:"60,90,120" }}</div>
+        {% endif %}
+        {{ link.title | split: '[' | first }}
+        {% if link.title contains '[label' %}<span class="lbl {{ label_1 }}">{{ settings[label_1] }}</span>{% endif %}
+        {%- if link.links != blank -%}{{ arrow }}{%- endif -%}
+    </a>
+    {%- if link.links != blank -%}
+        <ul class="subLinks">
+            {% unless settings.mmsub %}
+              {% assign name = link.title | split:'[label' | first %}
+              <li class="backto">{{ arrowbk }} {{ 'sections.navigation.back' | t: item: name }}</li>
+            {% endunless %}
+            {%- for childlink in link.links -%}
+                <li {% if childlink.active or childlink.child_active %}class="active"{% endif %}>
+                    {%- assign label_2 = childlink.title |  split: '[label' | last  | split: ']' | first | prepend: "nm_lbl" -%}
+                    <a href="{{ childlink.url }}" class="{% if childlink.links != blank %} hasSub{% endif %}"{% if childlink.title contains '[new]' %} target="_blank"{% endif %}>
+                        {% assign childcl = childlink.object %}
+                        {% assign img_2 = childcl.metafields.custom.icon | default:childcl.image | default: childcl.featured_image %}
+                        {% if secSt.sicnm and img_2 != blank %}
+                            <div class="icn mr10 pr">{{ img_2 | image_url: width: secSt.icnm | image_tag: loading:'lazy', class:'imgFt', widths:"60,90,120" }}</div>
+                        {% endif %}
+                        {{ childlink.title | split: '[' | first }}
+                        {% if childlink.title contains '[label' %}<span class="lbl {{ label_2 }}">{{ settings[label_2] }}</span>{% endif %}
+                        {%- if childlink.links != blank -%}{{ arrow }}{%- endif -%}
+                    </a>
+                    {%- if childlink.links != blank -%}
+                        <ul class="subLinks">
+                            {% unless settings.mmsub %}
+                              {% assign cname = childlink.title | split:'[label' | first %}
+                              <li class="backto">{{ arrowbk }} {{ 'sections.navigation.back' | t: item: cname }}</li>
+                            {% endunless %}
+                            {%- for lvl3link in childlink.links -%}
+                                <li {% if lvl3link.active %}class="active"{% endif %}>
+                                    {%- assign label_3 = lvl3link.title | split: '[label' | last  | split: ']' | first | prepend: "nm_lbl" -%}
+                                    <a href="{{ lvl3link.url }}" {% if lvl3link.title contains '[new]' %} target="_blank"{% endif %}>
+                                        {% assign childcl_3 = lvl3link.object %}
+                                        {% assign img_3 = childcl_3.metafields.custom.icon | default:childcl_3.image | default: childcl_3.featured_image %}
+                                        {% if secSt.sicnm and img_3 != blank %}
+                                            <div class="icn mr10 pr">{{ img_3 | image_url: width: secSt.icnm | image_tag: loading:'lazy', class:'imgFt', widths:"60,90,120" }}</div>
+                                        {% endif %}
+                                        {{ lvl3link.title | split: '[' | first }}
+                                        {% if lvl3link.title contains '[label' %}<span class="lbl {{ label_3 }}">{{ settings[label_3] }}</span>{% endif %}
+                                    </a>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    {%- endif -%}
+                </li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+</li>

@@ -1,0 +1,180 @@
+{% style %}
+  .bs-alert { padding:8px 16px; margin:0 auto 20px; border-radius: 4px; color: #0f5132; border:1px solid #badbcc; background-color:#d1e7dd; max-width:600px; }
+  .bs-alert-danger { color:#842029; background-color:#f8d7da; border-color:#f5c2c7; }
+  .bs-alert-warning { color:#664d03; background-color:#fff3cd; border-color:#ffecb5; }
+  .bs-alert ul { margin:0; padding:0 0 0 12px; line-height:normal; }
+  .bs-alert ul li { margin:4px; }
+  .bs-alert p { margin:0; padding:0; }
+{% endstyle %}
+<div id="eg-shipping-calc" class="tc shipCalc">
+  <h3 class="spttl"><span>{{ section.settings.shipTtl | default: 'Get shipping estimates' }}</span></h3>
+  <div id="eg-shipping-calc-alert-danger" class="bs-alert bs-alert-danger" role="alert" hidden></div>
+  <div id="eg-shipping-calc-alert-warning" class="bs-alert bs-alert-warning" role="alert" hidden></div>
+  <div id="eg-shipping-calc-alert-success" class="bs-alert bs-alert-success" role="alert" hidden></div>
+  <div id="shipping-calculator-wrapper" class="grid f-jcc f-ais">
+    <div class="gitem wd25-md" id="address_country_container" title="{{ 'customer.addresses.country' | t }}">
+        <select id="eg-shipping-calc-country" class="stopEv w_100" name="address[country]" autocomplete="country" aria-label="{{ 'customer.addresses.country' | t }}">{{ all_country_option_tags }}</select>
+    </div>
+    <div id="eg-shipping-calc-province-wrapper" class="gitem wd25-md" style="display:none;" title="{{ 'customer.addresses.province' | t }}">
+      <select id="eg-shipping-calc-province" class="stopEv w_100" name="address[province]" autocomplete="address-level1" aria-label="{{ 'customer.addresses.province' | t }}"></select>
+    </div>
+    <div class="gitem wd25-md" id="address_zip_container">
+      <input id="eg-shipping-calc-zip" class="stopEv w_100" name="address[zip]" type="text" placeholder="{{ 'customer.addresses.zip' | t }}" autocomplete="postal-code" aria-label="{{ 'customer.addresses.zip' | t }}" />
+    </div>
+    <div class="gitem wd25-md" id="get-rates-container">
+      <button id="eg-shipping-calc-btn" class="btn get-rates w_100 {{ section.settings.shipping-btn }}" data-label="{{ 'cart.button.calculate_shipping' | t }}" data-label-loading="{{ 'cart.button.calculating' | t }}" onclick="generateShippingRates(this)">{{ 'cart.button.calculate_shipping' | t }}</button>
+    </div>        
+  </div>
+</div>
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+<script>
+window.addEventListener('DOMContentLoaded', (event) => {
+    // Init Shipping Calc feature
+    const initShippingCalc = async (preload = false) => {
+        const element = document.querySelector('#eg-shipping-calc')
+        const cartDrawerItems = document.querySelector('cart-drawer-items')
+        const cartFooter = document.querySelector('#wrapper-response')
+        const countryProvinceSelector = new Shopify.CountryProvinceSelector('eg-shipping-calc-country', 'eg-shipping-calc-province', {
+            hideElement: 'eg-shipping-calc-province-wrapper'
+        });
+    }
+    initShippingCalc();
+
+    const selectAllshippingCountry = document.querySelectorAll("#eg-shipping-calc-country");
+    let selectedValue;
+
+    selectAllshippingCountry.forEach(selectElement => {
+        selectElement.addEventListener("change", (event) => {
+            // Get the selected option
+            selectedValue = event.target.selectedOptions[0];
+    
+            // Set the selected option for all #eg-shipping-calc-country elements
+            selectAllshippingCountry.forEach(element => {
+                // Find the option with the selected value and set it as selected
+                const optionToSelect = Array.from(element.options).find(option => option.value === selectedValue.value);
+                if(optionToSelect){
+                    optionToSelect.selected = true;
+    
+                    // Check if selectedValue has data-provinces
+                    const dataProvinces = selectedValue.getAttribute('data-provinces');
+                    if(dataProvinces){
+                        const allProvinceWrappers = document.querySelectorAll("#eg-shipping-calc-province-wrapper");
+                        const dataProvincesArr = dataProvinces.split(" ");
+                        if(dataProvincesArr.length > 1) {
+                          allProvinceWrappers.forEach(wrapper => {
+                              wrapper.style.display = 'block';
+                          });
+                        } else {
+                              allProvinceWrappers.forEach(wrapper => {
+                                  wrapper.style.display = 'none';
+                              });
+                          }
+                    }
+                }
+            });
+    
+            const countryProvinceSelector = new Shopify.CountryProvinceSelector('eg-shipping-calc-country', 'eg-shipping-calc-province', {
+                hideElement: 'eg-shipping-calc-province-wrapper'
+            });
+        });
+    });
+
+    const shopCurrency = '{{ shop.currency }}'.toUpperCase();
+
+    const convertShippingRate = (amount, fromCurrency, toCurrency) => {
+        if (!Number.isFinite(amount) || !fromCurrency || !toCurrency || fromCurrency === toCurrency) {
+            return amount;
+        }
+
+        if (window.Currency && typeof Currency.convert === 'function') {
+            const converted = Number(Currency.convert(amount, fromCurrency, toCurrency));
+            if (Number.isFinite(converted)) {
+                return converted;
+            }
+        }
+
+        const rates = window.Currency && Currency.rates ? Currency.rates : null;
+        if (rates) {
+            const fromRate = rates[fromCurrency] || rates[fromCurrency.toLowerCase()];
+            const toRate = rates[toCurrency] || rates[toCurrency.toLowerCase()];
+            if (fromRate && toRate) {
+                return amount * (toRate / fromRate);
+            }
+        }
+
+        const marketRate = Number(window.Shopify?.currency?.rate);
+        if (Number.isFinite(marketRate) && marketRate > 0 && fromCurrency === shopCurrency) {
+            return amount * marketRate;
+        }
+
+        return amount;
+    };
+
+    const formatShippingRate = (amount, currencyCode) => {
+        if (!Number.isFinite(amount)) return '';
+        try {
+            return new Intl.NumberFormat(document.documentElement.lang || 'en', {
+                style: 'currency',
+                currency: currencyCode
+            }).format(amount);
+        } catch (error) {
+            return `${amount.toFixed(2)} ${currencyCode}`;
+        }
+    };
+
+    // Generate Shipping rates
+    // https://shopify.dev/docs/api/ajax/reference/cart#generate-shipping-rates
+    window.generateShippingRates = async (btn) => {
+        btn.textContent = btn.dataset.labelLoading
+
+        const wrapper = document.querySelector('#eg-shipping-calc');
+
+        wrapper.querySelector('#eg-shipping-calc-alert-danger').innerHTML = ''
+        wrapper.querySelector('#eg-shipping-calc-alert-danger').setAttribute('hidden', 'hidden')
+        wrapper.querySelector('#eg-shipping-calc-alert-warning').innerHTML = ''
+        wrapper.querySelector('#eg-shipping-calc-alert-warning').setAttribute('hidden', 'hidden')
+        wrapper.querySelector('#eg-shipping-calc-alert-success').innerHTML = ''
+        wrapper.querySelector('#eg-shipping-calc-alert-success').setAttribute('hidden', 'hidden')
+
+        const country = wrapper.querySelector('#eg-shipping-calc-country').value
+        const province = wrapper.querySelector('#eg-shipping-calc-province').value
+        const zip = wrapper.querySelector('#eg-shipping-calc-zip').value
+
+        const prepareResponse = await fetch(`/cart/prepare_shipping_rates.json?shipping_address[zip]=${zip}&shipping_address[country]=${country}&shipping_address[province]=${province}`, {
+            method: 'POST'
+        })
+        console.log(prepareResponse)
+
+        if (prepareResponse.ok) {
+            const asyncRespose = await fetch(`/cart/async_shipping_rates.json?shipping_address[zip]=${zip}&shipping_address[country]=${country}&shipping_address[province]=${province}`)
+            const data = await asyncRespose.json()
+            let html = ''
+
+            if (data.shipping_rates.length) {
+                data.shipping_rates.forEach(elem => {
+                    const sourceCurrency = (elem.currency || '{{ shop.currency }}').toUpperCase();
+                    const marketCurrency = (window.Shopify?.currency?.active || sourceCurrency).toUpperCase();
+                    const baseAmount = parseFloat(elem.price);
+                    const marketAmount = convertShippingRate(baseAmount, sourceCurrency, marketCurrency);
+                    const formattedRate = formatShippingRate(marketAmount, marketCurrency);
+                    html += `<li>${elem.presentment_name}: <strong>${formattedRate}</strong></li>`
+                })
+                wrapper.querySelector('#eg-shipping-calc-alert-success').innerHTML = `<ul class="">${html}</ul>`
+                wrapper.querySelector('#eg-shipping-calc-alert-success').removeAttribute('hidden')
+            } else {
+                wrapper.querySelector('#eg-shipping-calc-alert-warning').innerHTML = `<p class="">${modal.dataset.textNoResults}</p>`
+                wrapper.querySelector('#eg-shipping-calc-alert-warning').removeAttribute('hidden')
+            }
+        } else {
+            const data = await prepareResponse.json()
+            let html = ''
+            for (const [key, value] of Object.entries(data)) {
+                html += `<li><strong>${key}</strong>: ${value.toString()}</li>`
+            }
+            wrapper.querySelector('#eg-shipping-calc-alert-danger').innerHTML = `<ul class="">${html}</ul>`
+            wrapper.querySelector('#eg-shipping-calc-alert-danger').removeAttribute('hidden')
+        }
+        btn.textContent = btn.dataset.label
+    }
+})
+</script>

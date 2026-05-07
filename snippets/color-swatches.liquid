@@ -1,0 +1,81 @@
+{%- assign color_type = section.settings.color_type | default: settings.color_type -%}
+{%- assign img_position = section.settings.vr_bg_position | default: settings.vr_bg_position -%}
+{%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' -%}
+{% capture color_swatch %}
+    {%- for option in product.options_with_values -%}
+       {%- liquid
+          assign option_index = option.position | minus: 1
+          assign is_color = false
+          for value in option.values
+             if value.swatch.image or value.swatch.color
+              assign is_color = true
+            endif
+          endfor
+       %}
+        {%- if is_color -%}
+          <ul class="grswatches fl f-wrap f-aic{% if source != "list" %} f-jcc{% else %} mb20{% endif %}">
+            {%- liquid
+                assign variants_available_arr = product.variants | map: 'available'
+                assign variants_option_1_arr = product.variants | map: 'option1'
+                assign variants_option_2_arr = product.variants | map: 'option2'
+                assign variants_option_3_arr = product.variants | map: 'option3'
+              -%}
+              {%- for value in option.values -%}
+                {%- liquid
+                  assign cl_count = forloop.index
+                  assign option_disabled = true
+
+                  for option1_name in variants_option_1_arr
+                    case option.position
+                      when 1
+                        if variants_option_1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                          assign option_disabled = false
+                        endif
+                      when 2
+                        if option1_name == product.selected_or_first_available_variant.option1 and variants_option_2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                          assign option_disabled = false
+                        endif
+                      when 3
+                        if option1_name == product.selected_or_first_available_variant.option1 and variants_option_2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option_3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                          assign option_disabled = false
+                        endif
+                    endcase
+                  endfor
+
+                  assign option_index = option.position | minus: 1
+                  assign swimg_size = settings.swatch_size | times: 2
+                  for variant in product.variants
+                      if variant.options[option_index] == value
+                        assign vr_img = variant.image
+                        break
+                      endif
+                  endfor
+                  assign swatch_clr = value.swatch.color
+                  if value.swatch.image
+                     assign swatch_img = value.swatch.image | image_url: width: swimg_size
+                     assign swatch_clr = 'url(' | append: swatch_img | append: ')'
+                  endif
+                -%}
+                {% if color_type == "vrimage" and vr_img != null %}
+                    {% # theme-check-disable DeprecateBgsizes %}
+                      <li class="swatch bgImg clrswt lazyload{% if option_disabled %} disabled{% endif %}{% if cl_count > settings.clcount %} hide{% endif %}" title="{{ value }}"
+                          style="background-position:{{ img_position }};" data-bgset="{{ vr_img | image_url: width: swimg_size }}" data-src="{{ vr_img | image_url: width: '500x' }}">
+                          <span class="tooltip-label top">{{ value }}</span>
+                      </li>
+                     {% # theme-check-enable DeprecateBgsizes %}
+                {% else %}
+                      <li class="swatch clrswt swt{{ value | handle }}{% if vr_img != null %} noImg{% endif %}{% if option_disabled %} disabled{% endif %}{% if cl_count > settings.clcount %} hide{% endif %}" title="{{ value }}"
+                          style="background:{{ swatch_clr }};" {% if vr_img != null %}data-src="{{ vr_img | image_url: width: '400x' }}"{% endif %}>
+                          <span class="tooltip-label top">{{ value }}</span>
+                      </li>
+                {% endif %}
+              {%- endfor -%}
+              {%- if cl_count > settings.clcount -%}
+                  <li class="numb clcount">{{ option.values.size | minus: settings.clcount }}+</li>
+              {%- endif -%}
+            </ul>
+        {%- endif -%}
+    {% endfor %}
+{% endcapture %}
+{{ color_swatch | strip_newlines | remove: "  " | remove: "	" }}
+{%- endunless -%}

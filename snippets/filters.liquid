@@ -1,0 +1,264 @@
+{%- liquid
+	assign sort_by = collection.sort_by | default: collection.default_sort_by
+	
+	assign drower = ''
+	assign flclass = 'f-wrap col-gap'
+	assign bgttl = ''
+	if section_st.sbpos != 'top'
+		assign drower = 'open'
+		assign flclass = 'f-col w_100'
+		assign bgttl = 'hide'
+	endif
+    assign pageurl = canonical_url | split:'?type=' | last
+-%}
+<form id="CollectionFiltersForm" class="flForm{% unless section_st.sbpos == 'top' %} fl f-col f-ais f-row-md{% endunless %}{% if section_st.sbpos == 'popup' %} h_100{% endif %}" {{ block.shopify_attributes }}>
+    {% if request.page_type == 'search' %}
+      <input type="hidden" name="q" value="{{ search.terms }}">
+      <input name="options[prefix]" type="hidden" value="last">
+    {% endif %}
+	{%- assign total_active_values = 0 -%}
+	{% if section_st.filters %}
+  	<div class="closeFilter{% if section_st.sbpos != 'popup' %} hide-lg{% endif %}"><svg class="at-icon"><use xlink:href="#icon-close"></use></svg></div>
+	<div class="filterWrap fl {{ flclass }}" data-url="{{ shop.url }}{{ collection.url | split: "?" | first }}"{% if section_st.sbpos == 'top' %} style="--gap:35px;"{% endif %}>
+      	{% for block in section.blocks %}
+          {%- assign blk_st = block.settings -%}
+          {%- if block.type == 'categories' and section_st.sbpos != 'top' -%}
+              <div class="filterBx" {{ block.shopify_attributes }}>
+                <div class="flTtl fl f-jcsb f-aic"><span class="{{ section_st.bx_ttlw }} {{ section_st.bx_tcase }} {{ section_st.tff }}">{{ blk_st.title }}</span></div>
+                <ul class="sb_categories mb20 sdBlock mt10 {{ section_st.optcase }}">
+                  {%- for link in linklists[blk_st.side_categories].links -%}
+                  	<li class="lvl-1{% if link.active or link.child_active %} active{% endif %}">
+                      <a href="{{ link.url }}" class="fl f-aic f-jcsb{% if link.links != blank %} js-toggle{% endif %}{% if link.active or link.child_active %} active{% endif %}">
+                          {{- link.title | split: '[' | first -}}
+                          {%- if link.links != blank -%}
+                              <svg class="at-icon"><use class="plus" xlink:href="#icon-plus"></use><use class="minus" xlink:href="#icon-minus"></use></svg>
+                          {%- endif -%}
+                        </a>
+                      {%- if link.links != blank -%}
+                      <ul class="subLinks of_hidden">
+                        {%- for childlink in link.links -%}
+                        <li class="lvl-2{% if childlink.active or childlink.child_active %} active{% endif %}">
+                          <a href="{{ childlink.url }}" class="lvl-2">
+                              {{- childlink.title -}}
+                              {%- if childlink.links != blank -%}
+                                  {%- assign class_name = 'plus' -%}
+                                  {%- if childlink.active or childlink.child_active -%}{%- assign class_name = 'minus' -%}{%- endif -%}
+                                  {%- if link.links != blank -%}<svg class="at-icon {{ class_name }}"><use xlink:href="#icon-plus"></use></svg>{%- endif -%}
+                              {%- endif -%}
+                          </a>
+                          {%- if childlink.links != blank -%}
+                          <ul class="subLinks of_hidden">{%- for lvl3link in childlink.links -%}<li class="lvl-3 {% if lvl3link.active %}active{% endif %}"><a href="{{ lvl3link.url }}" class="lvl-3">{{ lvl3link.title }}</a></li>{%- endfor -%}</ul>
+                          {%- endif -%}
+                        </li>
+                        {%- endfor -%}
+                      </ul>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+          {%- endif -%}
+
+      	  {%- if block.type == 'filter_by' -%}
+      		{%- if blk_st.title != blank -%}<label class="{{ section_st.tff }} flby mb20 {{ section_st.bx_ttlw }}{% if section_st.sbpos != 'top' %} col-1{% else %} f-asc mr10{% endif %}">{{ blk_st.title }}</label>{%- endif -%}
+            {%- liquid
+                if request.page_type == 'search'
+                  assign filters = search.filters
+                else
+                  assign filters = collection.filters
+                endif
+            -%}
+      		{%- for filter in filters -%}
+              {%- assign total_active_values = total_active_values | plus: filter.active_values.size -%}
+              {%- case filter.type -%}
+                  {%- when 'boolean', 'list' -%}
+                      <details class="filterBx dyFilters pr js-filter" data-index="{{ forloop.index }}" {{ drower }}>
+                          <summary class="flTtl fl f-jcsb f-aic">
+                              <span class="{{ section_st.bx_ttlw }} {{ section_st.bx_tcase }} {{ section_st.tff }}">
+                                {{- filter.label | escape -}}
+                                <span class="count-bubble">{% if filter.active_values.size > 0 %}{{ filter.active_values.size }}{% endif %}</span>
+                              </span>
+                              {% unless section_st.tglico %}
+                                <svg class="at-icon plus"><use xlink:href="#icon-plus"></use></svg>
+                                <svg class="at-icon minus"><use xlink:href="#icon-minus"></use></svg>
+                              {% endunless %}
+                          </summary>
+                        
+                          {%- liquid
+                              assign is_size = false
+                              assign size_options = section_st.flcolumn | downcase | replace:", ","," | replace:" , ","," | replace:" ,","," | split: ","
+                              assign fname = filter.label | downcase
+                              if size_options contains fname
+                                  assign is_size = true
+                              endif
+                          -%}
+                          <div class="filterDD{% if filter.presentation == 'swatch' %} filterClr{% endif %}">
+                              <div class="bxTtl fl f-jcsb {{ bgttl }}">
+                                  <span class="facets__selected no-js-hidden">{{ 'collections.general.filters_selected' | t: count: filter.active_values.size }}</span>
+                                  <a href="{{ filter.url_to_remove }}" class="facets__reset link underlined-link js-facet-remove" >{{ 'collections.general.reset' | t }}</a>
+                              </div>
+                              <ul class="flList {{ section_st.optcase }}{% if filter.presentation == 'swatch' %} fl f-wrap gap{% endif %}" role="list" {% if is_size %}style="column-count:2"{% endif %}>
+                              {%- for value in filter.values -%}
+                                {%- if filter.presentation == 'swatch' -%}
+                                  {%- liquid
+                                    assign swatch = value.swatch
+                                    assign swatch_value = null
+                                    if swatch.image
+                                      assign image_url = swatch.image | image_url: width: 50
+                                      assign swatch_value = 'url(' | append: image_url | append: ')'
+                                    elsif swatch.color
+                                      assign swatch_value = 'rgb(' | append: swatch.color.rgb | append: ')'
+                                    endif
+                                  -%}
+                                  <li class="color">
+									<label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="m0 fl-checkbox{% if value.count == 0 and value.active == false %} disabled{% endif %}">
+                                    	<input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" id="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="custCheck dyfl"
+                                            {%- if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>{{-  -}}
+                                        <span class="swt swt{{ value.value | handleize }} pr of_hidden clrbox" style="background:{{ swatch_value }};"></span>
+                                        <span class="tooltip-label top">{{ value.label }}</span>
+                                  	</label>
+                                  </li>
+                              {%- else -%}
+                                  <li>{{-  -}}
+                                  	  <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="m0 fl-checkbox{% if value.count == 0 and value.active == false %} disabled{% endif %}">{{-  -}}
+                                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" id="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="custCheck dyfl"
+                                          	{%- if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>{{-  -}}
+                                      	  <span class="checkbox"></span> {{ value.label | escape }}{% if blk_st.flpcnt %}<span class="prcnt">&nbsp;({{ value.count }})</span>{%- endif -%}
+                                      </label>
+                                  </li>
+                                 {%- endif -%}
+                               {%- endfor -%}
+                              </ul>
+                          </div>
+                      </details>
+                  {%- when 'price_range' -%}
+                      {% liquid
+                          assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,UYU,VES,VND' | split: ','
+                          assign uses_comma_decimals = false
+                          if currencies_using_comma_decimals contains cart.currency.iso_code
+                              assign uses_comma_decimals = true
+                          endif
+                      %}
+                      <details class="filterBx dyFilters pr{% if section_st.flbg and section_st.optbg %} bxBg{% endif %}" data-index="{{ forloop.index }}" {{ drower }}>
+                          <summary class="flTtl">
+                              <span class="fl f-jcsb f-aic {{ section_st.bx_ttlw }} {{ section_st.bx_tcase }} {{ section_st.tff }}">
+                                  {{- filter.label | escape -}}
+                                  <span class="count-bubble{% if filter.min_value.value or filter.max_value.value %}{{ filter.active_values.size }} count-bubble--dot{% endif %}"></span>
+                                  {% unless section_st.tglico %}
+                                    <svg class="at-icon plus"><use xlink:href="#icon-plus"></use></svg>
+                                    <svg class="at-icon minus"><use xlink:href="#icon-minus"></use></svg>
+                                  {% endunless %}
+                              </span>
+                          </summary>
+                          <div class="filterDD prsld pr">
+                            <div class="bxTtl fl f-jcsb {{ bgttl }}">
+								{%- assign max_price_amount = filter.range_max | money -%}
+								<span class="facets__selected">{{ "collections.general.max_price_html" | t: price: max_price_amount }}</span>
+								<a href="{{ filter.url_to_remove }}" class="facets__reset link underlined-link js-facet-remove" >{{ 'collections.general.reset' | t }}</a>
+							</div>
+                            <price-range class="fl f-jcsb f-aic flList mb20 {{ section_st.optcase }}">
+                              {%- liquid
+                                   assign last_two = filter.range_max | modulo: 100
+                                   assign difference = 100 | minus: last_two
+                                   assign min_value = 0
+                                   assign max_price = filter.range_max | plus: difference | money_without_currency | remove:',' | round
+                                   assign max_value = max_price
+
+                                   if filter.min_value.value
+                                     assign min_value = filter.min_value.value | money_without_currency | remove:',' | round
+                                   endif
+
+                                   if filter.max_value.value
+                                     assign max_value = filter.max_value.value | money_without_currency | remove:',' | round
+                                   endif
+                                   if uses_comma_decimals
+                                     assign max_price = filter.range_max | plus: difference | money_without_currency | remove:'.' | replace:",","." | round
+                                     assign max_value = max_price
+                                     if filter.min_value.value
+                                       assign min_value = filter.min_value.value | money_without_currency | remove:'.' | replace:",","." | round
+                                     endif
+                                     if filter.max_value.value
+                                       assign max_value = filter.max_value.value | money_without_currency | remove:'.' | replace:",","." | round
+                                     endif
+                                   endif
+                              -%}
+                              <div class="field pr">
+                                <label for="Filter-Price-GTE" class="hidden_txt">{{ filter.label | escape }}-GTE</label>
+                                <input class="prRange w_100" name="{{ filter.min_value.param_name }}" id="Filter-Price-GTE" type="number" placeholder="0" min="0" value="{{ min_value }}" max="{{ max_price }}" />
+                              </div>
+                              <span class="ml20 mr20"> - </span>
+                              <div class="field pr">
+                                <label for="Filter-Price-LTE" class="hidden_txt">{{ filter.label | escape }}-LTE</label>
+                                <input class="prRange w_100" name="{{ filter.max_value.param_name }}" id="Filter-Price-LTE" type="number" placeholder="{{ max_price }}" min="0" value="{{ max_value }}" max="{{ max_price }}" />
+                              </div>
+                            </price-range>
+                            <tc-range-slider min="0" max="{{ max_price }}" value1="{{ min_value }}" value2="{{ max_value }}" round="0" mousewheel-disabled="true" slider-width="100%" slider-bg="{{ section_st.bar }}" slider-bg-fill="{{ section_st.bara }}" id="priceSlider"></tc-range-slider>
+                          </div>
+                      </details>
+                  {%- endcase -%}
+              {%- endfor -%}
+      	  {%- endif -%}
+      		
+      	  {% comment %} *** Product Slider *** {% endcomment %}
+          {%- if block.type == 'products' and section_st.sbpos != 'top' -%}
+          <div class="filterBx hide-sm hide-md" {{ block.shopify_attributes }}>
+                <div class="flTtl"><span class="fl f-jcsb f-aic {{ section_st.bx_ttlw }} {{ section_st.bx_tcase }} {{ section_st.tff }}">{{ blk_st.title }}</span></div>
+            <div class="sdBlock mt10">
+              {%- if blk_st.sd_prod != blank -%}
+                  {% for product in collections[blk_st.sd_prod].products limit:blk_st.num_pr %}
+                    {% render 'product-card-columns', product: product, block: block.settings, section: section_st, sizes: image_size %}
+                  {% endfor %}
+              
+                {% if blk_st.btn_txt != blank %}<div class="mt15"><a href="{{ blk_st.sd_prod }}" class="btn">{{ blk_st.btn_txt }}</a></div>{% endif %}
+              {%- else -%}
+              <p>Please select collection from store admin > customize > Collection page > sidebar</p>
+              {%- endif -%} 
+            </div>
+          </div>
+          {%- endif -%}
+
+          {% comment %} *** Image Banner *** {% endcomment %}
+          {%- if block.type == 'image_bnr' and section_st.sbpos != 'top' -%}
+      	  <div class="pr hide-sm hide-md mb30 of_hidden brad" {{ block.shopify_attributes }} style="--rounded:{{ blk_st.rad }}px">
+            {% if blk_st.link != blank %}<a href="{{ blk_st.link }}">{% endif %}
+            {% if blk_st.img != blank %}
+                 <picture class="overlay" style="--overlay:{{ blk_st.overlay | color_modify: 'alpha', blk_st.overlay_op }};">
+                   {{ blk_st.img | image_url: width: blk_st.img.width | image_tag: loading:'lazy', width:blk_st.img.width, height: blk_st.img.height, class:'imgAt' , sizes:'(max-width:1024px) 300px,100vw', widths: "300,400,500,760" }}
+                 </picture>
+            {% else %}
+              {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+              {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg mb20' }}
+            {% endif %}
+             {% if blk_st.prehead != blank or blk_st.title != blank or blk_st.btn_txt != blank %}
+               <div class="pd30 pa fl f-col f-aic w_100 banner_text tc zi2" style="--cl:{{ blk_st.cl }};">
+                 {% if blk_st.prehead != blank %}<span class="db mb5 {{ blk_st.pfs }} {{ blk_st.tff }} fwm">{{ blk_st.prehead }}</span>{% endif %}
+                 {% if blk_st.title != blank %}<span class="db mb15 {{ blk_st.fs }} {{ blk_st.tff }} fwsb">{{ blk_st.title }}</span>{% endif %}
+                 {% if blk_st.btn_txt != blank %}<span class="btn {{ blk_st.btn-style }}">{{ blk_st.btn_txt }}</span>{% endif %}
+               </div>
+            {% endif %}
+            {% if blk_st.link != blank %}</a>{% endif %}
+          </div>
+          {%- endif -%}
+
+          {% comment %} *** Static Text Block *** {% endcomment %}
+          {%- if block.type == 'static_text' and section_st.sbpos != 'top' -%}
+          <div class="filterBx hide-sm hide-md" {{ block.shopify_attributes }}>
+            <div class="flTtl"><span class="fl f-jcsb f-aic {{ section_st.bx_ttlw }} {{ section_st.bx_tcase }} {{ section_st.tff }}">{{ blk_st.title }}</span></div>
+            <div class="sdBlock mt10">
+              {%- if blk_st.text != blank -%}
+                {{ blk_st.text }}
+              {%- else -%}
+                <p>Please select collection from store admin > customize > Collection page > sidebar</p>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- endif -%}
+      	{%- endfor -%}
+  	  </div>
+	{%- endif -%}
+	{%- if collection.current_vendor or collection.current_type -%}<input type="hidden" name="q" value="{{ collection.current_vendor }}{{ collection.current_type }}">{%- endif -%}
+    <div class="hide">
+      <input type="hidden" class="pageView dyfl" name="type" value="{% if pageurl == 'list' %}list{% else %}grid{% endif %}">
+      <noscript><button type="submit" class="button button--small">{{ 'collections.general.sort_button' | t }}</button></noscript>
+    </div>
+  </form>

@@ -1,0 +1,80 @@
+{%- liquid
+   assign form_class = 'sDrawer'
+   if search_type == 'inline'
+     assign form_class = 'sDrawer hide-lg'
+   endif
+
+   for collection in settings.srClList
+        assign collection_image = collection.metafields.custom.custom_image.value | default:collection.image | default: collection.products.first.featured_image
+        assign img_ratio = 1 | divided_by: collection_image.aspect_ratio | times: 100
+        break
+    endfor
+-%}
+<div class="searchDrawer ctScroll anim">
+    <span class="closeSearch" style="--icns:16px"><svg class="at-icon"><use xlink:href="#icon-close"></use></svg></span>
+        <div class="{% if secSt.sw %}fw-sec{% else %}page-width{% endif %}" style="--cl:{{settings.search_cl}};--fs:{{settings.search_fs}}px;--fsm:{{settings.search_fs}}px;--fw: {{settings.search_fw}};">
+          
+              <p class="rgTxt ft2 mb15 tc{% if search_type == 'inline' %} hide-lg{% endif %}">{{ settings.search_ttl }}</p>
+              {% render 'search-form', formClass: form_class %}
+          
+
+          {% if settings.search_sugges %}<div id="serchList" class="w_100 hide"></div>{% endif %}
+      
+          {% if settings.search_word != blank or settings.searchCl != blank %}
+              <div id="searchPre">
+                  {% if settings.search_word != blank  %}
+                      {% assign searchwords = settings.search_word | replace:", ","," | replace:" , ","," | replace:" ,","," | split: ',' %}  	
+                      <div class="s_suggestion fl f-wrap f-aic gap" style="--gap:14px;">
+                          <p class="rgTxt ft2 mb0">{{ settings.search_lbl1 }}</p>
+                          {% for searchvalue in searchwords %}<a href="{{ routes.search_url }}?type=product&options%5Bprefix%5D=none&q={{ searchvalue }}&options%5Bprefix%5D=last">{{ searchvalue }}</a>{% endfor %}
+                      </div>
+                      <hr class="mt25 mb25" />
+                  {% endif %}
+      
+                  {%  if settings.search_lbl2 != blank %}<p class="rgTxt ft2 mb15">{{ settings.search_lbl2 }}</p>{% endif %}
+                  {%  if settings.search_recomand == "prr" %}                         
+                      {%- assign collection = collections[settings.searchCl] -%}
+                      {% if collection.products.size > 0 %}
+                          <ul id="predictive-search-results-list" class="grid gspace mb20 rwcols-2 rwcols-md-3 rwcols-lg-5" role="list" aria-label="{{ settings.search_lbl2 }}"
+                              style="--grsp:7.5px;--grspm:5px;">
+                              {% for product in collection.products limit: settings.srclimit %}
+                                  {%- capture sizes -%}
+                                      (min-width:1024px) calc(({{ cntWd }} - 60px) / 5),(min-width:768px) calc((100vw - 45px) / 3), calc((100vw - 10px) / 2)
+                                  {%- endcapture -%}
+                                  <li class="gitem productCol {% render 'animate-data', css:true %}" {% render 'animate-data' %} role="option">{% render 'product-card-grid', product:product, secSt:secSt, sizes:sizes %}</li>
+                              {% endfor %}
+                          </ul>  
+                          <p class="tc">{% if settings.btntxt != blank %}<a href="{{ settings.searchCl.url }}" class="btn {{ settings.sbtn-size }} {{ settings.sbtn-style }} mt10">{{ settings.btntxt }}</a>{%  endif %}</p>
+                      {% endif %}
+                  {%  else %}
+                      <div class="grid cl_box cl_box3 gspace rwcols-2 rwcols-3 rwcols-lg-{{ settings.srclimit }} search_col" style="--grsp:10px;--grspm:5px;--ratio:{{ img_ratio | default:100 }}%">
+                          {% for collection in settings.srClList %}
+                              <div class="gitem">
+                                {%  assign collection_image = collection.metafields.custom.custom_image.value | default:collection.image | default: collection.products.first.featured_image %}
+                                {%- capture ttl -%}--fs:16px;--fsm:13px;--ft:var(--ft2);--fw:700;{% endcapture %}
+                                {%- capture sizes -%}
+                                  (min-width:1024px) calc(({{ cntWd }} - 60px) / 5),(min-width:768px) calc((100vw - 45px) / 3), calc((100vw - 10px) / 2)
+                              {%- endcapture -%}
+                                <div class="cl_item pr of_hidden">
+                                	<a href="{{ block.url | default:collection.url }}" class="cl_item_link">
+                                      <div class="img pr of_hidden mb10 brad" style="--rounded:{{ settings.srbrad }}px;" >
+                                         {%- if collection_image != blank -%}
+                                        	{{ collection_image | image_url: width: collection_image.width | image_tag: loading:'lazy', width:collection_image.width, height:collection_image.height, class:'imgFt', sizes:sizes, widths:"180,320,400,560,740,900,1200" }}
+                                         {% else %} 
+                                        	{% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}{{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}    
+                                         {% endif %}
+                                      </div>      
+                                      <div class="details tc" style="{{ dtlStyle }}">     	       
+                                        <div class="cl_ttl" style="{{ ttl }}">{{ collection.title }}</div>
+                                        <p class="counts mb5" style="--cl:{{ section.ttl }};">{{ 'collections.general.items_with_count' | t: count: collection.all_products_count }}</p>
+                                      </div>
+                                  </a>
+                                </div>
+                              </div>
+                          {% endfor %}
+                      </div>
+                  {% endif %}  
+              </div>
+          {% endif %}
+     </div>
+</div>

@@ -1,0 +1,109 @@
+{%- liquid
+	assign boxstyle = section_st.prbox_style | default: settings.prbox_style	  
+    assign second_img = settings.secondary_image  	 		
+    assign product_review = settings.show_product_review  			     
+    assign product_url = product.url | within: collection
+	assign quick_url = product.url | split: "?" | first
+
+    if section_st.prbox_style != blank  		
+		assign vendor_name = section_st.show_vendor  		  		 		
+  		assign color_swatch = section_st.show_color_swatch
+	else  		
+  		assign vendor_name = settings.show_vendor  		  		
+  		assign color_swatch = settings.show_color_swatch
+	endif
+   
+    if settings.clurl
+        assign product_url = product.url
+    endif   
+-%}
+
+{% capture product_timer %}
+	{%- if settings.display_countdown and product.metafields.custom.countdown != blank -%}
+        <countdown-time class="gridTimer atCounter pa fl tc ttu anim f-aic f-jcc" data-date="{{product.metafields.custom.countdown}}">
+          <span><span class="tm days">00</span>{{'date_formats.days_short' | t}}</span>:
+          <span><span class="tm hours">00</span>{{ 'date_formats.hours_short' | t }}</span>:
+          <span><span class="tm minutes">00</span>{{'date_formats.minuts_short' | t}}</span>:
+          <span><span class="tm seconds">00</span>{{'date_formats.seconds_short' | t}}</span>
+        </countdown-time>
+	{%- endif -%}
+{% endcapture %}
+
+<div class="grid_img_wr lv_image_col">
+  <a href="{{ product_url }}" class="grid_img">
+    {{ product.featured_image | image_url: width: product.featured_image.width | image_tag: loading:'lazy', width:product.featured_image.width, height:product.featured_image.height, class:'imgFt primary', sizes:sizes, widths:"180,320,400,560,740,900" }}
+      {%- if second_img and product.images.size > 1 and boxstyle != "style2" -%}
+          {{ product.images[1] | image_url: width: product.images[1].width | image_tag: loading:'lazy', width:product.images[1].width, height:product.images[1].height, class:'imgFt hover', sizes:sizes, widths:"180,320,400,560,740,900" }}
+      {%- endif -%}                   
+  </a>
+   <div class="fl f-col pa lv_buttons" style="--icns:15px;">      
+      {% if settings.wishlist %}
+        <button type="button" class="gbtn pr addwishlist" data-url="{{pages[settings.wishlist_page].url}}" data-id="{{ product.id }}">
+          <span class="txt"><svg class="at-icon wishicon"><use class="add" xlink:href="#icon-wishlist"></use><use class="added" xlink:href="#icon-remove"></use></svg></span>
+          <span class="tooltip-label {{lblposition}}">{{ 'products.wishlist.add_to_wishlist' | t}}</span>
+          <svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg>
+        </button>        
+      {% endif %}
+      {% if settings.quick_view %}
+          <button type="button" data-url="{{ quick_url }}?section_id=quick-view" class="gbtn pr quick-view">
+            <span class="txt"><svg class="at-icon"><use xlink:href="#icon-eye"></use></svg></span>
+            <span class="tooltip-label {{lblposition}}">{{ 'products.product.quick_view' | t}}</span>
+            <svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg>
+        </button>        
+    {% endif %}
+  </div>  
+  {{ product_timer }}
+</div>
+
+<div class="lv_detail_col pr">
+  {% comment %}<!-- product label --> {% endcomment %}
+  {%- if settings.pr_lbl -%}
+    <div class="pr_lbl mt5 mb15">
+      {%- if settings.lbl_sale and product.compare_at_price > product.price -%}
+        <span class="lbl sale dbi">
+            {% if settings.lbl_sale_type == "1" %}
+              {{ 'products.product.on_sale' | t}}
+            {% else %}
+              -{{ product.compare_at_price_min | minus: product.price | times: 100 | divided_by: product.compare_at_price_min }}%
+            {% endif %}
+        </span>
+      {%- endif -%}
+      {%- for label in product.metafields.custom.select_labels.value -%}
+        <span class="lbl {{ label.label | handleize }}">{{ label.label }}</span>
+      {%- endfor -%}
+      {% if settings.soldout_lbl and product.available == false -%}<label class="lbl sold-out"><span>{{ 'products.product.sold_out' | t}}</span></label>{%- endif -%}
+    </div>
+    {%- endif -%} 
+  
+  {% if vendor_name %}<div class="grid_vendor">{{ product.vendor }}</div>{% endif %}    
+  <a href="{{ product_url }}" class="lv_item_ttl dbi mb5">{{ product.title }}</a>
+  {% if product_review %}<div class="mb10">{% render 'ratings' %}</div>{% endif %}
+  {% if product.description != blank %}<p class="mb15">{{ product.description | strip_html | truncatewords: 40 }}</p>{% endif %}  
+  {%- unless settings.hide-price -%}<div class="grid_meta mb15">{% render 'product-price', product: product  %}</div>{%- endunless -%}
+  {% if color_swatch %} {% render 'color-swatches', product: product, source: "list" %} {% endif %}  
+  {% if product.metafields.custom.external_link_text != blank and product.metafields.custom.external_link != blank %} 
+          <a href="{{ product.metafields.custom.external_link }}"  class="btn" target="_blank">{{ product.metafields.custom.external_link_text }}</a>
+    {% else %}
+      {%- unless settings.catalog-mode -%} 
+          {% unless sold_out %}
+            {% assign variant_count = product.variants | size %}
+            {% if variant_count > 1 %}
+                  <button type="button" class="btn btn-options quickShop{% if hide_icons_mb %} hide-sm{% endif %}" data-url="{{ quick_url }}?section_id=quick-shop">
+                      <span class="txt">{{ 'products.product.quick_shop' | t}}</span>    
+                      <div class="loading__spinner hidden"><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></div>
+                  </button>
+            {% else %}
+                <product-form class="product-form">
+                    {%- form 'product', product, id: 'quickadd', class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                      <button type="submit" name="add" id="AddToCart-{{ product.id }}" class="btn{% if hide_icons_mb %} hide-sm{% endif %}">
+                           <span class="txt" id="AddToCartText-{{ product.id }}">{{ 'products.product.add_to_cart' | t}}</span>
+                           <div class="loading__spinner hidden"><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></div>
+                      </button>
+                    {%- endform -%}
+                </product-form>
+            {% endif %}            
+          {% endunless %}
+      {%- endunless -%}
+    {%  endif %}  
+</div>

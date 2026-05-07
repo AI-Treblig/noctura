@@ -1,0 +1,24 @@
+{%- if link != blank -%}<a href="{{ link }}">{%- endif -%}
+{%- if image != blank -%}
+  {%- liquid
+     assign image_class = 'imgFl anim'
+     if fullimg 
+       assign image_class = 'imgFt anim'
+     endif
+  %}
+  {{ image | image_url: width: image.width | image_tag: loading:'lazy', class:image_class, widths:"180,320,400,560,740,900,1200" }}
+{%- else -%}
+    {% # theme-check-disable RemoteAsset %}
+    <img src="{{ 'https://dummyimage.com/' | append: imgSize | append: '/F4F4F4/ccc' }}" width="" height="" class="imgFl lazyload" />
+    {% # theme-check-enable RemoteAsset %}
+{%- endif -%}
+{%- if text1 != blank or text2 != blank or text3 != blank %}
+<div class="fl pd25 pa all0 {{ pos }} {% if text_a %}tl{% else %}tc{% endif %}">
+<div class="dib pr grid_btxt t{{ blockId }} of_hidden zi1">
+  {%- if text1 != blank -%}<span class="text1 db {% if hidetxt1 %}hide-sm{% endif %}">{{ text1 }}</span>{%- endif -%}
+  {%- if text2 != blank -%}<span class="text2 db {% if hidetxt2 %}hide-sm{% endif %}">{{ text2 }}</span>{%- endif -%}
+  {%- if text3 != blank -%}<span class="text3 db {% if hidetxt3 %}hide-sm{% endif %}">{{ text3 }}</span>{%- endif -%}
+</div>
+</div>
+{%- endif -%}
+{%- if link != blank -%}</a>{%- endif -%}

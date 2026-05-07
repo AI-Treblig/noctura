@@ -1,0 +1,18 @@
+<div class="pagination mb20">
+  <hr class="clear" />
+  <ul class="fl f-jcc">
+    {%- if paginate.previous -%}<li class="prev"><a href="{{ paginate.previous.url }}" aria-label="previous Page"><svg class="at-icon arw left"><use xlink:href="#icon-arrow"></use></svg></a></li>{%- endif -%}
+    {%- for part in paginate.parts -%}
+      {% if part.is_link %}
+          <li>{{ part.title | link_to: part.url }}</li>
+      {% else %}
+        {% if part.title == '&hellip;' %}
+            <li class="ellipsis disabled"><a href="#" onclick="return false;">{{ part.title }}</a></li>
+        {% else %}
+            <li class="active"><a href="#this">{{ part.title }}</a></li>
+        {% endif %}
+      {% endif %}
+    {%- endfor -%}
+    {%- if paginate.next -%}<li class="next"><a href="{{ paginate.next.url }}" aria-label="Next Page"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></a></li>{%- endif -%}
+  </ul>
+</div>

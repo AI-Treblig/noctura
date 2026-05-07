@@ -1,0 +1,11 @@
+{%- liquid
+   if settings.animef
+     if css and text
+       echo 'scroll-trigger fadeIn'
+     elsif css
+       echo 'scroll-trigger ' | append: settings.anin_style
+     else
+      echo 'data-cascade'
+     endif
+   endif
+-%}

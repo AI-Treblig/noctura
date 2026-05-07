@@ -1,0 +1,67 @@
+{% capture site_bottom %}
+{%- if is_rtl -%}
+    {{ 'defaultRtl.css' | asset_url | stylesheet_tag }}
+{%- else -%}
+    <link rel="stylesheet" href="{{ 'default.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- endif -%}
+
+<div class="loadingBox" style="--icns:35px;"><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></div>
+<div class="modalOverly"></div>
+
+{%- if settings.show_scroll -%}
+  <back-to-top class="back-to-top fl f-aic f-jcc cpointer of_hidden{% if settings.show_stt_mb %} hide-sm{% endif %}" style="--height: 39.06%;" title="{{ 'accessibility.scroll_to_top_button' | t }}">
+      <span class="pa w_100 ht-scroll zi1"></span>
+      <svg class="at-icon pr zi3" viewBox="0 0 448 512"><path fill="currentColor" d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"/></svg>
+    </back-to-top>
+{%- endif -%}
+
+<ul hidden>
+  <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+  <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
+</ul>
+<script src="{{ 'lazysizes.js' | asset_url }}" async></script>
+<script>
+{%- if settings.dynamicTtl -%}
+    {% capture titletext %}{%- if settings.dynamicTxt1 != blank -%}{{ settings.dynamicTxt1 }}{%- endif -%}{%- if settings.dynamicTxt2 != blank -%}{%- if settings.dynamicTxt1 != blank -%}!;{%- endif -%}{{ settings.dynamicTxt2 }}{%- endif -%}{% endcapture %}
+    let l = { "message": {{ titletext | split:"!;" | json }},"delay": 1000,"titleTag": document.getElementsByTagName("title")[0] };
+    l.titleTag && (l.originalTitle = l.titleTag.innerText,l.isSingle = l.message.length < 2,l.isActive = !1,l.myTimer,
+    document.addEventListener('visibilitychange',()=>{
+        document.visibilityState === 'visible' ? function(){
+            if (!l.isActive) return;
+            clearInterval(l.myTimer), l.titleTag.innerText = l.originalTitle
+        }():function(){
+            let e=0,t=l.message[e];
+            if (l.isActive = !0, l.titleTag.innerText = t, l.isSingle) return;
+            l.myTimer = setInterval(function () {
+                let i = l.message[++e];
+                i || (e = 0, i = t), l.titleTag.innerText = i
+            }, l.delay)
+        }()
+    }));
+{%- endif -%}
+    
+  {% if settings.prevent_copy %}
+    document.addEventListener("contextmenu", function(event) {var notInput = (event.target || event.srcElement).tagName.toLowerCase() !== "input" && (event.target || event.srcElement).tagName.toLowerCase() !== "textarea";if (notInput && (event.target || event.srcElement).innerText) {event.preventDefault();} });
+    document.addEventListener("mousedown", function(event) { if ((event.target || event.srcElement).tagName.toLowerCase() === "img"){ if (event.which == 2) { event.preventDefault(); }}});
+    document.addEventListener("contextmenu", function(event) { if ((event.target || event.srcElement).tagName.toLowerCase() === "img") { event.preventDefault(); } });
+    const disableDragAndDrop = function(){document.body.setAttribute("ondragstart", "return false;");document.body.setAttribute("ondrop", "return false;");};
+    if (document.readyState === "complete") {disableDragAndDrop();} else {document.addEventListener("DOMContentLoaded", disableDragAndDrop);}
+    document.addEventListener("contextmenu", function(event) { if ((event.target || event.srcElement).style.backgroundImage) { event.preventDefault(); } });
+  {% endif %}
+</script>
+{%- if settings.animef -%}<script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>{%- endif -%}
+<script src="{{ 'tingle.min.js' | asset_url }}" defer></script>
+{%- if content_for_layout contains 'prlxImg' -%}<script src="{{ 'ukiyo.min.js' | asset_url }}" defer></script>{% endif %}
+{%- if content_for_layout contains 'grid-masonary' or request.design_mode -%}<script src="{{ 'masonry.js' | asset_url }}" defer></script>{%- endif -%}
+{%- if settings.mlcurrency and settings.curOpt == 'script' -%}
+  <script src="//cdn.shopify.com/s/javascripts/currencies.js" defer></script>
+  <script src="{{ "currencies.min.js" | asset_url }}" defer></script>
+{%- endif -%}
+<script src="{{ 'theme.js' | asset_url }}" defer></script>
+<script src="{{ 'cart.js' | asset_url }}" defer></script>
+{%- if request.design_mode -%}
+    <script src="{{ 'admin.js' | asset_url }}" defer></script>
+    {{ 'admin.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+{% endcapture %}
+{{- site_bottom | strip_newlines | remove: "  " | remove: "	" -}}

@@ -1,0 +1,23 @@
+<div class="complementary-products recommendad-wrapper mb{{ blk_st.bm }}" {{ blk_st.shopify_attributes }}>
+    <h2 class="rgTxt tc" style="--cl:{{ blk_st.cl }};--fs:{{ blk_st.fs }}px;--fsm:{{ blk_st.fsm }}px;--fw:{{ blk_st.fw }}">{{ blk_st.title }}</h2>
+    <product-recommendations data-id="compSlider" data-url="{{ routes.product_recommendations_url }}?section_id={{ sectionId }}&product_id={{ product.id }}&limit={{ blk_st.limit }}&intent=complementary"
+        class="grid gspace recomPr rwcols-{{ blk_st.gridmb }} rwcols-md-{{ blk_st.gridtb }} rwcols-lg-{{ blk_st.grid }} recomprSlider swiper" role="list" id="compSlider" style="--grsp:7px;--grspm:5px;"
+        data-swiper='{ "slidesPerView":"auto", "loop":false, {% if blk_st.autoplay %}"autoplay":{ "delay":"{{ blk_st.speed | times: 1000 }}" },{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" },"pagination":{ "el":".swpg{{ section.id }}","clickable":false }}'>
+        {%- if recommendations.performed and recommendations.products_count > 0 -%}
+            <div class="swiper-wrapper">
+            {%- for product in recommendations.products limit: blk_st.settings.products_per_page offset: continue -%}
+                <div class="swiper-slide gitem tc">
+                    <div class="grid_bx">
+                    <a class="grid_img mb15" href="{{ product.url | within: collection }}">
+                        {{ product.featured_image | image_url: width: product.featured_image.width | image_tag: loading:'lazy', width:product.featured_image.width, height:product.featured_image.height, class:'imgFt primary', sizes:sizes, widths:"180,320,400,560,740" }}
+                    </a>
+                    <div class="grid_title"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></div>
+                    {% unless settings.catalogmode %}<div class="grid_meta mt5">{% render 'product-price', product: product %}</div>{% endunless %}
+                    </div>
+                </div>
+            {%- endfor -%}
+            </div>
+            {% render 'swiper-navigation', id:section.id, section_st:blk_st %}
+        {%- endif -%}
+    </product-recommendations>
+</div>

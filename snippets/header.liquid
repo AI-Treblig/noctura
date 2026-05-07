@@ -1,0 +1,41 @@
+{%- capture header -%}{
+<div class="headSpace"></div>
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "logo": {{ settings.logo | image_url: width: 600 | prepend: "https:" | json }},
+    "sameAs": [
+      {{ settings.twitter | json }},
+      {{ settings.facebook | json }},
+      {{ settings.pinterest | json }},
+      {{ settings.instagram | json }},
+      {{ settings.tumblr | json }},
+      {{ settings.snapchat | json }},
+      {{ settings.linkedin | json }},
+      {{ settings.tiktok | json }},
+      {{ settings.youtube | json }},
+      {{ settings.vimeo | json }}
+    ],
+    "url": {{ request.origin | append: page.url | json }}
+  }
+</script>
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ request.origin | append: page.url | json }}
+    }
+  </script>
+{%- endif -%}
+{%- endcapture -%}
+{{ header | strip_newlines | remove:"  " | remove:"	" }}

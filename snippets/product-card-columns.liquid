@@ -1,0 +1,24 @@
+{%- liquid
+    assign product_url = product.url | within: collection
+    if settings.clurl
+        assign product_url = product.url
+    endif
+-%}
+<div class="pr_list fl f-aic brad of_hidden" style="--rounded:{{ section_st.brad }}px">
+  <div class="pr_list_img">    
+    <a class="grid_img" href="{{ product_url }}" aria-label="{{ product.title }}">
+        {{ product.featured_image | image_url: width: product.featured_image.width | image_tag: loading:'lazy', width:product.featured_image.width, height:product.featured_image.height, class:'imgFt', sizes:'80px', widths:"100,200,320" }}
+    </a>
+  </div>
+  <div class="fl1 pr_list_detail">
+    <a href="{{ product_url }}" class="pr_list_ttl mb5">{{ product.title }}</a>
+    {% if settings.show_vendor %}<div class="pr_list_vendor mb5">{{ product.vendor }}</div>{% endif %}   	
+    {%- unless settings.hide-price -%}<div class="pr_list_meta mb10">{% render 'product-price', product: product %}</div>{%- endunless -%}        
+    {% if settings.show_product_review %}<div class="pr_review mb5">{% render 'ratings', product: product %}</div>{% endif %}
+    {%- if showbtn -%}
+      <product-card>
+        <button type="button" data-url="{{ product.url | split: "?" | first }}?section_id=quick-view" class="btn btn-sm btn-options pr quick-view {{ ctrecom }}"><span class="txt">{{ 'products.product.quick_shop' | t}}</span><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></button>
+      </product-card>
+    {%- endif -%}
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<!-- /snippets/comment.liquid -->
+<div class="mb20 rte">{{ comment.content }}</div>
+<div class="comment__meta">
+  <b class="comment__meta-item">{% render 'icon-user' %} &nbsp;{{ comment.author }}</b>
+  <span class="comment__meta-item">{{ comment.created_at | time_tag: format: 'month_day_year' }}</span>
+</div>

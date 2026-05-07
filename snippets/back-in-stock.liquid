@@ -1,0 +1,23 @@
+<style>
+    .bismodal .tingle-modal-box { max-width:500px; }    
+    .backStock { padding:35px 35px 38px; background:var(--bg);}
+    .backStock h3 { font-size:18px; }
+    #backStockSuccess{ color:#3fbc22; }
+</style>
+<back-in-stock id="backInStock-{{ section.id }}" class="backStock db mb20 brad border{% if current_variant.available %} hide{% endif %}" data-id="{{ product.id }}"
+   style="--border:{{ blk_st.bd }};--rounded:{{ blk_st.bdr }}px;--bg:{{ blk_st.bg }};">
+    <h3 class="mb5 fw-500">{{ 'products.notify.title' | t }}</h3>
+    <p class="form-success bisMsg mb0 hide">{{ 'products.notify.submited' | t }}</p>
+    <div id="backStockSuccess" class="tinglebox pp-hide cm tc">{{ 'products.notify.post_success' | t }}</div>
+      {% form 'contact', id: 'backinstockform' %}
+          <label for="backStockEmail" class="mb10">{{ 'products.notify.subtitle' | t }}</label>
+          {{ form.errors | default_errors }}
+              <input type="hidden" name="contact[product]" value="{{ product.title }} - {{ shop.url }}{{ product.url }}">
+              <input type="hidden" name="contact[variant]" value="{{ current_variant.title }}" class="bisVariant" data-id="{{ current_variant.id }}">
+              <input type="hidden" name="challenge" value="false">
+              <div class="fl formFiels f-col f-row-md gap" style="--gap:10px">
+                  <input type="email" id="backStockEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" class="fl1 m0" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required>
+                  <input type="submit" class="btn mb0" value="{{ 'products.notify.button' | t }}" data-variant="">
+              </div>
+      {% endform %}
+</back-in-stock>

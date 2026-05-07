@@ -1,0 +1,17 @@
+{%- if settings.newsletter_code != blank -%}
+	{{ settings.newsletter_code }}
+{%- else -%}
+	{%- form 'customer', novalidate: 'novalidate', id: formid, class: 'form-single-field' -%}
+		{{ form.errors | default_errors }}
+		{%- if form.posted_successfully? -%}
+			<p class="form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+		{%- else -%}
+			<div class="fl f-col gap{% unless verticle %} ad_inputs f-row-md{% endunless %}" style="{% unless verticle %}--gap:10px;--gapm:10px;{% else %}--gap:15px;{% endunless %}">
+				<input type="hidden" name="contact[tags]" value="newsletter">
+                <label for="Email-{{ formId }}" class="hidden_txt">{{ 'general.newsletter_form.email_placeholder' | t }}</label>
+				<input type="email" name="contact[email]" id="Email-{{ formId }}" class="newsletter_txt w_100 mb0" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}" autocorrect="off" autocapitalize="off">
+                <button type="submit" class="btn newsletter_btn bdr0 {{ btn_class }}" name="commit" id="Subscribe{{ formId }}" title="{{ 'general.newsletter_form.submit' | t }}">{%  if isicon %} <svg class="at-icon"><use xlink:href="#icon-email"></use></svg> {% else %}{{ 'general.newsletter_form.submit' | t }}{% endif %}</button>
+			</div>
+		{%- endif -%}
+	{%- endform -%}
+{%- endif -%}

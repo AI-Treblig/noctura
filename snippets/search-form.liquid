@@ -1,0 +1,7 @@
+<form action="{{ routes.search_url }}" method="get" class="search pr w_100 m_auto {{ formClass }}" role="search">	
+    <div class="ad_inputs fl of_hidden" style="--icns:15px;">
+        <label for="siteSearch{{ formClass }}" class="hidden_txt">{{ settings.search_ph }}</label>
+        <input class="s_input w_100" type="search" name="q" id="siteSearch{{ formClass }}" placeholder="{{ settings.search_ph }}" value="{{ search.terms | escape }}" autocomplete="off" />
+        <button class="btn s_submit" type="submit"><svg class="at-icon"><use xlink:href="#icon-search"></use></svg> <span class="fallback_txt">{{ 'general.search.submit' | t }}</span></button>
+    </div>
+</form>

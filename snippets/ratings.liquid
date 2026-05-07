@@ -1,0 +1,11 @@
+{%- if settings.reviews == 'loox' -%}
+    <div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+{%- elsif settings.reviews == 'trustoo' -%}
+    <div class="custom-vstar-rating-widget" product-id="{{ product.id }}"></div>
+{%- elsif settings.reviews == 'other' -%}
+    {{ settings.otherapp }}                                             
+{%- endif -%}
+<style>
+.pr_review .loox-rating-label{ display:none;}
+.loox-rating-content .loox-rating-label{font-size:12px !important;}
+</style>

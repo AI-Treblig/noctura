@@ -1,0 +1,139 @@
+{% if blockType == 'menu' %}
+    <div class="sb_widget categories" {{ bkat }}>  
+      <div class="rgTxt {{ section.wdTtlft }}{% if section.ttlbdrt %} border-bottom mb15{% endif %}">{{ block.title }}</div>
+      <div class="widget_con">
+        <ul class="sb_category sdBlock" style="--icns:12px;">
+              {% for link in linklists[block.side_categories].links %}
+                <li class="lvl-1{% if link.active or link.child_active %} active{% endif %}">
+                  <a href="{{ link.url }}" class="fl f-aic f-jcsb{% if link.links != blank %} js-toggle{% endif %}{% if link.active or link.child_active %} active{% endif %}">
+                      {{ link.title | split: '[' | first }}
+                      {%- if link.links != blank -%}
+                          <svg class="at-icon"><use class="plus" xlink:href="#icon-plus"></use><use class="minus" xlink:href="#icon-minus"></use></svg>
+                      {%- endif -%}
+                  </a>
+                  {%- if link.links != blank -%}
+                  <ul class="subLinks">
+                    {%- for childlink in link.links -%}
+                    <li class="lvl-2{% if childlink.active or childlink.child_active %} active{% endif %}">
+                      <a href="{{ childlink.url }}" class="lvl-2">{{ childlink.title }}
+                          {%- if childlink.links != blank -%}
+                              <svg class="at-icon"><use class="plus" xlink:href="#icon-plus"></use><use class="minus" xlink:href="#icon-minus"></use></svg>
+                          {%- endif -%}
+                        </a>
+                      {%- if childlink.links != blank -%}
+                      <ul class="subLinks">{%- for lvl3link in childlink.links -%}<li class="lvl-3 {% if lvl3link.active %}active{% endif %}"><a href="{{ lvl3link.url }}" class="lvl-3">{{ lvl3link.title }}</a></li>{%- endfor -%}</ul>
+                      {%- endif -%}
+                    </li>
+                    {%- endfor -%}
+                  </ul>
+                  {%- endif -%}
+                </li>
+              {% endfor %}
+            </ul>
+      </div>
+    </div>
+{% elsif blockType == 'search' %}
+    <div class="sb_widget search_block" {{ bkat }}>
+      {%  if block.title != blank %}
+      <div class="rgTxt {{ section.wdTtlft }}{% if section.ttlbdrt %} border-bottom mb25{% endif %}" >{{ block.title }}</div> {%  endif %}
+      <div class="widget_con">
+        <form action="{{ routes.search_url }}" method="get" class="ad_inputs fl" role="search" style="--border_cl:{{ block.border_cl }};--icns:14px;--icon_cl:{{ block.icon_cl }};">
+            <input type="hidden" name="type" value="article" />
+            <input class="w_100" type="search" name="q" value="{{ search.terms | escape }}" {% if block.sph != blank %}placeholder="{{ block.sph }}" {% endif %} autocomplete="off" />
+            <input type="hidden" name="options[prefix]" value="last" aria-hidden="true" />
+             <button class="bdr0" type="submit" title="{{ 'general.search.submit' | t }}"><svg class="at-icon"><use xlink:href="#icon-search"></use></svg></button>
+        </form>
+      </div>
+    </div>
+{% elsif blockType == 'rposts' %}
+    <div class="sb_widget categories" {{ bkat }}>
+      <div class="rgTxt {{ section.wdTtlft }}{% if section.ttlbdrt %} border-bottom mb25{% endif %}">{{ block.title }}</div>
+      <div class="widget_con">
+        {% for article in blogs[blog.handle].articles limit:5 %}
+          <div class="post recentPost fl f-aic">
+            <a href="{{ article.url }}" class="article-img pr mr15">
+                {{ article.image | image_url: width: article.image.width | image_tag: loading:'lazy', class:'imgFt' , sizes:'(max-width:600px) 100px,100px', widths:"180,320" }}
+            </a>
+            <div class="fl1 details">
+                <a href="{{ article.url }}" class="post_name">{{ article.title }}</a>
+                <span class="post_date">{{ article.published_at | time_tag: format: 'month_day_year' }}</span>
+            </div>
+          </div>
+          {% unless forloop.last == true %}<hr />{% endunless %}
+          {% endfor %}
+      </div>
+    </div>
+{% elsif blockType == 'tags' %}
+    <div class="sb_widget" {{ bkat }}>
+      <div class="rgTxt {{ section.wdTtlft }}{% if section.ttlbdrt %} border-bottom mb20{% endif %}">{{ block.title }}</div>
+      <div class="widget_con">
+        <div class="blogTags pr fl f-wrap gap" style="--gap:10px;--tag_border:{{ section.links_cl | color_lighten : 80}};--tag_border_hov:{{ section.links_cl_hv | color_lighten : 10}};">
+          {% for tag in blog.all_tags %}
+            {{ tag | link_to_tag: tag }}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+{% elsif blockType == 'products' %}
+  <div class="sb_widget hide-sm hide-md" {{ bkat }}>
+    <div class="rgTxt {{ section.wdTtlft }}{% if section.ttlbdrt %} border-bottom mb15{% endif %}">{{ block.title }}</div>
+    <div class="widget_con">
+      {% if block.sidebar_products != blank %}
+          {% for product in collections[block.sidebar_products].products limit:block.num_of_products %}
+            {% render 'product-card-columns', product: product, block: block.settings, section: section.settings %}           
+          {% endfor %}
+        {% if block.btn_txt != blank %}
+            <div class="text-center"><a href="{{ block.sidebar_products }}" class="btn mt20">{{ block.btn_txt }}</a></div>
+        {% endif %} 
+      {% else %}
+      <p>Please select collection from block settings</p>
+      {% endif %} 
+    </div>
+  </div>
+{% elsif blockType == 'nw' %}
+    <div class="sb_widget newsbox" {{ bkat }} style="--fieldbg:{{ block.fieldbg }};--fieldbdr:{{ block.fieldbdr }};--field:{{ block.field }};--border_cl:{{ block.border_cl }};--icns:14px;--icon_cl:{{ block.icon_cl }}; ">
+      <div class="rgTxt {{ section.wdTtlft }}{% if section.ttlbdrt %} border-bottom mb15{% endif %}">{{ block.title }}</div>
+      <div class="widget_con">
+        {% if block.subttl != blank %}<p class="mb15">{{ block.subttl }}</p>{% endif %}
+        {% render 'newsletter-form', formId: 'blog_newsletter', isicon: true %}
+      </div>
+    </div>
+{% elsif blockType == 'image_bnr' %}
+  <div class="pr hide-sm hide-md mb30 of_hidden brad" {{ block.shopify_attributes }} style="--rounded:{{ block.rad }}px">
+    {% if block.link != blank %}<a href="{{ block.link }}">{% endif %}
+    {% if block.img != blank %}
+         <picture class="overlay" style="--overlay:{{ block.overlay | color_modify: 'alpha', block.overlay_op }};">
+           {{ block.img | image_url: width: block.img.width | image_tag: loading:'lazy', width:block.img.width, height: block.img.height, class:'imgAt' , sizes:'(max-width:1024px) 300px,100vw', widths: "300,400,500,760" }}
+         </picture>
+    {% else %}
+      {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+      {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg mb20' }}
+    {% endif %}
+     {% if block.prehead != blank or block.title != blank or block.btn_txt != blank %}
+       <div class="pd30 pa fl f-col f-aic w_100 banner_text zi2" style="--cl:{{ block.cl }};">
+         {% if block.prehead != blank %}<span class="db mb5 {{ block.pfs }} {{ block.tff }} fwm">{{ block.prehead }}</span>{% endif %}
+         {% if block.title != blank %}<span class="db mb15 {{ block.fs }} {{ block.tff }} fwsb">{{ block.title }}</span>{% endif %}
+         {% if block.btn_txt != blank %}<span class="btn {{ block.btn-style }}">{{ block.btn_txt }}</span>{% endif %}
+       </div>
+    {% endif %}
+    {% if block.link != blank %}</a>{% endif %}
+ </div>
+{% elsif blockType == 'social' %}
+  <div class="sb_widget sdSocial" {{ bkat }}>
+    <div class="rgTxt {{ section.wdTtlft }}">{{ block.title }}</div>
+    <div class="widget_con">
+        <div class="mb10">{{ block.text }}</div>
+        {% render 'social-media' %}
+        <style>
+            .sdSocial .social_icons a { color:{{ block.icon }}; display:inline-block; text-align:center; border:1px solid {{ block.iconbd }}; border-radius:50%;
+            width:{{ block.icnsz | plus: 20 }}px; height:{{ block.icnsz | plus: 20 }}px; line-height:{{ block.icnsz | plus: 17 }}px;  }
+            .sdSocial .social_icons a .at-icon { width:{{ block.icnsz }}px;height:{{ block.icnsz }}px; }
+        </style>
+    </div>
+  </div>
+{% elsif blockType == 'text' %}
+  <div class="sb_widget" {{ bkat }}>
+    <div class="rgTxt {{ section.wdTtlft }}{% if section.ttlbdrt %} border-bottom mb15{% endif %}">{{ block.title }}</div>
+    <div class="widget_con">{{ block.text }}</div>
+  </div>
+{% endif %}

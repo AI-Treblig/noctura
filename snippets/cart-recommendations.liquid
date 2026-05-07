@@ -1,0 +1,18 @@
+{%- for item in cartItems -%}
+  {%- assign product_rec = item.product -%}
+{%- endfor -%}
+<div class="recommendad-wrapper cartrecomended mb20{%  if settings.h_recomand %} hide-sm{% endif %}" data-id="cartrecomSlider" data-url="{{ routes.product_recommendations_url }}?section_id=cart-drawer&product_id={{ product_rec.id }}&limit=5">
+      <div class="rmttl tc mb10 fl f-aic f-jcsb pr">
+        <span>{{ settings.rctitle }}</span>
+        <div class="fl1 fl f-jce swiper-pagination pgcartrecomSlider tr"></div>
+      </div>
+      <product-recommendations data-id="cartrecomSlider" data-url="{{ routes.product_recommendations_url }}?section_id=cart-drawer&product_id={{ product_rec.id }}&limit=5"
+          class="grid cartrecomPr grid-products swiper" id="cartrecomSlider"
+          data-swiper='{ "slidesPerView":1, "loop":true, "autoplay":{ "delay":"5000" },"pagination":{ "el":".pgcartrecomSlider","clickable":false }}'>
+          <div class="swiper-wrapper">
+              {% for recommendation in recommendations.products %}
+                  <div class="swiper-slide gitem">{% render 'product-card-columns', product: recommendation, block: block.settings, section: section.settings, sizes:image_size, showbtn:true, ctrecom:'ctrecom' %}</div>
+              {%- endfor -%}
+          </div>
+      </product-recommendations>
+</div>
