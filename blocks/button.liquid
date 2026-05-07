@@ -1,0 +1,126 @@
+{%- liquid
+  assign blk_st = block.settings
+-%}
+{%- if blk_st.text != blank -%}
+  <div id="blk-{{ block.id }}" class="btnWrap mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hide_mb %} hide-sm{% endif %}" {{ block.shopify_attributes }}><a class="btn {{ blk_st.btn-size }} {{ blk_st.btn-style }}" href="{{ blk_st.url }}" {% if blk_st.newtab %} target="_blank"{% endif %}>{{ blk_st.text }}</a></div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Button",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Button Link"
+    },
+	{
+        "type": "select",
+        "id": "btn-style",
+        "label": "Button Design",
+        "default": "btn1",
+        "options": [
+             {
+                "label": "Button 1",
+                "value": "btn1"
+             },
+             {
+                "label": "Button 2",
+                "value": "btn2"
+             },
+             {
+                "label": "Button 3",
+                "value": "btn3"
+             },
+             {
+                "label": "Button 4",
+                "value": "btn4"
+             },
+             {
+                "label": "Button 5",
+                "value": "btn5"
+             },
+             {
+                  "label": "Button 6",
+                  "value": "btn6"
+             },
+             {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+             },
+             {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+             },
+             {
+                  "label": "Link",
+                  "value": "btnLink"
+             }
+        ]
+      },
+      {
+          "type": "select",
+          "id": "btn-size",
+          "label": "Buttons Size",
+          "default": "btn-lg",
+          "options": [
+              {
+                  "label": "Small",
+                  "value": "btn-sm"
+              },
+              {
+                  "label": "Medium",
+                  "value": "btn-md"
+              },
+              {
+                  "label": "Large",
+                  "value": "btn-lg"
+              } 		  
+          ]
+      },
+     {
+          "type": "checkbox",
+          "id": "newtab1",
+          "label": "Open in new tab?",
+          "default":false
+      },
+    {
+      "type": "checkbox",
+      "id": "hide_mb",
+      "label": "Hidden on mobile",
+      "default": false
+    },
+      {
+          "type": "range",
+          "id": "mb",
+          "label": "Margin Bottom",
+          "default": 25,
+          "min":0,
+          "max": 50,
+          "step":5,
+          "unit": "px"
+      },
+      {
+          "type": "range",
+          "id": "mbm",
+          "label": "Margin Bottom (mobile)",
+          "default": 15,
+          "min":0,
+          "max":50,
+          "step":5,
+          "unit": "px"
+      }
+  ],
+  "presets": [
+    {
+      "name": "Button"
+    }
+  ]
+}
+{% endschema %}

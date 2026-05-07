@@ -1,0 +1,88 @@
+{%- liquid
+  assign blk_st = block.settings
+  assign ratio = 1 | divided_by: blk_st.image.aspect_ratio | times: 100
+  assign ratiom = 1 | divided_by: blk_st.imagem.aspect_ratio | times: 100
+  assign img_ratio = ratio | default: 40
+  assign img_ratiom = ratiom | default: ratiom | default: 40
+-%}
+{%- if blk_st.url != blank -%}<a href="{{ blk_st.link }}">{%- endif -%}
+<div id="blk-{{ block.id }}" class="pr of_hidden mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hide_mb %} hide-sm{% endif %}" style="--ratio:{{ img_ratio }}%;--ratiom:{{ img_ratiom }}%" {{ block.shopify_attributes }}>
+    {% if blk_st.image != blank %}
+      {%- liquid
+          assign img_class = "imgAt"
+          assign banner_img = blk_st.image
+          assign banner_imgm = blk_st.imagem
+          assign banner_img_fp = banner_imgm.presentation.focal_point
+          assign banner_img_src = banner_imgm | image_url: width: banner_imgm.width | image_tag: widths: '400,560,780,1000' | split: 'srcset="' | last | split: '"' | first
+  
+          if banner_imgm != blank and banner_imgm.presentation.focal_point != blank
+             assign img_class = "imgAt mbFocal"
+          endif
+      -%}
+      {% if blk_st.image != blank %}
+      <picture class="" {% if banner_imgm != blank and banner_img_fp != blank %}style="--fp:{{ banner_img_fp }}"{% endif %}>
+          {% if blk_st.imagem != blank %}
+              <source media="(max-width: 767px)" srcset="{{ banner_img_src }}" width="{{ banner_imgm.width }}" height="{{ banner_imgm.height }}">
+          {% endif %}
+          {{ banner_img | image_url: width: banner_img.width | image_tag: class:img_class, loading:'lazy', siezs:"100vw", widths:"400,600,800,1000,1200,1400,1600,2000" }}
+      </picture>
+      {% endif %}
+  {% else %}
+      <div class="ph_bg">{% capture current %}{% cycle 1, 2 %}{% endcapture %}{{ 'hero-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}</div>
+  {% endif %}
+</div>
+{%- if blk_st.url != blank -%}</a>{%- endif -%}
+{% schema %}
+  {
+    "name": "Image",
+    "tag": null,
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "imagem",
+            "label": "Image (Mobile)"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_mb",
+          "label": "Hidden on mobile",
+          "default": false
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Button Link"
+        },
+        {
+            "type": "range",
+            "id": "mb",
+            "label": "Margin Bottom",
+            "default": 25,
+            "min":0,
+            "max": 50,
+            "step":5,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "mbm",
+            "label": "Margin Bottom (mobile)",
+            "default": 15,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        }
+    ],
+	 "presets": [
+      {
+        "name": "Image"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,77 @@
+{% liquid
+  assign blk_st = block.settings
+%}
+<div id="blk-{{ block.id }}" class="at_box_icons {{ blk_st.ff }} mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hide_mb %} hide-sm{% endif %}" style="--icons:{{ blk_st.icns }}px;--iconsm:{{ blk_st.icnsm }}px" {{ block.shopify_attributes }}>
+  {% if blk_st.image != blank %}
+      {% assign img_alt = blk_st.image.alt | escape %}
+      {% capture icnsizes %}(min-width:1024px) {{ blk_st.icns }}px, {{ blk_st.icnsm }}px{% endcapture %}
+      {% capture widths %}{{ blk_st.icns }}, {{ blk_st.icns | times: 1.5 | round }}, {{ blk_st.icns | times: 2 }}{% endcapture %}
+      {{ blk_st.image | image_url: width:blk_st.image.width | image_tag: loading:'lazy', width:blk_st.icns, height:blk_st.icns, class:'imgAt', sizes:icnsizes, widths:widths, alt: img_alt }}
+  {%- else -%}
+      {{ 'icon.svg' | inline_asset_content }}
+  {%- endif -%}
+</div>
+{% schema %}
+{
+  "name": "Icon",
+  "tag": null,
+  "settings": [
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_mb",
+      "label": "Hidden on mobile",
+      "default": false
+    },
+		{
+            "type": "range",
+            "id": "icns",
+            "label": "Icons Size",
+            "default": 50,
+            "min": 20,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "icnsm",
+            "label": "Icons Size (mobile)",
+            "default": 35,
+            "min": 20,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 5,
+                    "min":0,
+                    "max": 50,
+                    "step":5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 5,
+                    "min":0,
+                    "max":50,
+                    "step":5,
+                    "unit": "px"
+                }
+  ],
+  "presets": [
+    {
+      "name": "Icon"
+    }
+  ]
+}
+{% endschema %}

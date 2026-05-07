@@ -1,0 +1,143 @@
+{%- assign blk_st = block.settings -%}  
+<div class="video_bnr pr mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md">
+      {%- capture video_data -%}
+        {%- liquid
+            assign poster = blk_st.poster | default: blk_st.video.preview_image
+            assign poster_size = poster | image_url: width: poster.width
+            assign psratio = '56.25'
+            if poster
+               assign psratio = 1 | divided_by: poster.aspect_ratio | times: 100
+            endif
+            assign muted = blk_st.muted
+            assign loop = false
+            if blk_st.autoplay == true
+               assign muted = true
+               assign loop = true
+            endif 										
+        -%}
+        <div class="vd-wrap" style="--ratio:{{ psratio }}%;">
+          {% # theme-check-disable RemoteAsset,DeprecateBgsizes %}
+          {% if blk_st.video_url == blank and blk_st.video == blank %}
+            <iframe class="db" src="//www.youtube.com/embed/_9VUPq3SxOc?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+          {% elsif blk_st.video_url != blank %}
+            {% if blk_st.video_url.type == "youtube" %}
+                <iframe class="db lazyload" data-src="//www.youtube.com/embed/{{ blk_st.video_url.id }}?controls=0&autoplay=1&rel=0&showinfo=0{% if blk_st.video_style == "bg" %}&mute=1{% endif %}" width="850" height="480" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+            {% endif %}
+            {% if blk_st.video_url.type == "vimeo" %}
+                <iframe class="db lazyload" data-src="//player.vimeo.com/video/{{ blk_st.video_url.id }}?background=1&byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+            {% endif %}
+          {% elsif blk_st.video != blank %}
+              {{ blk_st.video | video_tag: image_size:poster_size, loop:loop, autoplay:blk_st.autoplay, muted:muted, controls:blk_st.controls, poster:poster_size, class:'w_100 db' }}
+          {% endif %}
+          {% # theme-check-enable DeprecateBgsizes,DeprecateBgsizes %}
+        </div>
+      {%- endcapture -%}
+
+      {%- if blk_st.video_style == "pp" -%}
+        <a href="{{ blk_st.video_url }}?controls=0&autoplay=1&rel=0&showinfo=0" class="video_pop popup-link" data-popup="vd{{ block.id }}" aria-haspopup="dialog">
+           <div class="vd-wrap pr" style="--ratio:{{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;--icns:50px;">
+              {% if poster %}
+                  {{ poster | image_url: width: poster.width | image_tag: class:'imgFt ctimg', loading:'lazy', widths:"200,400,600,800,1000,1200,1400,1600,2000" }}
+                  <svg class="at-icon pa play-btn" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M256,0C114.617,0,0,114.615,0,256s114.617,256,256,256s256-114.615,256-256S397.383,0,256,0z M344.48,269.57l-128,80 c-2.59,1.617-5.535,2.43-8.48,2.43c-2.668,0-5.34-0.664-7.758-2.008C195.156,347.172,192,341.82,192,336V176 c0-5.82,3.156-11.172,8.242-13.992c5.086-2.836,11.305-2.664,16.238,0.422l128,80c4.676,2.93,7.52,8.055,7.52,13.57 S349.156,266.641,344.48,269.57z"/></svg>
+              {% else %}
+                  <p class="db pd30">Please upload video poster image.</p>
+              {% endif %}
+           </div>
+          </a>
+        <div id="vd{{ block.id }}" class="tinglebox pp-hide vd">{{ video_data | replace: "vd-wrap","vd-wrap1" }}</div>
+      {%- endif -%}
+
+     {%- if blk_st.video_style == "df" -%}{{ video_data }}{%- endif -%}
+</div>
+{% schema %}
+{
+    "name": "Video",
+    "tag": null,
+    "settings": [     
+       {
+              "type": "checkbox",
+              "id": "hidem",
+              "label": "Hide on mobile?",
+              "default": false			
+          },
+          {
+              "type": "video_url",
+              "id": "video_url",
+              "label": "YouTube/Vimeo Video Link",
+              "accept": ["youtube", "vimeo"]                   
+          },		        		
+          {
+              "type": "video",
+              "id": "video",
+              "label": "Select MP4 video"
+          },
+          {
+              "type": "image_picker",
+              "id": "poster",
+              "label": "Poster Image"
+          },
+          {
+              "type": "select",
+              "id": "video_style",
+              "label": "Select Style",
+              "default": "df",
+              "options": [
+                  {
+                      "value": "pp",
+                      "label": "Popup"
+                  },
+                  {
+                      "value": "df",
+                      "label": "Default"
+                  }
+              ]
+          },
+          {
+              "type":"checkbox",
+              "id":"controls",
+              "label":"Enable controls?",
+              "default": true,
+              "info":"Show video play/pause buttons"
+          },
+          {
+              "type":"checkbox",
+              "id":"autoplay",
+              "label":"Enable autoplay?",
+              "default": false,
+              "info":"Autoplay will not work on Mobile with SOUND"
+          },
+          {
+              "type":"checkbox",
+              "id":"muted",
+              "label":"Enable sound?",
+              "default": false,
+              "info":"Autoplay will not work on Mobile with SOUND"
+          },
+          {
+              "type": "range",
+              "id": "mb",
+              "label": "Margin Bottom",
+              "default": 25,
+              "min":0,
+              "max": 50,
+              "step":5,
+              "unit": "px"
+          },
+          {
+              "type": "range",
+              "id": "mbm",
+              "label": "Margin Bottom (mobile)",
+              "default": 15,
+              "min":0,
+              "max":50,
+              "step":5,
+              "unit": "px"
+          }
+    ],
+    "presets": [
+        {
+            "name": "Video"      
+        }
+    ]
+}
+{% endschema %}

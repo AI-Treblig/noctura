@@ -1,0 +1,98 @@
+{%- liquid
+  assign blk_st = block.settings
+-%}
+<div id="blk-{{ block.id }}" class="dbi mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hide_mb %} hide-sm{% endif %}" {{ block.shopify_attributes }}>
+  <countdown-time class="atCounter box_timer fl tc ttu" data-date="{{ blk_st.date }}" style="--cl:{{ blk_st.cl }};--bg:{{ blk_st.bg }};--border:{{ blk_st.bdr }};--rounded:{{ blk_st.radius }}px;--fs:{{ blk_st.fs }}px;--fsl:{{ blk_st.fsl }}px;--fw:500" {{ block.shopify_attributes }}>
+      <span class="pd10"><span class="tm days">00</span>{{ 'date_formats.days' | t }}</span>
+      <span class="pd10"><span class="tm hours">00</span>{{ 'date_formats.hours' | t }}</span>
+      <span class="pd10"><span class="tm minutes">00</span>{{ 'date_formats.minuts' | t }}</span>
+      <span class="pd10"><span class="tm seconds">00</span>{{ 'date_formats.seconds' | t }}</span>
+  </countdown-time>
+</div>
+{% schema %}
+{
+  "name": "Countdown",
+  "tag": null,
+  "settings": [
+    {
+                    "type": "text",
+                    "id": "date",
+                    "label": "Enter Date",
+					"info":"Format: mm/dd/yyyy hh:mm:ss"
+                },
+                {
+                    "type": "color",
+                    "id": "bg",
+                    "label": "Background",
+                    "default": "#000"
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text",
+                    "default": "#eee"
+                },
+                {
+                    "type": "color",
+                    "id": "bdr",
+                    "label": "Border",
+                    "default": "#000"
+                },
+              {
+                    "type": "range",
+                    "id": "fs",
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "label": "Font Size Digit",
+                    "unit": "px",
+                    "default": 22
+                },
+               {
+                    "type": "range",
+                    "id": "fsl",
+                    "min": 10,
+                    "max": 20,
+                    "step": 1,
+                    "label": "Font Size Label",
+                    "unit": "px",
+                    "default": 12
+                },
+                {
+                    "type": "range",
+                    "id": "radius",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "label": "Rounded Corners",
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },				            
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                } 
+  ],
+  "presets": [
+    {
+      "name": "Countdown"
+    }
+  ]
+}
+{% endschema %}

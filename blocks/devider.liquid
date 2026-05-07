@@ -1,0 +1,111 @@
+{%- liquid
+  assign blk_st = block.settings
+-%}
+<div id="blk-{{ block.id }}" class="mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hide_mb %} hide-sm{% endif %}" {{ block.shopify_attributes }}>
+    {%- if blk_st.isbdr -%}<hr style="margin:0;border-bottom:{{ blk_st.lht }}px {{ blk_st.lns }} {{ blk_st.bdr }};">{%- endif -%}
+    {%- if blk_st.image != blank -%}
+        {{ blk_st.image | image_url: width: blk_st.image.width | image_tag: class:'h_auto', loading:'lazy', width:blk_st.image.width, height:blk_st.image.height, widths:"200,400,600,800,1000,1200,1400,1600,2000" }}
+    {%- endif -%}
+</div>
+{% schema %}
+  {
+    "name": "Divider",
+    "tag": null,
+    "settings": [
+        {
+            "type":"header",
+            "content":"Line ==="
+        },
+		{
+            "type": "checkbox",
+            "id": "isbdr",
+            "label": "Show?",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "lns",
+            "label": "Line Style",
+            "default": "solid",
+            "options": [
+              {
+                "label": "Solid",
+                "value": "solid"
+              },
+              {
+                "label": "Dashed",
+                "value": "dashed"
+              },
+              {
+                "label": "Dotted",
+                "value": "dotted"
+              },
+              {
+                "label": "Double",
+                "value": "double"
+              }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "lht",
+            "label": "Line height",
+            "default": 1,
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "color",
+            "id": "bdr",
+            "label": "Border Color",
+            "default": "#f5f5f5"
+        },
+        {
+            "type":"header",
+            "content":"Image ==="
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Divider Image"
+        },
+        {
+            "type":"paragraph",
+            "content":"-------------------------"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_mb",
+          "label": "Hidden on mobile",
+          "default": false
+        },
+        {
+            "type": "range",
+            "id": "mb",
+            "label": "Margin Bottom",
+            "default": 25,
+            "min":0,
+            "max": 50,
+            "step":5,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "mbm",
+            "label": "Margin Bottom (mobile)",
+            "default": 15,
+            "min":0,
+            "max":50,
+            "step":5,
+            "unit": "px"
+        }
+    ],
+	 "presets": [
+      {
+        "name": "Devider"
+      }
+    ]
+  }
+{% endschema %}

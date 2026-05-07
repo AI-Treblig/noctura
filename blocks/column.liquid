@@ -1,0 +1,351 @@
+{% liquid
+  assign blk_st = block.settings
+%}
+{%- capture styles -%}
+--cl_bg:{% if blk_st.bgg != blank %}{{ blk_st.bgg }}{% else %}{{ blk_st.bg }}{% endif %};
+--cl_pdm:{{ blk_st.pad_tbm }}px {{ blk_st.pad_lrm }}px;
+--cl_pdt:{{ blk_st.pad_tbt }}px {{ blk_st.pad_lrt }}px;
+--cl_pd:{{ blk_st.pad_tb }}px {{ blk_st.pad_lr }}px;
+{%- endcapture -%}
+<div id="{{ block.id }}" class="grcol gcol-{{ blk_st.column_mb }} gcol-{{ blk_st.column_tb }}-md gcol-{{ blk_st.column_dk }}-lg {{ blk_st.rounded }}" style="{{ styles | strip_newlines }}" {{ block.shopify_attributes }}>
+    <div class="column_inner {{ blk_st.positionm }} {{ blk_st.position }} t-{{ blk_st.alignm }} t-{{ blk_st.align }}-md">{% content_for 'blocks' %}</div>
+</div>
+{% schema %}
+  {
+    "name": "Column",
+    "tag": null,
+    "blocks": [
+      { "type": "group" },
+      { "type": "heading" },
+      { "type": "text" },
+      { "type": "button" },
+      { "type": "devider" },
+      { "type": "countdown" },
+      { "type": "image" },
+      { "type": "video" },
+      { "type": "icon" },
+      { "type": "collection" },
+      { "type": "product" }
+    ],
+    "settings": [
+      {
+        "type": "header",
+        "content": "Sizes"
+      },
+      {
+        "type": "select",
+        "id": "column_dk",
+        "label": "Column desktop",
+        "options": [
+          {
+            "value": "0",
+            "label": "Hidden"
+          },
+          {
+            "value": "1",
+            "label": "1/12 - 8.33%"
+          },
+          {
+            "value": "2",
+            "label": "2/12 - 16.66%"
+          },
+          {
+            "value": "3",
+            "label": "3/12 - 25%"
+          },
+          {
+            "value": "4",
+            "label": "4/12 - 33.33%" 
+          },
+          {
+            "value": "5",
+            "label": "5/12 - 41.66%"
+          },
+          {
+            "value": "6",
+            "label": "6/12 - 50%"
+          },
+          {
+            "value": "7",
+            "label": "7/12 - 58.33%"
+          },
+          {
+            "value": "8",
+            "label": "8/12 - 66.66%"
+          },
+          {
+            "value": "9",
+            "label": "9/12 - 75%"
+          },
+          {
+            "value": "10",
+            "label": "10/12 - 83.33%"
+          },
+          {
+            "value": "11",
+            "label": "11/12 - 92%"
+          },
+          {
+            "value": "12",
+            "label": "12/12 - 100%"
+          },
+          
+        ],
+        "default": "6"
+      },
+      {
+        "type": "select",
+        "id": "column_tb",
+        "label": "Column tablet",
+        "options": [
+          {
+            "value": "0",
+            "label": "Hidden"
+          },
+          {
+            "value": "1",
+            "label": "1/12 - 8.33%"
+          },
+          {
+            "value": "2",
+            "label": "2/12 - 16.66%"
+          },
+          {
+            "value": "3",
+            "label": "3/12 - 25%"
+          },
+          {
+            "value": "4",
+            "label": "4/12 - 33.33%" 
+          },
+          {
+            "value": "5",
+            "label": "5/12 - 41.66%"
+          },
+          {
+            "value": "6",
+            "label": "6/12 - 50%"
+          },
+          {
+            "value": "7",
+            "label": "7/12 - 58.33%"
+          },
+          {
+            "value": "8",
+            "label": "8/12 - 66.66%"
+          },
+          {
+            "value": "9",
+            "label": "9/12 - 75%"
+          },
+          {
+            "value": "10",
+            "label": "10/12 - 83.33%"
+          },
+          {
+            "value": "11",
+            "label": "11/12 - 92%"
+          },
+          {
+            "value": "12",
+            "label": "12/12 - 100%"
+          },
+        ],
+        "default": "6"
+      },
+      {
+        "type": "select",
+        "id": "column_mb",
+        "label": "Column mobile",
+        "default": "12",
+        "options": [
+          {
+            "value": "0",
+            "label": "Hidden"
+          },
+          {
+            "value": "4",
+            "label": "4/12 - 33.33%" 
+          },
+          {
+            "value": "6",
+            "label": "6/12 - 50%"
+          },
+          {
+            "value": "12",
+            "label": "12/12 - 100%"
+          },
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Padding"
+      },
+      {
+        "type": "range",
+        "id": "pad_lr",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding left/right",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "pad_tb",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding top/bottom",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "pad_lrt",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding left/right (tablet)",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "pad_tbt",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding top/bottom (tablet)",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "pad_lrm",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding left/right (mobile)",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "pad_tbm",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding top/bottom (mobile)",
+        "default": 15
+      },
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "default": "cl-psc-md",			
+          "options": [
+              { "label": "Top Left",      "value": "cl-pstl-md" },
+              { "label": "Top Center",    "value": "cl-pstc-md" },
+              { "label": "Top Right",     "value": "cl-pstr-md" },
+              { "label": "Left",  		  "value": "cl-psl-md" },
+              { "label": "Center", 		  "value": "cl-psc-md" },
+              { "label": "Right",  		  "value": "cl-psr-md" },
+              { "label": "Bottom Left",   "value": "cl-psbl-md" },						 
+              { "label": "Bottom Center", "value": "cl-psbc-md" }, 						 
+              { "label": "Bottom Right",  "value": "cl-psbr-md" }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "positionm",
+          "label": "Position (mobile)",
+          "default": "cl-psc",
+          "info":"Useful when you set different image for mobile view",
+          "options": [ 			
+              { "label": "Top Left",      "value": "cl-pstl" },
+              { "label": "Top Center",    "value": "cl-pstc" },
+              { "label": "Top Right",     "value": "cl-pstr" },
+              { "label": "Left",  		  "value": "cl-psl" },
+              { "label": "Center", 		  "value": "cl-psc" },
+              { "label": "Right",  		  "value": "cl-psr" },
+              { "label": "Bottom Left",   "value": "cl-psbl" },						 
+              { "label": "Bottom Center", "value": "cl-psbc" }, 						 
+              { "label": "Bottom Right",  "value": "cl-psbr" }
+          ]
+      },
+      {
+        "type": "text_alignment",
+        "id": "align",
+        "label": "Alignment",
+        "default": "center"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignm",
+        "label": "Alignment mobile",
+        "default": "center"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+          "type": "color_background",
+          "id": "bgg",
+          "label": "Gradient background"
+      },
+      {
+        "type": "select",
+        "id": "rounded",
+        "label": "Rounded",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "round-xs",
+            "label": "Extra small"
+          },
+          {
+            "value": "round-sm",
+            "label": "Small"
+          },
+          {
+            "value": "round-md",
+            "label": "Medium"
+          },
+          {
+            "value": "round-lg",
+            "label": "Large"
+          },
+          {
+            "value": "round-full",
+            "label": "Full"
+          }
+        ]
+      },
+      
+    ],
+    "presets": [
+      {
+        "name": "Column",
+        "blocks": [
+          {
+            "type": "heading"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

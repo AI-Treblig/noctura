@@ -1,0 +1,242 @@
+{% liquid
+  assign blk_st = block.settings
+%}
+{%- capture styles -%}
+--cl_bg:{% if blk_st.bgg != blank %}{{ blk_st.bgg }}{% else %}{{ blk_st.bg }}{% endif %};
+--gr_pd:{{ blk_st.pd }};--gr_pdm:{{ blk_st.pdm }};--gr_mr:{{ blk_st.mr }};--gr_mrm:{{ blk_st.mrm }};
+--gap:{{ blk_st.gap }}px;--gapm:{{ blk_st.gapm }}px;
+{%- endcapture -%}
+<div id="{{ block.id }}" class="flbox fl gap {{ blk_st.directionm }} {{ blk_st.justifym }} {{ blk_st.alignim }} {{ blk_st.direction }} {{ blk_st.justify }} {{ blk_st.aligni }}{% if blk_st.wrap %} f-wrap{% endif %} {{ blk_st.rounded }} t-{{ blk_st.alignm }} t-{{ blk_st.align }}-md" style="{{ styles | strip_newlines }}" {{ block.shopify_attributes }}>
+    {% content_for 'blocks' %}
+</div>
+{% schema %}
+  {
+    "name": "Group",
+    "tag": null,
+    "blocks": [
+      { "type": "@app" },
+      { "type": "group" },
+      { "type": "heading" },
+      { "type": "text" },
+      { "type": "button" },
+      { "type": "devider" },
+      { "type": "countdown" },
+      { "type": "image" },
+      { "type": "video" },
+      { "type": "icon" },
+      { "type": "collection" },
+      { "type": "product" }
+    ],
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout Option"
+      },
+      {
+          "type": "select",
+          "id": "direction",
+          "label": "Direction",
+          "default": "f-row-md",
+          "options": [
+              { "label": "Row - horizontal", "value": "f-row-md" },
+              { "label": "Column - vertical", "value": "f-col-md" },
+          ]
+      },
+      {
+          "type": "select",
+          "id": "justify",
+          "label": "Justify Content",
+          "default": "f-jcs-md",
+          "options": [
+              { "label": "Start", "value": "f-jcs-md" },
+              { "label": "Center", "value": "f-jcc-md" },
+              { "label": "End", "value": "f-jce-md" },
+              { "label": "Space Between", "value": "f-jcsb-md" },
+              { "label": "Space Around", "value": "f-jcsa-md" },
+              { "label": "Space Evenly", "value": "f-jcse-md" }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "aligni",
+          "label": "Align Items",
+          "default": "f-ais-md",
+          "options": [
+              { "label": "Start", "value": "f-ais-md" },
+              { "label": "Center", "value": "f-aic-md" },
+              { "label": "End", "value": "f-aie-md" },
+              { "label": "Stretch", "value": "f-aist-md" }
+          ]
+      },
+      {
+          "type": "checkbox",
+          "id": "wrap",
+          "label": "Wrap Items",
+          "default": false
+      },
+      {
+        "type": "range",
+        "id": "gap",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Gaps",
+        "default": 15
+      },
+      {
+        "type": "text",
+        "id": "pd",
+        "label": "Padding",
+        "default": "0",
+        "info": "Top Right Bottom Left ex: 5px 10px 5px 10px"
+      },
+      {
+        "type": "text",
+        "id": "mr",
+        "label": "Margin",
+        "default": "0",
+        "info": "Top Right Bottom Left ex: 5px 10px 5px 10px"
+      },
+      {
+        "type": "text_alignment",
+        "id": "align",
+        "label": "Alignment",
+        "default": "center"
+      },
+      {
+        "type": "header",
+        "content": "Layout Option for Mobile"
+      },
+      {
+          "type": "select",
+          "id": "directionm",
+          "label": "Direction",
+          "default": "f-row",
+          "options": [
+              { "label": "Row - horizontal", "value": "f-row" },
+              { "label": "Column - vertical", "value": "f-col" },
+          ]
+      },
+      {
+          "type": "select",
+          "id": "justifym",
+          "label": "Justify Content",
+          "default": "f-jcs",
+          "options": [
+              { "label": "Start", "value": "f-jcs" },
+              { "label": "Center", "value": "f-jcc" },
+              { "label": "End", "value": "f-jce" },
+              { "label": "Space Between", "value": "f-jcsb" },
+              { "label": "Space Around", "value": "f-jcsa" },
+              { "label": "Space Evenly", "value": "f-jcse" }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "alignim",
+          "label": "Align Items",
+          "default": "f-ais",
+          "options": [
+              { "label": "Start", "value": "f-ais" },
+              { "label": "Center", "value": "f-aic" },
+              { "label": "End", "value": "f-aie" },
+              { "label": "Stretch", "value": "f-aist" }
+          ]
+      },
+      {
+          "type": "checkbox",
+          "id": "wrapm",
+          "label": "Wrap Items",
+          "default": false
+      },
+      {
+        "type": "range",
+        "id": "gapm",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Gaps (Mobile)",
+        "default": 10
+      },
+      {
+        "type": "text",
+        "id": "pdm",
+        "label": "Padding",
+        "default": "0",
+        "info": "Top Right Bottom Left ex: 5px 10px 5px 10px"
+      },
+      {
+        "type": "text",
+        "id": "mrm",
+        "label": "Margin",
+        "default": "0",
+        "info": "Top Right Bottom Left ex: 5px 10px 5px 10px"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignm",
+        "label": "Alignment mobile",
+        "default": "center"
+      },
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background color"
+      },
+      {
+          "type": "color_background",
+          "id": "bgg",
+          "label": "Gradient background"
+      },
+      {
+        "type": "select",
+        "id": "rounded",
+        "label": "Rounded",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "round-xs",
+            "label": "Extra small"
+          },
+          {
+            "value": "round-sm",
+            "label": "Small"
+          },
+          {
+            "value": "round-md",
+            "label": "Medium"
+          },
+          {
+            "value": "round-lg",
+            "label": "Large"
+          },
+          {
+            "value": "round-full",
+            "label": "Full"
+          }
+        ]
+      },
+      
+    ],
+    "presets": [
+      {
+        "name": "Group",
+        "blocks": [
+          {
+            "type": "heading"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

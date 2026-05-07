@@ -1,0 +1,131 @@
+quick-order-list { padding:35px 35px 0; background:var(--cbg); max-width:var(--table-width); margin:0 auto; border-radius:var(--brad);}
+.quick-order-list__table tr{ border-bottom:1px solid var(--border);}
+
+quick-order-list .quantity {
+  width: calc(11rem / var(--font-body-scale) + var(--inputs-border-width) * 2);
+  min-height: calc((var(--inputs-border-width) * 2) + 3.5rem);
+}
+.quick-order-list__container--disabled { pointer-events:none; }
+.quick-order-list__total { padding:20px 0; }
+
+@media screen and (min-width:990px){
+  .quick-order-list-total__info { flex-direction: row;}
+  .quick-order-list__total { position:sticky; bottom:0; z-index:2; background:var(--cbg); border-top:1px solid var(--border);}
+  .variant-item__error { margin-left:5px; }
+  .variant-item--unit-price .variant-item__totals { vertical-align:top; }
+  .variant-item--unit-price .variant-item__totals .loading__spinner { padding-top:15px; }
+}
+
+.quick-order-list__table td,
+.quick-order-list__table th { padding:0; border:none; }
+
+.quick-order-list__table th { padding-bottom:10px; opacity:0.85; }
+.variant-item__totals, .variant-item__details, .variant-item__price { position:relative; }
+
+.variant-item__price .price,
+.variant-item__totals .price { display:block; }
+
+.variant-item__media { width:50px; }
+.variant-item__details > * { margin:0; }
+.variant-item__info { padding-bottom:5px; }
+.variant-item__name { display:block; font-size:110%; }
+.variant-item__sku { font-size:90%; opacity:0.7; }
+
+.variant-item__discounted-prices { margin-top:0; margin-bottom:0; }
+.variant-item__old-price,
+.variant-item__sold-out { opacity:0.7; }
+.variant-item__final-price { font-weight:400; }
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  quick-order-list-remove-button { width:1.5rem; height:1.5rem; }
+  .quick-order-list-total__column { flex-wrap:wrap; }
+
+  .quick-order-list__message, .quick-order-list-error { padding-bottom: 1rem; }
+}
+
+.variant-item .loading__spinner { top:0; left:auto; right:0; bottom:0; padding:0; }
+.variant-remove-total .button--tertiary { width: max-content; }
+
+.quick-order-list__message { margin-top: 1rem; display: block; }
+.quick-order-list__message .svg-wrapper { margin-right:10px; width:16px; }
+.quick-order-list-error { margin-top:1rem; display:flex; }
+.quick-order-list-error .svg-wrapper { flex-shrink:0; width:1.2rem; margin-right:0.7rem; margin-top:0.3rem; align-self:flex-start; }
+
+@media screen and (min-width: 990px) {
+  .variant-item .loading__spinner { padding-top:3rem; bottom:auto; }
+  .variant-item .loading__spinner--error { padding-top:5rem; }
+  .variant-remove-total .loading__spinner { left:2rem; top:1.2rem; }
+  .variant-remove-total--empty .loading__spinner { top:-1rem; }
+}
+
+quick-order-list-remove-button:hover .icon-remove { transform:scale(1.25); }
+
+.quick-order-list-total__info quick-order-list-remove-all-button:hover { text-decoration:underline; text-underline-offset:0.3rem; }
+.variant-remove-total { position:relative; align-self:center; }
+.variant-item .loading__spinner:not(.hidden) ~ *,
+.variant-remove-total .loading__spinner:not(.hidden) ~ * { visibility:hidden; }
+
+.variant-item__error { display:flex; align-items:flex-start; margin-top:0.2rem; width:min-content; min-width:100%; }
+.variant-item__error-text { font-size: 1.2rem; line-height: calc(1 + 0.2 / var(--font-body-scale)); order:1; }
+.variant-item__error-text + .svg-wrapper { flex-shrink:0; width:1.2rem; margin-right:0.5rem; margin-top:0.1rem; }
+.variant-item__error-text:empty + .svg-wrapper { display:none; }
+
+.quick-order-list__table thead th { text-transform:uppercase; }
+.variant-item__image-container--no-img { border:0; }
+.quick-order-list-total__confirmation { margin-top:15px;}
+
+@media screen and (min-width: 990px) {
+  .quick-order-list__table th { border-bottom:1px solid var(--border); }
+  .quick-order-list__table .quick-order-list__table-heading--wide + .quick-order-list__table-heading--wide { text-align:right; }
+  .quick-order-list__table td { padding-top:15px; padding-bottom:15px; }
+  .quick-order-list__table .desktop-row-error td { padding-top: 0; }
+  .quick-order-list__table .variant-item--unit-price td { vertical-align:middle; }
+
+  .variant-item { display:table-row; }
+  .variant-item .variant-item__price { text-align:right; }
+  .variant-item__info { display:flex; padding:10px; }
+  
+  .quick-order-list-total__confirmation span { margin-right:3rem; }
+  .quick-order-list__table thead th:first-child, .quick-order-list-total__column { width:47%; }
+}
+
+.quick-order-list__total-items span,
+.totals__subtotal-value { font-size:125%; }
+
+.quick-order-list__total-items p, .totals__subtotal { opacity:0.75; margin-bottom:0; }
+
+.quick-order-list-total__price { flex-grow:1; width: min-content; }
+quick-order-list .tax-note { margin: 0 0 15px; display:block; width:100%; text-align: right; }
+
+@media screen and (max-width:989px){
+  .quick-order-list__table,
+  .quick-order-list__table thead,
+  .quick-order-list__table tbody { display:block; width:100%; }
+
+  .quick-order-list__table thead tr { display:flex; justify-content:space-between; border-bottom:0.1rem solid #eee; margin-bottom:20px; }
+
+  .variant-item { display: grid; grid-template-columns:50px 1fr; grid-template-rows:repeat(2, auto); column-gap:15px; row-gap:10px; margin-bottom:15px; }
+  .variant-item--no-media { grid-template:repeat(2, auto) / repeat(3, auto); }
+  .variant-item__totals { grid-column: 5 / 3; }
+  .variant-item--no-media .variant-item__inner ~ .variant-item__quantity { grid-column: 1 / 5; }
+  .variant-item__quantity { grid-column: 2 / 5;  }
+  .quantity-popover-container { margin-bottom:10px;}
+
+  .quick-order-list-total__column,
+  .quick-order-list-buttons { flex-direction:column; width:100%; }
+
+  .quick-order-list-total__column { order:2; }
+  .variant-remove-total,
+  .quick-order-list-buttons .btn,
+  .quick-order-list-total__price { width:100%; }
+
+  .totals__product-total { display:flex; justify-content:center; width:100%; align-items:center; padding-bottom:10px; }
+
+  .quick-order-list-total__confirmation quick-order-list-remove-all-button button { margin-top:10px; }
+  .quick-order-list-total__confirmation { flex-direction: column; margin-top:20px; }
+  .quick-order-list__button-confirm { width:100%; max-width:36rem; }
+  .quick-order-list-total__info, .quick-order-list-total__price, quick-order-list .tax-note {text-align:center;}
+  .quick-order-list-total__price  { justify-content:center;}
+}
+
+.quantity-popover-container--empty {width:100px; text-align:center;}
