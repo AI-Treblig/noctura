@@ -1,0 +1,689 @@
+{%- capture featured_blog -%}
+{%- liquid
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+-%}
+{%- capture sizes -%}
+  (min-width:1024px) calc(({{ page_width }} - {{ 30 | times: section_st.grid | minus:30 }}px) / {{ section_st.grid }}),(min-width:768px) calc((100vw - {{ 15 | times: section_st.gridtb | minus:15 }}px) / {{ section_st.gridtb }}), calc((100vw - {{ 10 | times: section_st.gridmb | minus:10 }}px) / {{ section_st.gridmb }})
+{%- endcapture -%}
+<style>{%- if section.settings.headings_cl != 'rgba(0,0,0,0)' and section.settings.headings_cl != blank -%} .wrap-blog { color:{{ section_st.headings_cl }};} {% endif %}</style>
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"  
+   {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>
+	<div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}" id="blogSlider-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="carousel">
+        {% render 'sec-title' %}
+        {%- assign blog = blogs[section_st.blog] -%}
+        {%- capture blog_data -%}
+          {%- if section_st.blog != blank and section_st.blog.articles_count > 0 -%}
+                    {% for article in blog.articles limit: section_st.limit %}
+                        <div class="{% if section_st.carousel %}swiper-slide{% endif %} gitem {% render 'animate-data', css:true %}" {% render 'animate-data', i:forloop.index %}>{% render 'blog-card-grid', blog: blog, article: article, section_st:section_st, sizes:sizes %}</div>
+                    {% endfor %}
+                {% else %}
+                    {% for i in (1..section_st.limit) %}
+                        <div class="swiper-slide gitem {% render 'animate-data', css:true %}" {% render 'animate-data', i:forloop.index %}>
+                            <div class="wrap-blog pr brad of_hidden {{ section_st.blog_align }} of_hidden" style="--rounded:{{ section_st.bbrad }}px">
+                                <a class="db pr of_hidden brad mb20" href="{{ article.url }}" style="padding-bottom:{{ section_st.img_ratio }}%;--rounded:{{ section_st.bbrad }}px;" title="{{ article.title | escape }}">
+                                    {% capture current %}{% cycle 1, 2, 3, 4 %}{% endcapture %}{{ 'blog-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg imgFt' }}
+                                </a>
+                                <div class="blogInr {{ section_st.blog_align }}">
+                                    <{{ section_st.htag }} class="blogTtl rgTxt mb10 {{ section_st.tff }}{% if section_st.tcase %} ttu{% endif %}"><a href="#">{{ 'homepage.onboarding.blog_title' | t }}</a></{{ section_st.htag }}>
+                                    {% if section_st.author %}<span class="clr_body">{{ 'homepage.onboarding.blog_author' | t }}</span>{% endif %}
+                                    {% if section_st.des %}<div class="rte mb25">{{ 'homepage.onboarding.blog_excerpt' | t }}</div> {% endif %}
+                                    {% if section_st.more %}<p class="mb10"><a href="{{ article.url }}" class="btnLink">{{ 'blogs.article.read_more' | t }}</a></p>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        {%- endcapture -%}
+        {%- capture styles -%}
+            --grsp:{{ section_st.gspace | divided_by: 2.0 }}px;--grspm:{{ section_st.gspacem | divided_by: 2.0 }}px;
+            --fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;--lh:{{ section_st.lh }};--fw:{{ section_st.fw }};
+        {%- endcapture -%}
+
+        {%- if section_st.carousel -%}
+            <slide-section class="homeblog grid gspace blog{{ section_st.grids }} rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} grid--blog swiper" style="{{ styles }}"
+              data-swiper='{ "slidesPerView":"auto", "loop":{{ section_st.loop }}, {% if section_st.autoplay %}"autoplay":{ "delay":"{{ section_st.speed | times: 1000 }}" },{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" },"pagination":{ "el":".swpg{{ section.id }}","clickable":true }}'>
+              <div class="swiper-wrapper">{{ blog_data }}</div>
+              {% render 'swiper-navigation', id:section.id, section_st:section_st %}
+            </slide-section>
+        {%- else -%}
+            <div class="homeblog grid gspace blog{{ section_st.grids }} rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} grid--blog" style="{{ styles }}">{{ blog_data }}</div>                    
+        {%- endif -%}
+        {% if section_st.viewall != blank %}<div class="tc mt20"><a href="{{ blog.url }}" class="btn {{ section_st.btn-style }} {{ section_st.btn-size }}">{{ section_st.viewall }}</a></div>{% endif %}
+    </div>
+</div>
+{%- endcapture -%}
+{{ featured_blog | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Blog List",
+    "class": "index-section",
+    "disabled_on": {
+        "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [	
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Blog posts"            
+        },
+        {
+            "type": "textarea",
+            "id": "subtitle",
+            "label": "Sub Heading",
+            "default": "Describe your products, collection, content etc..."
+        },  
+        {
+            "id": "blog",
+            "type": "blog",
+            "label": "Select Blog"
+        },
+       {          
+            "type": "header",
+            "content": "Grid Design ==="
+        },
+         {
+            "type": "select",
+            "id": "grids",
+            "label": "Select Style",
+            "default": "1",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "Style 1"
+                },               
+				{
+                    "value": "2",
+                    "label": "Style 2"
+                } 
+            ]
+        },  
+       {
+            "type": "select",
+            "id": "img_ratio",
+            "label": "Images aspect ratio",
+            "default": "60",
+           "info": "style 2, recommended ratio:squared",
+            "options": [
+                { "group": "Landscape", "value": "30", "label": "0:3" },
+                { "group": "Landscape", "value": "40", "label": "0:4" },
+                { "group": "Landscape", "value": "50", "label": "0:5" },
+                { "group": "Landscape", "value": "60", "label": "0:6" },
+                { "group": "Landscape", "value": "70", "label": "0:7" },
+                { "group": "Landscape", "value": "80", "label": "0:8" },
+                { "group": "Landscape", "value": "90", "label": "0:9" },
+                { "group": "Squared", "value": "100", "label": "1:1" },
+                { "group": "Portrait", "value": "110", "label": "1:1" },
+                { "group": "Portrait", "value": "120", "label": "1:2" },
+                { "group": "Portrait", "value": "130", "label": "1:3" },
+                { "group": "Portrait", "value": "140", "label": "1:4" },
+                { "group": "Portrait", "value": "150", "label": "1:5" }
+            ]
+        },      
+       {
+			"type": "range",
+			"id": "bbrad",
+			"min": 0,
+			"max": 50,
+			"step": 1,
+			"label": "Image rounded",
+			"unit": "px",
+			"default":0
+        },             
+        {
+            "type": "paragraph",
+            "content": "Post limit ==="
+        },
+        {
+            "type": "range",
+            "id": "limit",
+            "label": "Posts to show",
+            "default": 3,
+            "min": 1,
+            "max": 15,
+            "step": 1       
+        },
+        {
+            "type": "range",
+            "id": "grid",
+            "label": "Desktop",
+            "default": 3,
+            "min": 1,
+            "max": 6,
+            "step": 1       
+        },
+        {
+            "type": "range",
+            "id": "gridtb",
+            "label": "Tablet",
+            "default": 2,
+            "min": 1,
+            "max": 4,
+            "step": 1       
+        },
+        {
+            "type": "range",
+            "id": "gridmb",
+            "label": "Mobile",
+            "default": 1,
+            "min": 1,
+            "max": 3,
+            "step": 1       
+        },      
+       {
+            "type": "range",
+            "id": "gspace",
+            "label": "Grid gap",
+              "default": 20,
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit":"px"
+        },
+        {
+            "type": "range",
+            "id": "gspacem",
+            "label": "Grid gap (mobile)",
+            "default": 10,
+            "min": 0,
+            "max": 15,
+            "step": 1,
+            "unit":"px"		
+        },         
+       {
+            "type": "header",
+            "content": "Text Appearance ===="
+        },   
+       {
+            "type": "select",
+            "id": "blog_align",
+            "label": "Text align",
+            "default": "tl",
+            "options": [
+                {
+                    "value": "tl",
+                    "label": "Left"
+                },
+                {
+                    "value": "f-jcc tc",
+                    "label": "Center"
+                }         
+            ]
+        }, 
+          {
+            "type": "select",
+            "id": "blog_alignv",
+            "label": "Vertical alignment",
+            "info":"for style 2",
+            "default": "f-ais",
+            "options": [
+                {
+                    "value": "f-ais",
+                    "label": "Top"
+                },
+                {
+                    "value": "f-aic",
+                    "label": "Middle"
+                },
+                {
+                    "value": "f-aie",
+                    "label": "Bottom"
+                } 
+            ]
+        },        
+        {
+            "type": "paragraph",
+            "content": "Post Title ===="
+        },  
+        {
+                "type": "select",
+                "id": "htag",
+                "label": "Title tag",
+               "info":"Specify heading types for SEO and search engines for crawling purposes.",
+                "default": "h2",
+                "options": [                      
+                    {
+                        "value": "h2",
+                        "label": "H2"
+                    },
+                    {
+                        "value": "h3",
+                        "label": "H3"
+                    },
+                    {
+                        "value": "h4",
+                        "label": "H4"
+                    },
+                    {
+                        "value": "h5",
+                        "label": "H5"
+                    },
+                    {
+                        "value": "h6",
+                        "label": "H6"
+                    },
+                   {
+                        "value": "p",
+                        "label": "P"
+                    }
+                ]
+            }, 
+            {
+            "type": "select",
+            "id": "tff",
+            "label": "Font family",
+            "default": "ft1",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },
+       {
+            "type": "range",
+            "id": "fs",
+            "label": "Font size",
+            "default": 18,
+            "min": 10,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font size (mobile)",
+            "default": 16,
+            "min": 10,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "lh",
+            "label": "Line height",
+            "default": 1.5,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1              
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font weight",
+            "default": "500",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "tcase",
+            "label": "Use uppercase?"        
+        },
+       {
+            "type": "paragraph",
+            "content": "----------------------------------------------"
+        }, 
+        {
+            "type": "paragraph",
+            "content": "Post publish detail ===="
+        },         
+      {
+            "type": "checkbox",
+            "id": "author",
+            "label": "Show author?",		
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "date",
+            "label": "Show date?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "comment",
+            "label": "Show comment?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "tags",
+            "label": "Show tags?",
+            "default": false
+        },   
+       {
+            "type": "select",
+            "id": "post_sep",
+            "label": "Separation",
+            "default": "1",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "Icons"
+                },               
+				{
+                    "value": "2",
+                    "label": "Pipe"
+                },
+               {
+                    "value": "3",
+                    "label": "Bullets"
+                },
+               {
+                    "value": "4",
+                    "label": "Dash"
+                },
+               {
+                    "value": "5",
+                    "label": "none"
+                }
+            ]
+        }, 
+       {
+            "type": "checkbox",
+            "id": "post_case",
+            "label": "Use uppercase?"        
+        },
+       {
+            "type": "paragraph",
+            "content": "----------------------------------------------"
+        }, 
+       {
+        "type": "checkbox",
+        "id": "desc",
+        "label": "Show short description?",
+        "default": true		
+      },
+      {
+        "type": "range",
+        "id": "dwords",
+        "label": "Display words",
+        "default": 15,
+        "min": 10,
+        "max": 60,
+        "step": 1,
+        "visible_if": "{{ section.settings.desc }}"
+       },
+        {
+            "type": "checkbox",
+            "id": "more",
+            "label": "Read more link?",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "viewall",
+            "label": "Read All Button",
+                  
+        },
+        {
+            "type": "select",
+            "id": "btn-style",
+            "label": "Button design",
+            "default": "btn1",
+            "options": [
+                {
+                    "label": "Button 1",
+                    "value": "btn1"
+                },
+                {
+                    "label": "Button 2",
+                    "value": "btn2"
+                },
+                {
+                    "label": "Button 3",
+                    "value": "btn3"
+                },
+                {
+                    "label": "Button 4",
+                    "value": "btn4"
+                },
+                {
+                    "label": "Button 5",
+                    "value": "btn5"
+                },
+				  {
+					"label": "Button 6",
+					"value": "btn6"
+				  },
+                 {
+                      "label": "Button 7 Gradient",
+                      "value": "btn7"
+                  },
+                  {
+                      "label": "Button 8 Gradient",
+                      "value": "btn8"
+                  },
+				  {
+					"label": "Link",
+					"value": "btnLink"
+				  }  
+            ],
+            "visible_if": "{{ section.settings.viewall != blank }}"      
+        },
+        {
+            "type": "select",
+            "id": "btn-size",
+            "label": "Button size",
+            "default": "btn-sm",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                }
+            ],
+            "visible_if": "{{ section.settings.viewall != blank }}"      
+        },     
+		{
+            "type": "header",
+            "content": "Slider Settings ==="
+        },
+        {
+            "type":"checkbox",
+            "id":"carousel",
+            "label":"Enable carousel",
+            "default": true
+        },
+ 		{
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Infinite loop",
+            "default": true
+        },
+ 		{
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Auto-rotate slide",
+            "default": false			
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Change Slide every",
+            "default": 5,
+            "min": 1,
+            "max": 30,
+            "step": 1,
+            "unit": "Sec",
+            "visible_if": "{{ section.settings.autoplay }}"			
+        },		
+		{
+            "type": "checkbox",
+            "id": "arrow",
+            "label": "Show arrows on Desktop?",
+            "default": true			
+        },
+		{
+            "type": "checkbox",
+            "id": "arrowm",
+            "label": "Show arrows on Mobile?",
+            "default": false			
+        },		
+		{
+            "type": "checkbox",
+            "id": "dot",
+            "label": "Show dots on Desktop?",
+            "default": false			
+        },
+		{
+            "type": "checkbox",
+            "id": "dotm",
+            "label": "Show dots on Mobile?",
+            "default": false			
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },		                     
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":30
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on Desktop?",
+            "default": false
+        }	
+    ],
+    "presets": [
+        {
+            "name": "Blog List",
+            "category": "Storytelling",
+             "settings": {
+                "blog": "News"
+            }
+        }
+    ]
+}
+{% endschema %}

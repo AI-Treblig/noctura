@@ -1,0 +1,1870 @@
+{%- liquid
+    assign sec_st = section.settings
+
+    assign cnt_width = settings.cntwd | append: 'px'
+    if sec_st.sw
+        assign cnt_width = '100vw'
+    endif
+
+    assign is_rtl = false
+    assign list_rtl = 'ar,dv,ha,he,ku,fa,ur,ug' | split: ','
+    assign pm_left = 'left'
+    assign pm_right = 'right'
+    if list_rtl contains request.locale.iso_code or settings.rtl
+        assign is_rtl = true
+        assign pm_left = 'right'
+        assign pm_right = 'left'
+    endif
+   
+    assign logo = sec_st.logo
+    assign istrnsparent = false
+    assign page_type = request.page_type
+    if page_type == 'index' and sec_st.trhead
+        assign istrnsparent = true
+    elsif page_type == 'collection' and sec_st.trheadcl
+        assign istrnsparent = true
+    elsif page_type == 'blog' and sec_st.trheadbg
+        assign istrnsparent = true
+    elsif page_type == 'article' and sec_st.trheadar and article.image != blank
+        assign istrnsparent = true
+    endif
+    if istrnsparent
+        assign logo = sec_st.trLogo | default: logo
+    endif
+-%}
+
+{%- style -%}
+     .hdr_bottom { --hdrHt:{{ sec_st.ht }}px;--hdrHtm:{{ sec_st.htm }}px;--hdrSp:{{ sec_st.head_space }}px;--logowd:{{ sec_st.logowd }}px;--logowdm:{{ sec_st.logowdm }}px;
+     {%- if sec_st.hdrbd -%}border-bottom:1px solid {{ sec_st.hdrbd_cl }}; {%- endif -%}
+     {%- if sec_st.bgimg != blank -%}
+        background:{{ sec_st.bg }} url({{ sec_st.bgimg | image_url: width:sec_st.bgimg.width }}) {{ sec_st.bgrepeat }} {{ sec_st.bgposition | replace:"_", " " }}/{{ sec_st.bgsize }};
+    {%- elsif sec_st.bgg != blank -%}
+        background:{{ sec_st.bgg }};
+    {%- else -%}
+        background-color:{{ sec_st.bg }};
+     {%- endif -%}
+    --cl:{{ sec_st.cl }}; --clh:{{ sec_st.clh }}; --icns:{{ sec_st.icon }}px; --icnsm:16px; --fs:{{ sec_st.fs }}px;
+  }
+
+    {%- if sec_st.cntlogo -%}
+      .mbnavCol { min-width:35px; margin-{{ pm_left }}:-5px; }  
+    {%- else -%}
+      .navToggle { margin-{{ pm_right }}:-5px; }
+    {%- endif -%}
+  
+    .searchinline .search .ad_inputs { max-width:250px;}
+    
+  @media only screen and (max-width:1024px){
+    .main-search { order:3; width:100%; flex:auto; margin:5px 0 0; }
+    {%- if sec_st.cntlogo -%}
+      .icons-col { flex:1; }
+    {%- endif -%}
+  }
+  
+  {%- if sec_st.hdrStyle == '3' -%}
+  #header .crlgTtl { font-size:{{ settings.navfs }}px; font-weight:{{ settings.navfw }};  {% if settings.nav_case %} text-transform: uppercase; {% endif %} font-family:var(--{{ settings.navft }}); }
+  #header .crlgTtl { color:var(--cl); }
+  #header .crlgTtl:after { background-color:var(--cl); }
+  {%- endif -%}  
+
+  {%- if sec_st.icntyp == '3' -%}
+  .cartCount.pp {margin: -2upx 0 0 4px;}  
+  {%- endif -%}
+      
+      #header .crlgTtl,
+      #header .social_icons a { color:var(--cl); font-weight:{{settings.navfw}};}
+      #header .crlgTtl:after { background-color:var(--cl); }
+      .hdSearch { max-width:280px; }      
+      #main_nav.f-jcs > li:first-child > a { padding-left:0; }
+  
+  {%- if istrnsparent -%}
+      .hdr_wrap:not(.sticky_hdr) { position:absolute; left:0; right:0; }
+      .hdr_wrap.sticky_hdr, .hdr_wrap.header-hidden { position:fixed; }
+      html:not(.searchact) .hdr_wrap:not(.sticky_hdr,:hover) { background-color:transparent; border-color:transparent; }
+      .hdr_wrap:not(.sticky_hdr):not(:hover) .hdicon,
+      .hdr_wrap:not(.sticky_hdr):not(:hover) .lvl1 > a,
+      .hdr_wrap:not(.sticky_hdr):not(:hover) .crlgTtl { color:{{ sec_st.thcl }}!important; }
+      .hdr_wrap:not(.sticky_hdr):not(:hover) .stlogo,
+      .hdr_wrap.sticky_hdr .trlogo,
+      .hdr_wrap:hover .trlogo { display:none !important; }
+      .hdr_wrap:not(.sticky_hdr):not(:hover) #main_navwr { background-color:transparent; border:0 none; }
+      .hdr_wrap:hover #header, .searchact #header { background:var(--hdrbg); }
+      .hdr_wrap .searchDrawer { top:var(--hdrHtm); }
+        @media only screen and (min-width:1024px){
+          .hdr_wrap .searchDrawer { top:var(--hdrHt); }
+        }
+      #main_navwr { transition: all 0.2s ease-in-out; }
+      #PageContainer { --hdht:{{ sec_st.ht | plus:40 }}px;--hdhtm:{{ sec_st.htm }}px; }
+  {%- endif -%}
+  
+  .leftcol .s_res {width:400px !important}
+{%- endstyle -%}
+  
+{%- capture logo -%}
+<div class="header-logo">
+  <a href="{{ routes.root_url }}" itemprop="url" class="hdr_logo_lnk" title="{{ shop.name }}">
+    {%- assign logo_alt = logo.alt | default: shop.name | escape -%}
+    {%- capture sizes -%}(max-width: {{ sec_st.logowd | times: 2 }}px) 50vw, {{ sec_st.logowd }}px{%- endcapture -%}
+    {%- capture widths -%}{{ sec_st.logowd }}, {{ sec_st.logowd | times: 1.5 | round }}, {{ sec_st.logowd | times: 2 }}{% endcapture -%}
+    {%- if istrnsparent and logo != blank -%}
+        {%- assign trlogo_ht = sec_st.logowd | divided_by: logo.aspect_ratio -%}
+        {{- logo | image_url: width: 600 | image_tag: class: 'imgAt trlogo db fw700', widths: widths, height: trlogo_ht, width: sec_st.logowd, alt: logo_alt, sizes: sizes, preload: true -}}
+    {%- endif -%}
+    {%- if sec_st.logo != blank -%}
+        {%- assign logo_ht = sec_st.logowd | divided_by: sec_st.logo.aspect_ratio -%}
+        {{- sec_st.logo | image_url: width: 600 | image_tag: class: 'imgAt stlogo db fw700', widths: widths, height: logo_ht, width: sec_st.logowd, alt: logo_alt, sizes: sizes, preload: true -}}
+    {%- else -%}
+        {{ shop.name }}
+    {%- endif -%}
+  </a>
+</div>
+{%- endcapture -%}
+
+{%- capture promo -%}
+    {%- if sec_st.promo_head != blank or sec_st.promo_text != blank -%}
+      <div class="fl f-aic promo_txt hide-sm hide-md" style="--icns:{{ sec_st.prisz }}px">
+        {%- if sec_st.prico != blank -%}
+          {%- capture prico_width -%}{{ sec_st.prisz }}, {{ sec_st.prisz | times: 1.5 | round }}, {{ sec_st.prisz | times: 2 }}{%- endcapture -%}
+          {{- sec_st.prico | image_url: width: 100 | image_tag: class: 'at-icon mr10', widths:prico_width, height:sec_st.prisz, width:sec_st.prisz, alt:sec_st.prico.alt -}}
+        {%- endif -%}
+        <div style="color:{{ sec_st.prcl }}; font-size:{{ sec_st.prfs }}px; line-height:1.1;">
+          {%- if sec_st.promo_head != blank -%}<p style="color:{{ sec_st.prtcl }}; font-size:{{ sec_st.prtfs }}px; font-weight:{{ sec_st.prfw }};margin-bottom:2px;">{{ sec_st.promo_head }}</p>{%- endif -%}
+          {%- if sec_st.promo_text != blank -%}<span>{{ sec_st.promo_text }}</span>{%- endif -%}
+        </div>
+      </div>
+      {%- endif -%}
+{%- endcapture -%}
+
+{%- capture nav_toggle -%}
+    <a href="#" class="hdicon navToggle hide-lg" role="button" title="{{ 'sections.navigation.menu' | t }}"><svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 464.205 464.205"><path d="m435.192 406.18h-406.179c-16.024 0-29.013-12.99-29.013-29.013s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.99 29.013 29.013-.001 16.023-12.99 29.013-29.014 29.013z"/><path d="m435.192 261.115h-406.179c-16.024 0-29.013-12.989-29.013-29.012s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.989 29.013 29.013s-12.99 29.012-29.014 29.012z"/><path d="m435.192 116.051h-406.179c-16.024 0-29.013-12.989-29.013-29.013s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.989 29.013 29.013s-12.99 29.013-29.014 29.013z"/></svg></a>
+{%- endcapture -%}
+
+{%- capture site_header -%}
+<header id="header" class="main_hdr fl f-aic col-gap pr{% if sec_st.sw %} fw-sec{% else %} page-width{% endif %}{% if istrnsparent %} trnsprt{% endif %}" data-sticky="{{ sec_st.sticky_type }}" data-section-id="header" style="{% if sec_st.trhead %}--thcl:{{ sec_st.thcl }};{% endif %}--gap:{{ sec_st.gap }}px;">
+      {%- if sec_st.cntlogo -%}
+        <div class="fl1 mbnavCol fl hide-lg cnt">
+            {{ nav_toggle }}
+            {% if settings.enable_search and sec_st.cntlogo %}
+              <a class="hdicon searchIcn" href="{{ routes.search_url }}" title="{{ 'sections.header.search' | t }}"><svg class="at-icon"><use xlink:href="#icon-search"></use></svg></a>
+            {% endif %}
+        </div>
+      {%- endif -%}
+      <div class="fl1 leftcol fl f-aic gap hide-sm hide-md" style="--gap:15px;">
+          {%- if sec_st.leftcol == '1' -%}
+                {{ promo }}
+            {%- elsif sec_st.leftcol == '2' -%}
+                {% if settings.mlcurrency or settings.mlLang %}{%- render 'currencyLang' -%}{% endif %}
+            {%- elsif sec_st.leftcol == '3' -%}
+                {%- render 'social-media' -%}
+            {%- elsif sec_st.leftcol == '4' -%}
+              <div class="searchinline hide-sm hide-md">{%- render 'search-form', frmClas: 'hdSearch' -%}</div>
+            {%- endif -%}
+      </div>
+
+      {{- logo -}}
+
+      <div class="fl f-jce icons-col fl1">
+        {%- if settings.enable_search -%}
+		  <a class="hdicon searchIcn{% if sec_st.cntlogo %} hide-sm hide-md{% endif %}{% if sec_st.leftcol == '4' %} hide-lg{% endif %}" href="{{ routes.search_url }}" title="{{ 'sections.header.search' | t }}">
+              <svg class="at-icon{% if sec_st.icntyp == '3' %} hide-lg{% endif %}"><use xlink:href="#icon-search"></use></svg>
+              <p class="m0{% if sec_st.icntyp == '1' %} hide{% else %} hide-sm hide-md{% endif %}{% if sec_st.icntyp == '2' %} pdt5{% endif %}">{{ 'sections.header.search' | t }}</p>
+          </a>
+        {%- endif -%}
+        {%- if shop.customer_accounts_enabled -%}
+		  <a class="hdicon user-menu" href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" title="{{ 'sections.header.account' | t }}">
+                {%- render 'icon-account',  icntyp: sec_st.icntyp -%}
+                <p class="m0{% if sec_st.icntyp == '1' %} hide{% else %} hide-sm hide-md{% endif %}{% if sec_st.icntyp == '2' %} pdt5{% endif %}">{{ 'sections.header.account' | t }}</p>
+          </a>
+        {%- endif -%}
+
+        {%- if settings.wishlist -%}
+          <a class="hdicon" href="{{ pages[settings.wishlist_page].url }}" title="{{ 'sections.header.wishlist' | t }}">
+              <svg class="at-icon{% if sec_st.icntyp == '3' %} hide-lg{% endif %}"><use xlink:href="#icon-wishlist"></use></svg>
+              {%- if sec_st.icntyp != '3' -%}<b id="wishlistItems" class="cartCount pp">0</b>{%- endif -%}
+              <p class="m0{% if sec_st.icntyp == '1' %} hide{% else %} hide-sm hide-md{% endif %}{% if sec_st.icntyp == '2' %} pdt5{% endif %}">{{ 'sections.header.wishlist' | t }}</p>
+          </a>
+        {%- endif -%}
+
+        {%- unless settings.catalog-mode -%}						
+		<a href="{{ routes.cart_url }}" class="hdicon" id="cartLink" title="{{ 'sections.header.cart' | t }}">
+            <svg class="at-icon{% if sec_st.icntyp == '3' %} hide-lg{% endif %}"><use xlink:href="#icon-cart"></use></svg>
+            {%- if sec_st.icntyp != '3' -%}<b id="cart-icon-bubble" class="cartCount pp">{{ cart.item_count }}</b>{%- endif -%}
+            <p class="m0{% if sec_st.icntyp == '1' %} hide{% else %} hide-sm hide-md{% endif %}{% if sec_st.icntyp == '2' %} pdt5{% endif %}">{{ 'sections.header.cart' | t }}{% if sec_st.icntyp == '3' %}<b id="cart-icon-bubble" class="cartCount pp">{{ cart.item_count }}</b>{% endif %}</p>
+        </a>
+        {%- endunless -%}
+        {%- unless sec_st.cntlogo -%}
+            <a href="#" class="hdicon navToggle hide-lg" title="{{ 'sections.navigation.menu' | t }}"><svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 464.205 464.205"><path d="m435.192 406.18h-406.179c-16.024 0-29.013-12.99-29.013-29.013s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.99 29.013 29.013-.001 16.023-12.99 29.013-29.014 29.013z"/><path d="m435.192 261.115h-406.179c-16.024 0-29.013-12.989-29.013-29.012s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.989 29.013 29.013s-12.99 29.012-29.014 29.012z"/><path d="m435.192 116.051h-406.179c-16.024 0-29.013-12.989-29.013-29.013s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.989 29.013 29.013s-12.99 29.013-29.014 29.013z"/></svg></a>
+        {%- endunless -%}
+      </div>
+</header>
+    <nav id="main_navwr" class="{% if istrnsparent %}trnsprt{% endif %} hide-sm hide-md" role="navigation">
+        <div class="{% if sec_st.sw %} fw-sec{% else %} page-width{% endif %}">
+            {%- render 'navigation', sec_st:sec_st, secblk:section.blocks, cnt_width:cnt_width -%}
+        </div>
+    </nav>
+    {%-liquid
+        if settings.enable_search
+            assign search_type = 'drawer'
+            if sec_st.leftcol == '4'
+                assign search_type = 'inline'
+            endif
+            render 'search-drawer', search_type:search_type, cnt_width:cnt_width, is_rtl:is_rtl
+          endif
+    -%}
+<!--mmobile-->
+{%- render 'mobile-nav', sec_st:sec_st, secblk:section.blocks -%}
+{%- endcapture -%}
+{{- site_header | replace:"<!--mmobile-->", "</div>" | strip_newlines | remove: "  " | remove: "	" -}}
+{% schema %}
+ {
+    "name": "Header - Menu Bottom",
+	"limit": 1,
+    "class": "hdr_wrap pr hdr_bottom",
+    "enabled_on": {
+        "groups": ["header"]
+    },
+    "settings": [      	       
+      {
+        "type": "range",
+        "id": "ht",
+        "min": 50,
+        "max": 150,
+        "step": 1,
+        "label": "Header Height",
+        "default": 70
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo Image"
+      },
+      {
+        "type": "range",
+        "id": "logowd",
+        "min": 50,
+        "max": 500,
+        "step": 5,
+        "label": "Logo Width",
+        "default": 120
+      },
+      {
+        "type": "select",
+        "id": "icntyp",
+        "label": "Addons",
+        "default": "2",
+        "options": [
+          {
+            "label": "Icons only",
+            "value": "1"
+          },         
+          {
+          "label": "Icon with text",
+            "value": "2"
+          },         
+          {
+          "label": "Text only",
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "icon",
+        "min": 12,
+        "max": 50,
+        "step": 1,
+        "label": "Icons Size",
+        "unit": "px",
+        "default": 18
+      },
+      {
+        "type": "range",
+        "id": "fs",
+        "min": 10,
+        "max": 20,
+        "step": 1,
+        "label": "Font Size",
+        "unit": "px",
+        "default": 12
+      },           
+      {
+        "type": "color",
+        "id": "cl",
+        "label": "Icons & Text",
+        "default": "#555"
+      },
+      {
+        "type": "color",
+        "id": "clh",
+        "label": "Icons & Text Hover",
+        "default": "#000"
+      },      
+      {
+            "type": "select",
+            "id": "leftcol",
+            "label": "Left Column",
+            "default": "2",
+            "info":"Enable Currency & Language from Theme Settings",
+            "options": [
+              {
+                "label": "Promotional Text",
+                "value": "1"
+              },         
+              {
+              "label": "Currency & Language",
+                "value": "2"
+              },         
+              {
+              "label": "Social Icons",
+                "value": "3"
+              },         
+              {
+              "label": "Search Box",
+                "value": "4"
+              }
+            ]
+      },
+	  {
+        "type": "header",
+        "content": "Promotional Text ====",
+        "visible_if": "{{ section.settings.leftcol == '1' }}"
+      },	 
+      {
+          "type": "image_picker",
+          "id": "prico",
+          "label": "Image or Svg Icon",
+          "info":"[Available SVG icons.](https://adornthemes.com/documentation/vogal/svg-icons.html)",
+           "visible_if": "{{ section.settings.leftcol == '1' }}"
+      },
+      {
+        "type": "range",
+        "id": "prisz",
+        "label": "Icon Size",
+        "default": 30,
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "visible_if": "{{ section.settings.leftcol == '1' }}"
+      },
+      {
+        "type": "text",
+        "id": "promo_head",
+        "label": "Heading",
+        "default": "Expert Support",
+        "visible_if": "{{ section.settings.leftcol == '1' }}"
+      },
+      {
+        "type": "color",
+        "id": "prtcl",
+        "label": "Color",
+        "default": "#444",
+        "visible_if": "{{ section.settings.leftcol == '1' }}"        
+      },
+      {
+        "type": "range",
+        "id": "prtfs",
+        "label": "Font Size",
+        "default": 16,
+        "min": 10,
+        "max": 60,
+        "step": 1,
+        "unit": "px",
+         "visible_if": "{{ section.settings.leftcol == '1' }}"        
+      },
+      {
+        "type": "select",
+        "id": "prfw",
+        "label": "Font Weight",
+        "default": "500",
+        "visible_if": "{{ section.settings.leftcol == '1' }}",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Regular"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi Bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "promo_text",
+        "label": "Promo. Text",
+        "default": "Available 24\/7 via chat",
+        "visible_if": "{{ section.settings.leftcol == '1' }}"
+      },
+	  {
+        "type": "color",
+        "id": "prcl",
+        "label": "Color",
+        "default": "#111",
+        "visible_if": "{{ section.settings.leftcol == '1' }}"
+      },
+      {
+        "type": "range",
+        "id": "prfs",
+        "label": "Font Size",
+        "default": 12,
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "visible_if": "{{ section.settings.leftcol == '1' }}"
+      },      	  
+      {
+        "type": "header",
+        "content": "Sticky Header ====="
+      },
+      {
+        "type": "select",
+        "id": "sticky_type",
+        "label": "Sticky header",
+        "default": "top",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "always",
+            "label": "Always"
+          },
+          {
+            "value": "top",
+            "label": "On scroll up"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "sticky_shadow",
+        "label": "Show bottom shadow?",
+        "default": true
+      },
+	  {
+        "type": "header",
+        "content": "Transparent Header ====="
+      },
+      {
+        "type": "checkbox",
+        "id": "trhead",
+        "label": "Enable for home page",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "trheadcl",
+        "label": "Enable for collection page",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "trheadbg",
+        "label": "Enable for blog page",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "trheadar",
+        "label": "Enable for article page",
+        "default": false
+      },
+	  {
+        "type": "image_picker",
+        "id": "trLogo",
+        "label": "Logo Image",
+        "visible_if": "{{ section.settings.trhead }}"
+      },      
+	  {
+        "type": "color",
+        "id": "thcl",
+        "label": "Text & Icon",
+        "default": "#fff",
+        "visible_if": "{{ section.settings.trhead }}"
+      },
+	  {
+        "type": "header",
+        "content": "Navigation ===="
+      },
+      {
+		 "type": "paragraph",
+		 "content":"Customize look from Theme Settings -> Header Menu"
+      },       
+      {
+        "type": "header",
+        "content": "Mobile Site  ====="
+      },
+      {
+        "type": "range",
+        "id": "logowdm",
+        "min": 50,
+        "max": 200,
+        "step": 2,
+        "label": "Logo Width",
+        "default": 90
+      },
+      {
+        "type": "checkbox",
+        "id": "cntlogo",
+        "label": "Logo Center?",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "htm",
+        "min": 30,
+        "max": 130,
+        "step": 1,
+        "label": "Header Height",
+        "default": 60
+      },
+      {
+        "type": "checkbox",
+        "id": "spnav",
+        "label": "Show different Menu for Mobile?",		
+        "default": false
+      },
+      {
+        "type": "link_list",
+        "id": "mbmenu",
+        "label": "Select Menu",
+        "default": "main-menu"
+      },      
+      {
+        "type": "checkbox",
+        "id": "catnav",
+        "label": "Show Categories Menu?",
+        "default": true
+      },
+      {
+        "type": "link_list",
+        "id": "catmenu",
+        "label": "Select Menu",
+        "default": "main-menu"
+      },
+      {
+            "type":"checkbox",
+            "id":"sicnm",
+            "label":"Show Icon Image?",
+            "default": true,
+            "visible_if": "{{ section.settings.catnav }}",
+			"info":"[How to add?](https://www.adornthemes.com/knowledge-base/icon-image-for-collection/)"
+      },
+      {
+            "type": "range",
+            "id": "icnm",
+            "label": "Icon/img Size",
+            "default":30,
+            "min": 10,
+            "max": 70,
+            "step": 1,
+            "unit": "px",
+            "visible_if": "{{ section.settings.catnav }}"
+      },
+      {
+            "type": "range",
+            "id": "icnrad",
+            "label": "Border Radius",
+            "default":30,
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "unit": "px",
+             "visible_if": "{{ section.settings.catnav }}"
+      },
+      {
+        "type": "textarea",
+        "id": "help",
+        "label": "Help Block"
+      },
+      {
+        "type": "header",
+        "content": "Section Design ==="
+      },
+        {
+          "type":"checkbox",
+          "id":"sw",
+          "label":"Fullwidth?",
+          "default": false,
+          "info":"Manage fullwidth padding from Theme Settings -> Layout"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background",
+        "default": "#fff"
+      },
+      {
+        "type": "color_background",
+        "id": "bgg",
+        "label": "Gradient Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "bgimg",
+        "label": "Background image"
+      },
+      {
+        "type": "select",
+        "id": "bgrepeat",
+        "label": "Background Repeat",
+        "default": "no-repeat",
+        "info": "[how to repeat the background image](https:\/\/w3schools.com\/cssref\/pr_background-repeat.asp)",
+        "options": [
+          {
+            "value": "no-repeat",
+            "label": "No Repeat"
+          },
+          {
+            "value": "repeat",
+            "label": "All Sides"
+          },
+          {
+            "value": "repeat-x",
+            "label": "Horizontally"
+          },
+          {
+            "value": "repeat-y",
+            "label": "Vertically"
+          }
+        ],
+        "visible_if": "{{ section.settings.bgimg != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "bgposition",
+        "label": "Background Position",
+        "default": "center_center",
+        "info": "[position of the background images](https:\/\/w3schools.com\/cssref\/pr_background-position.asp)",
+        "options": [
+          {
+            "value": "left_top",
+            "label": "Left Top"
+          },
+          {
+            "value": "left_center",
+            "label": "Left Center"
+          },
+          {
+            "value": "left_bottom",
+            "label": "Left Bottom"
+          },
+          {
+            "value": "center_top",
+            "label": "Center Top"
+          },
+          {
+            "value": "center_center",
+            "label": "Center Center"
+          },
+          {
+            "value": "center_bottom",
+            "label": "Center Bottom"
+          }
+        ],
+        "visible_if": "{{ section.settings.bgimg != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "bgsize",
+        "label": "Background Size",
+        "default": "auto",
+        "info": "[Specifies the size of the background image](https:\/\/w3schools.com\/cssref\/css3_pr_background-size.asp)",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Auto"
+          },
+          {
+            "value": "cover",
+            "label": "Cover"
+          },
+          {
+            "value": "contain",
+            "label": "Contain"
+          }
+        ],
+        "visible_if": "{{ section.settings.bgimg != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "hdrbd",
+        "label": "Show Bottom Border",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "hdrbd_cl",
+        "label": "Bottom Border",
+        "default": "#fff",
+        "visible_if": "{{ section.settings.hdrbd }}"
+      }
+	],
+    "blocks": [
+      {
+        "type": "home",
+        "name": "Home Link",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Link Name",
+			"default": "Home"
+          }
+        ]
+      },
+	  {
+        "type": "slink",
+        "name": "Single Link",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Link Name",
+            "default": "Single Menu"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Menu Link"
+          }
+        ]
+      }, 
+      {
+        "type": "dd",
+        "name": "Dropdown Menu",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Link Name",
+            "default": "Dropdown"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Menu Link"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Select Menu",
+            "default": "main-menu"
+          }
+        ]
+      },	 
+	  {
+        "type": "m1",
+        "name": "MM Modern",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Link Name",
+            "default": "Modern"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Menu Link"
+          },
+ 			{
+            "type": "checkbox",
+            "id": "newtab",
+            "label": "Open Link in New Window?"
+          },  
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Select Menu",
+            "default": "main-menu"
+          },
+          {
+            "type": "range",
+            "id": "mcol",
+            "min": 1,
+            "max": 6,
+            "step": 1,
+            "label": "Select Columns",
+            "default": 2
+          },
+          {
+            "type": "header",
+            "content": "Image Columns ==="
+          },
+          {
+            "type": "select",
+            "id": "callPos",
+            "label": "Position",
+            "default": "right",
+			"info": "Show images at right or bottom of links",
+            "options": [
+              { "value": "right", "label": "Right" },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              }
+            ]
+          },
+
+          {
+            "type": "range",
+            "id": "colWd",
+            "min": 20,
+            "max": 100,
+            "step": 1,
+            "label": "Column Width",
+            "default": 50,
+			"unit": "%",
+			"visible_if": "{{ block.settings.callPos == 'right' }}"
+          },
+          {
+            "type": "range",
+            "id": "icol",
+            "min": 1,
+            "max": 4,
+            "step": 1,
+            "label": "Columns per row",
+            "default": 2
+          },        
+          {
+            "type": "paragraph",
+            "content": "-----------------------------------------------"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image 1"
+          },
+          {
+            "type": "text",
+            "id": "iTtl1",
+            "label": "Title Text",
+            "visible_if": "{{ block.settings.image1 != blank }}"
+          },
+          {
+            "type": "url",
+            "id": "imgurl1",
+            "label": "Link on Image",
+            "visible_if": "{{ block.settings.image1 != blank }}"
+          },
+          {
+            "type": "paragraph",
+            "content": "-----------------------------------------------"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image 2"            
+          },
+          {
+            "type": "text",
+            "id": "iTtl2",
+            "label": "Title Text",
+            "visible_if": "{{ block.settings.image2 != blank }}"
+          },
+          {
+            "type": "url",
+            "id": "imgurl2",
+            "label": "Image 2 Link",
+            "visible_if": "{{ block.settings.image2 != blank }}"
+          },
+         {
+            "type": "paragraph",
+            "content": "-----------------------------------------------"
+          },
+          {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Image 3"
+          },
+          {
+            "type": "text",
+            "id": "iTtl3",
+            "label": "Title Text",
+            "visible_if": "{{ block.settings.image3 != blank }}"
+          },
+          {
+            "type": "url",
+            "id": "imgurl3",
+            "label": "Image 3 Link",
+            "visible_if": "{{ block.settings.image3 != blank }}"
+          },
+         {
+            "type": "paragraph",
+            "content": "-----------------------------------------------"
+          },
+          {
+            "type": "image_picker",
+            "id": "image4",
+            "label": "Image 4",
+            "info": "Image to show in menu"
+          },
+          {
+            "type": "text",
+            "id": "iTtl4",
+            "label": "Title Text"
+          },
+          {
+            "type": "url",
+            "id": "imgurl4",
+            "label": "Image 4 Link"
+          },
+            {
+            "type": "range",
+            "id": "icnbr",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Image Rounded",
+            "default": 0
+          },
+          {
+            "type":"paragraph",
+            "content":"Title Appearance ==="
+          },
+           {
+            "type": "checkbox",
+            "id": "overlay_lbl",
+            "label": "Show above image?"
+          },             
+          {
+            "type": "color",
+            "id": "ttcl",
+            "label": "Text",
+            "default": "#111"
+          },
+           {
+            "type": "color",
+            "id": "ttbg",
+            "label": "Background",
+            "default": "#fff"
+          },
+          {
+            "type": "range",
+            "id": "ttfs",
+            "label": "Font Size",
+            "default": 13,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+          },
+          {
+            "type": "select",
+            "id": "ttfw",
+            "label": "Font Weight",
+            "default": "600",
+            "options": [
+              {
+                "value": "300",
+                "label": "Light"
+              },
+              {
+                "value": "400",
+                "label": "Regular"
+              },
+              {
+                "value": "500",
+                "label": "Medium"
+              },
+              {
+                "value": "600",
+                "label": "Semi Bold"
+              },
+              {
+                "value": "700",
+                "label": "Bold"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "ttla",
+            "label": "Alignment",
+            "default": "tc",
+            "options": [
+              { "value": "tl", "label": "Left" },
+              { "value": "tc", "label": "Center" },
+              { "value": "tr", "label": "Right" }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Popup width ==="
+          },
+   		 {
+			"type": "checkbox",
+			"id": "cwd",
+			"label": "Custom width?",
+			"default": false,
+            "visible_if": "{{ block.settings.bxsz == false }}",
+		  },
+		  {
+			"type": "text",
+			"id": "bxwd",
+			"label": "Box width",
+			"default": "600",
+            "visible_if": "{{ block.settings.cwd }}"
+		  },
+		  {
+			"type": "select",
+			"id": "mmal",
+			"label": "Box align",
+			"default": "center",
+            "visible_if": "{{ block.settings.cwd }}",
+			"options": [
+			  { "value": "left", "label": "Left" },
+			  { "value": "center", "label": "Center" },
+			  { "value": "right", "label": "Right" }
+			]
+		  },
+		 {
+            "type": "checkbox",
+            "id": "bxsz",
+            "label": "Fullwidth?",
+            "default": false,
+             "info":"fullwidth inner content",
+             "visible_if": "{{ block.settings.cwd == false }}",
+          }
+        ]
+      },
+	  {
+        "type": "m2",
+        "name": "MM Links & Products",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Link Name",
+            "default": "Products"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Menu Link"
+          },  
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Select Menu",
+            "default": "main-menu"
+          },
+          {
+            "type": "range",
+            "id": "lgrid",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "label": "Columns per row",
+            "default": 2
+          },
+          {
+            "type": "header",
+            "content": "Products ==="
+          },
+          {
+            "type": "text",
+            "id": "pttl",
+            "label": "Title Text",
+            "default": "BEST SELLER"
+          },
+          {
+          	"type": "product_list",
+          	"id": "products",
+          	"label": "Select Products"
+          },
+          {
+            "type": "range",
+            "id": "grid",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "label": "Products per row",
+            "default": 2
+          },
+          {
+            "type": "range",
+            "id": "pcolWd",
+            "min": 20,
+            "max": 70,
+            "step": 1,
+            "label": "Columns Width",
+			"unit": "%",
+            "default": 30
+          },
+          {
+            "type": "text",
+            "id": "prodall",
+            "label": "Button Text",
+            "default": "View All"
+          },
+          {
+            "type": "select",
+            "id": "btn-style",
+            "label": "Select Button",
+            "default": "btn1",
+            "options": [
+              {
+                "label": "Button 1",
+                "value": "btn1"
+              },
+              {
+                "label": "Button 2",
+                "value": "btn2"
+              },
+              {
+                "label": "Button 3",
+                "value": "btn3"
+              },
+              {
+                "label": "Button 4",
+                "value": "btn4"
+              },
+              {
+                "label": "Button 5",
+                "value": "btn5"
+              },
+               {
+                "label": "Button 6",
+                "value": "btn6"
+              },
+              {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Featured Column ==="
+          },
+          {
+            "type": "checkbox",
+            "id": "ftcl",
+            "label": "Enable ?",
+			"default": true
+          },
+          {
+            "type": "range",
+            "id": "colWd",
+            "min": 20,
+            "max": 80,
+            "step": 1,
+            "label": "Columns Width",
+			"unit": "%",
+            "default": 30
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "icnbr",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Image Rounded",
+            "default": 0
+          },
+          {
+            "type": "text",
+            "id": "ft_ttl",
+            "label": "Title"
+          },
+          {
+            "type": "range",
+            "id": "ft_ttls",
+            "min": 13,
+            "max": 100,
+            "step": 1,
+            "label": "Font Size",
+            "default": 30
+          },
+          {
+            "type": "text",
+            "id": "ft_sttl",
+            "label": "Sub Title"
+          },
+          {
+            "type": "range",
+            "id": "ft_sttls",
+            "min": 10,
+            "max": 40,
+            "step": 1,
+            "label": "Font Size",
+            "default": 15
+          },
+          {
+            "type": "text",
+            "id": "ft_btn",
+            "label": "Button Text"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "select",
+            "id": "btn-style2",
+            "label": "Select Button",
+            "default": "btn1",
+            "options": [
+              {
+                "label": "Button 1",
+                "value": "btn1"
+              },
+              {
+                "label": "Button 2",
+                "value": "btn2"
+              },
+              {
+                "label": "Button 3",
+                "value": "btn3"
+              },
+              {
+                "label": "Button 4",
+                "value": "btn4"
+              },
+              {
+                "label": "Button 5",
+                "value": "btn5"
+              },
+               {
+                "label": "Button 6",
+                "value": "btn6"
+              },
+              {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              }
+            ]
+         },
+          {
+            "type": "color",
+            "id": "txtcl",
+            "label": "Text",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "id": "ft_bg",
+            "label": "Image overlay",
+            "default": "#333"
+          },
+        {
+            "type": "range",
+            "id": "ft_opt",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0.4
+        },
+          {
+            "type": "header",
+            "content": "Popup width ==="
+          },
+   		 {
+			"type": "checkbox",
+			"id": "cwd",
+			"label": "Custom width?",
+			"default": false,
+            "visible_if": "{{ block.settings.bxsz == false }}",
+		  },
+		  {
+			"type": "text",
+			"id": "bxwd",
+			"label": "Box width",
+			"default": "600",
+            "visible_if": "{{ block.settings.cwd }}"
+		  },
+		  {
+			"type": "select",
+			"id": "mmal",
+			"label": "Box align",
+			"default": "center",
+            "visible_if": "{{ block.settings.cwd }}",
+			"options": [
+			  { "value": "left", "label": "Left" },
+			  { "value": "center", "label": "Center" },
+			  { "value": "right", "label": "Right" }
+			]
+		  },
+		 {
+            "type": "checkbox",
+            "id": "bxsz",
+            "label": "Fullwidth?",
+            "default": false,
+             "info":"fullwidth inner content",
+             "visible_if": "{{ block.settings.cwd == false }}",
+          }
+        ]
+      },
+	  {
+        "type": "m3",
+        "name": "MM Top Image Columns",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Link Name",
+            "default": "Image Columns"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Menu Link"
+          },
+		  {
+            "type":"header",
+        	"content": "Column 1"
+          },
+          {
+            "type": "text",
+            "id": "ttl1",
+            "label": "Title text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "url1",
+            "label": "Image Link"
+          },
+          {
+            "type": "link_list",
+            "id": "menu1",
+            "label": "Select Menu"
+          },
+		  {
+            "type":"header",
+        	"content": "Column 2"
+          },
+          {
+            "type": "text",
+            "id": "ttl2",
+            "label": "Title text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "url2",
+            "label": "Image Link"
+          },
+          {
+            "type": "link_list",
+            "id": "menu2",
+            "label": "Select Menu"
+          },
+		  {
+            "type":"header",
+        	"content": "Column 3"
+          },
+          {
+            "type": "text",
+            "id": "ttl3",
+            "label": "Title text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Image",
+            "info": "Image to show in menu"
+          },
+          {
+            "type": "url",
+            "id": "url3",
+            "label": "Image Link"
+          },
+          {
+            "type": "link_list",
+            "id": "menu3",
+            "label": "Select Menu"
+          },
+		  {
+            "type":"header",
+        	"content": "Column 4"
+          },
+          {
+            "type": "text",
+            "id": "ttl4",
+            "label": "Title text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image4",
+            "label": "Image",
+            "info": "Image to show in menu"
+          },
+          {
+            "type": "url",
+            "id": "url4",
+            "label": "Menu Link"
+          },
+          {
+            "type": "link_list",
+            "id": "menu4",
+            "label": "Select Menu"
+          },
+		  {
+            "type":"header",
+        	"content": "Column 5"
+          },
+          {
+            "type": "text",
+            "id": "ttl5",
+            "label": "Title text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image5",
+            "label": "Image",
+            "info": "Image to show in menu"
+          },
+          {
+            "type": "url",
+            "id": "url5",
+            "label": "Menu Link"
+          },
+          {
+            "type": "link_list",
+            "id": "menu5",
+            "label": "Select Menu"
+          },
+            {
+            "type": "range",
+            "id": "icnbr",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Image Rounded",
+            "default": 0
+          },
+         {
+            "type": "header",
+            "content": "Popup width ==="
+          },
+   		 {
+			"type": "checkbox",
+			"id": "cwd",
+			"label": "Custom width?",
+			"default": false,
+            "visible_if": "{{ block.settings.bxsz == false }}",
+		  },
+		  {
+			"type": "text",
+			"id": "bxwd",
+			"label": "Box width",
+			"default": "600",
+            "visible_if": "{{ block.settings.cwd }}"
+		  },
+		  {
+			"type": "select",
+			"id": "mmal",
+			"label": "Box align",
+			"default": "center",
+            "visible_if": "{{ block.settings.cwd }}",
+			"options": [
+			  { "value": "left", "label": "Left" },
+			  { "value": "center", "label": "Center" },
+			  { "value": "right", "label": "Right" }
+			]
+		  },
+		 {
+            "type": "checkbox",
+            "id": "bxsz",
+            "label": "Fullwidth?",
+            "default": false,
+             "info":"fullwidth inner content",
+             "visible_if": "{{ block.settings.cwd == false }}",
+          }
+        ]
+      },
+	  {
+        "type": "m4",
+        "name": "MM Categories",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Link Name",
+            "default": "Categories"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Menu Link"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Select Menu",
+            "default": "main-menu",
+            "info": "Use collection links only to show link with image"
+          },                           
+          {
+            "type": "header",
+            "content": "Main Links ==="
+          },
+           {
+            "type": "checkbox",
+            "id": "icn",
+            "label": "Show Icons?",
+            "default": false,
+            "info": "[How to add icon image by metafield?](https://www.adornthemes.com/knowledge-base/icon-image-for-collection/)"			
+          },
+          {
+            "type": "range",
+            "id": "icnsz",
+            "min": 20,
+            "max": 100,
+            "step": 2,
+            "label": "Icon Size",
+            "default": 30
+          },
+          {
+            "type": "range",
+            "id": "icnbr",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Border Radius",
+            "default": 15
+          },
+          {
+            "type": "range",
+            "id": "fs",
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "label": "Font Size",
+            "default": 14
+          },
+          {
+            "type": "header",
+            "content": "Sub Links ==="
+          },
+           {
+            "type": "checkbox",
+            "id": "icn1",
+            "label": "Show Icons?",
+            "default": false			
+          },  
+          {
+            "type": "range",
+            "id": "sicnsz",
+            "min": 20,
+            "max": 200,
+            "step": 2,
+            "label": "Icon Size",
+            "default": 50
+          },
+          {
+            "type": "range",
+            "id": "sicnbr",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Border Radius",
+            "default": 30
+          },
+          {
+            "type": "range",
+            "id": "sfs",
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "label": "Font Size",
+            "default": 16
+          },
+          {
+            "type": "radio",
+            "id": "tps",
+            "label": "Link Position",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "Left of Image"
+              },
+              {
+                "value": "2",
+                "label": "Bottom of Image"
+              }
+            ]
+          },
+          {
+            "type": "range",
+            "id": "mcol",
+            "min": 1,
+            "max": 6,
+            "step": 1,
+            "label": "Select Columns",
+            "default": 3
+          },
+          {
+            "type": "header",
+            "content": "Products ==="
+          },
+          {
+            "type": "checkbox",
+            "id": "showpr",
+            "label": "Show Prducts?",
+            "default": true
+          },
+          {
+            "type": "range",
+            "id": "grid",
+            "label": "Products Per Row",
+            "default": 2,
+            "min": 1,
+            "max": 4,
+            "step": 1
+          },
+          {
+            "type": "range",
+            "id": "prlimit",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "label": "Products limit",
+            "default": 6
+          },
+          {
+            "type": "range",
+            "id": "prColwd",
+            "min": 20,
+            "max": 70,
+            "step": 1,
+            "label": "Column width",
+            "default": 50,
+			"unit": "%"
+          },
+          {
+            "type": "header",
+            "content": "Popup width ==="
+          },
+   		 {
+			"type": "checkbox",
+			"id": "cwd",
+			"label": "Custom width?",
+			"default": false,
+            "visible_if": "{{ block.settings.bxsz == false }}",
+		  },
+		  {
+			"type": "text",
+			"id": "bxwd",
+			"label": "Box width",
+			"default": "600",
+            "visible_if": "{{ block.settings.cwd }}"
+		  },
+		  {
+			"type": "select",
+			"id": "mmal",
+			"label": "Box align",
+			"default": "center",
+            "visible_if": "{{ block.settings.cwd }}",
+			"options": [
+			  { "value": "left", "label": "Left" },
+			  { "value": "center", "label": "Center" },
+			  { "value": "right", "label": "Right" }
+			]
+		  },
+		 {
+            "type": "checkbox",
+            "id": "bxsz",
+            "label": "Fullwidth?",
+            "default": false,
+             "info":"fullwidth inner content",
+             "visible_if": "{{ block.settings.cwd == false }}",
+          }
+        ]
+      },
+	  {
+        "type": "m5",
+        "name": "MM Collections",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Link Name",
+            "default": "Collections"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Menu Link"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Select Menu",
+            "default": "main-menu",
+            "info": "Use collection links only for this menu"
+          },
+          {
+            "type": "checkbox",
+            "id": "icn",
+            "label": "Show Icon/image?",
+            "default": true		
+          },
+          {
+            "type": "paragraph",
+            "content":"[How to add icon image by metafield??](https://www.adornthemes.com/knowledge-base/icon-image-for-collection/)"
+          },
+          {
+            "type": "range",
+            "id": "icnsz",
+            "min": 20,
+            "max": 300,
+            "step": 5,
+            "label": "Image Size",
+            "default": 200
+          },
+          {
+            "type": "range",
+            "id": "icnbr",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Border Radius",
+            "default": 0
+          },
+          {
+            "type": "radio",
+            "id": "tps",
+            "label": "Link Position",
+            "default": "2",
+            "options": [
+              {
+                "value": "1",
+                "label": "Left of Image"
+              },
+              {
+                "value": "2",
+                "label": "Bottom of Image"
+              }
+            ]
+          },
+          {
+            "type": "range",
+            "id": "fs",
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "label": "Font Size",
+            "default": 14
+          },
+          {
+            "type": "range",
+            "id": "mcol",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "label": "Select Columns",
+            "default": 5
+          },
+          {
+            "type": "header",
+            "content": "Popup width ==="
+          },
+   		 {
+			"type": "checkbox",
+			"id": "cwd",
+			"label": "Custom width?",
+			"default": false,
+            "visible_if": "{{ block.settings.bxsz == false }}",
+		  },
+		  {
+			"type": "text",
+			"id": "bxwd",
+			"label": "Box width",
+			"default": "600",
+            "visible_if": "{{ block.settings.cwd }}"
+		  },
+		  {
+			"type": "select",
+			"id": "mmal",
+			"label": "Box align",
+			"default": "center",
+            "visible_if": "{{ block.settings.cwd }}",
+			"options": [
+			  { "value": "left", "label": "Left" },
+			  { "value": "center", "label": "Center" },
+			  { "value": "right", "label": "Right" }
+			]
+		  },
+		 {
+            "type": "checkbox",
+            "id": "bxsz",
+            "label": "Fullwidth?",
+            "default": false,
+             "info":"fullwidth inner content",
+             "visible_if": "{{ block.settings.cwd == false }}",
+          }
+        ]
+      }      
+    ],
+    "presets": [
+        {
+            "name": "Header - Menu Bottom",
+            "settings":{
+            },
+            "blocks": [
+              {
+                  "type": "home"
+              },
+              {
+                  "type": "slink"
+              },
+              {
+                  "type": "m1"
+              },
+              {
+                  "type": "m2"
+              },
+              {
+                  "type": "dd"
+              }
+            ]
+        }
+    ]
+  }
+
+
+{% endschema %}

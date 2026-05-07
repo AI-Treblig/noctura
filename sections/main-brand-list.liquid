@@ -1,0 +1,137 @@
+{% assign section_st = section.settings %}
+<div class="sec_cov" style="--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">   
+{%- capture logobar -%}
+    {% assign array = "A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" | split: "|" %}
+    {%- if section_st.navigation -%}      
+        <div class="filterbrand fl f-wrap f-jcc mb30" style="--bdr:{{ section_st.bdr }};">
+            <a href="#all" role="button">All</a>
+            {%- for item in array -%}	
+                <a href="#br{{ item | downcase }}" role="button">{{ item }}</a>
+            {%- endfor -%}
+        </div>
+    {%- endif -%}
+
+    {%- for item in array -%}	
+    <div class="brandList mb20 gap fl f-col f-row-md {% render 'animate-data', css:true %}" {% render 'animate-data' %} id="br{{ item | downcase }}" style="--bdr:{{ section_st.bdr }};--gap:10px;">
+       
+        <div class="rgTxt ttu tc" style="color:{{ section_st.alpha }};background-color:{{ section_st.alphabg }};--fs:18px;--fsm:18px;--fw:600;">{{ item }}</div>				
+      
+        <ul class="list fl1 fl f-wrap gap" style="--gap:10px;">
+            {% for vendor in shop.vendors %}
+                {% assign item_name = item | downcase %}
+                {% assign vendor_name = vendor | split: "" | first | downcase %}
+                {% if vendor_name == item_name %}
+                    {% assign its_a_match = false %}
+                    {% capture my_collection_handle %}{{ vendor | handleize | strip | escape }}{% endcapture %}
+                    {% assign my_collection_handle_stripped = my_collection_handle | strip | escape %}
+                    {% for collection in collections %}
+                        {% if my_collection_handle_stripped == collection.handle %}
+                            {% assign its_a_match = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if its_a_match %}
+                        <li class="fl"><a href="{{ routes.collections_url }}{{ vendor | handleize }}">{{ vendor }}</a></li>
+                    {% else %}
+                        <li class="fl">{{ vendor | link_to_vendor }}</li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {%- endfor -%}	  	       
+{%- endcapture -%}
+<div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}">
+  {% if section_st.pgttl %}<h1 class="page-title {{ settings.title_align }}">{{ page.title }}</h1>{% endif %}
+    <div class="rte">{{ page.content }}</div>
+      {{ logobar | strip_newlines | remove: "  " | remove: "	" }}
+    </div>
+</div>
+{% schema %}
+  {
+    "name": "Brands List Page",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "pgttl",
+        "label": "Show Page Title?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "navigation",
+        "label": "Show Navigation?",
+        "default": true
+      },
+     {
+        "type": "color",
+        "id": "alpha",
+        "label": "Alphabet",
+        "default": "#111"
+     },
+     {
+        "type": "color",
+        "id": "alphabg",
+        "label": "Alphabet Background",
+        "default": "#f3f3f3"
+     },
+     {
+        "type": "color",
+        "id": "bdr",
+        "label": "Border",
+        "default": "#ccc"
+     },
+	{
+            "type": "header",
+            "content": "Section"
+        },	
+      {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },  
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top Spacing",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom Spacing",
+			"unit": "px",
+			"default":30
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top Spacing (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom Spacing (mobile)",
+			"unit": "px",
+			"default":15
+        }        
+    ]
+  }
+{% endschema %}

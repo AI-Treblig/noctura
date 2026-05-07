@@ -1,0 +1,192 @@
+{%- capture breadcrumb -%}
+{% assign section_st = section.settings %}  
+{% unless template == 'index' %}
+<nav class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %} breadcrumb fl f-wrap f-aic{% if section_st.tc %} tc f-jcc{% endif %}{% if section_st.hidemb %} hide-sm{% endif %}{% if settings.bcase %} ttu{% endif %}" role="navigation" aria-label="breadcrumbs">
+    <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+    {% if template contains 'product' %}
+        {% if collection %}
+               <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+            {% if collection.handle %}
+                {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+                {{ collection.title | link_to: url }}
+            {% endif %}
+        {% endif %}
+        <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+        <span class="fwm">{{ product.title }}</span>
+    {% elsif template contains 'collection' and collection.handle %}
+           <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+        {% if current_tags %}
+            {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+            {{ collection.title | link_to: url }}
+            <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+            <span>{{ current_tags | join: " + " }}</span>
+        {% else %}
+            <span class="fwm">{{ collection.title }}</span>
+        {% endif %}
+    {% elsif template == 'blog' %}
+           <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+        {% if current_tags %}
+            {{ blog.title | link_to: blog.url }}
+               <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+            <span>{{ current_tags | join: " + " }}</span>
+        {% else %}
+            <span class="fwm">{{ blog.title }}</span>
+        {% endif %}
+    {% elsif template == 'article' %}
+           <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+        {{ blog.title | link_to: blog.url }}
+           <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+        <span class="fwm">{{ article.title }}</span>
+    {% elsif template contains 'page' %}
+           <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+        <span class="fwm">{{ page.title }}</span>
+    {% elsif template contains 'cart' %}
+           <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+        <span class="fwm">{{ 'cart.general.title' | t }}</span>
+    {% else %}
+        <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+        <span class="fwm">{{ page_title }}</span>
+    {% endif %}
+</nav>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+                "@id": "{{ routes.root_url }}",
+                "name": "{{ 'general.breadcrumbs.home' | t }}"
+            }
+        }
+        {% if template contains 'product' %}
+            {% if collection and collection.handle %}
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "{{ routes.collections_url }}/{{ collection.handle }}",
+                    "name": "{{ collection.title }}"
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                    "@id": "{{ product.url | within: collection }}",
+                    "name": "{{ product.title }}"
+                }
+            }
+            {% endif %}
+        {% elsif template == 'list-collections' %}
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "{{ routes.collections_url }}/{{ collection.handle }}",
+                    "name": "{{ 'collections.general.all' | t }}"
+                }
+            }
+        {% elsif template contains 'collection' and collection.handle %}
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "{{ routes.collections_url }}/{{ collection.handle }}",
+                    "name": "{{ collection.title }}"
+                }
+            }
+        {% elsif template == 'blog' %}
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "{{ blog.url }}",
+                    "name": "{{ blog.title }}"
+                }
+            }
+            {% if current_tags %}
+            ,{
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                    "@id": "{{ blog.url }}",
+                    "name": "{{ current_tags | join: " + " }}"
+                }
+            }
+            {% endif %}
+        {% elsif template == 'article' %}
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "{{ blog.url }}",
+                    "name": "{{ blog.title }}"
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                    "@id": "{{ article.url }}",
+                    "name": "{{ article.title }}"
+                }
+            }
+        {% elsif template contains 'page' %}
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "{{ page.url }}",
+                    "name": "{{ page.title }}"
+                }
+            }
+        {% else %}
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "{{ page.url }}",
+                    "name": "{{ page.title }}"
+                }
+            }
+        {% endif %}
+    ]
+}
+</script>
+{% endunless %}
+{%- endcapture -%}
+{{ breadcrumb | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Breadcrumb",
+    "class": "bc_wrap",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "sw",
+            "label": "Fullwidth?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hidemb",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+		{
+            "type": "checkbox",
+            "id": "tc",
+            "label": "Text center?",
+            "default": false
+        },
+		{
+            "type": "paragraph",
+            "content": "Set style from Theme Settings-> Typography & Colors -> Breadcrumb"            
+        }
+    ]
+}
+{% endschema %}

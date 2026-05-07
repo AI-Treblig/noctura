@@ -1,0 +1,320 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'customer.js' | asset_url }}" defer></script>
+{% assign section_st = section.settings %}
+<div class="sec_cov" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">  
+    <div class="page-width" style="--cl:{{ section_st.cl }};--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;--fw:{{ section_st.fw }};--bcl:{{ section_st.bcl }};--fbg:{{ section_st.fbg }};--bd:{{ section_st.bd }};">
+        <div class="fl f-aic f-jcsb f-col f-row-md gap" style="--gap:15px;">
+          <h1 class="page-title mb0">{{ 'customer.account.title' | t }}</h1> 
+          <div class="account-links fl f-aic f-jcc f-wrap gap f-col f-row-md" style="--cl:{{ section_st.scl }};--clh:{{ section_st.sclh }};--fs:{{ section_st.sfs }}px;--fsm:{{ section_st.sfsm }}px;--bdr:{{ section_st.scl | color_modify:'alpha', 0.1 }};">
+              <div>{{ 'customer.account.welcome_text' | t }} <b class="dbi">{{ customer.name }}</b></div>
+              <span class="hide-sm">|</span>
+              <div class="fl f-aic f-jcc f-wrap gap">
+                <a href="{{ routes.account_url }}" class="active"> {{ 'customer.orders.link_name' | t }} </a>
+                <a href="{{ routes.account_addresses_url }}"> {{ 'customer.addresses.link_name' | t }}</a>
+                <a href="{{ routes.account_logout_url }}"> {{ 'customer.account.logout' | t }} </a>
+              </div>
+          </div>
+        </div>
+        <hr />
+        <div class="grid">
+          
+          <div class="gitem wd66-md">
+
+            <h2 class="rgTxt">{{ 'customer.orders.title' | t }}</h2>
+            <hr/>
+            {% paginate customer.orders by 20 %}
+            {% if customer.orders.size != 0 %}
+
+            <table class="responsive_tbl">
+              <thead>
+                <tr>
+                  <th>{{ 'customer.orders.order_number' | t }}</th>
+                  <th>{{ 'customer.orders.date' | t }}</th>
+                  <th>{{ 'customer.orders.payment_status' | t }}</th>
+                  <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                  <th>{{ 'customer.orders.total' | t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in customer.orders %}
+                <tr>
+                  <td data-label="{{ 'customer.orders.order_number' | t }}">
+                    <a href="{{ order.customer_url }}" class="btnLink tdu">{{ order.name }}</a>
+                  </td>
+                  <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                  <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                  <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                  <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            {% else %}
+
+            <p>{{ 'customer.orders.none' | t }} </p>
+              <p><a href="{{ routes.all_products_collection_url }}" class="btn">{{ 'customer.account.no_order_button' | t }}</a></p>
+
+            {% endif %}
+            {% if paginate.pages > 1 %}
+            {% render 'pagination' %}
+            {% endif %}
+            {% endpaginate %}
+
+                <br>
+            
+
+            <p></p>
+          </div>
+          <div class="gitem wd33-md">
+            <div class="fl f-jcsb">
+              <h2 class="rgTxt mb0">{{ 'customer.account.details' | t }}</h2>
+            </div>
+            <hr/>
+            {{ customer.default_address | format_address }}
+            <a href="{{ routes.account_addresses_url }}" class="btn btn">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+          </div>
+
+      </div>
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Account",
+  "settings": [
+		{
+            "type": "header",
+            "content": "Links ==="
+        },
+        {
+            "type": "range",
+            "id": "sfs",
+            "label": "Font Size",
+            "default": 14,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        }, 
+        {
+            "type": "range",
+            "id": "sfsm",
+            "label": "Font Size (mobile)",
+            "default": 13,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "color",
+            "id": "scl",
+            "label": "Text/Link",
+            "default": "#555"
+        },
+        {
+            "type": "color",
+            "id": "sclh",
+            "label": "Link Hover",
+            "default": "#000"
+        },
+		{
+            "type": "paragraph",
+            "content": "Title Text ===="
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Text Color",
+            "default": "#000"
+        },
+        {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 20,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        }, 
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font Size (mobile)",
+            "default": 18,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "600",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": "Box ===="
+        },
+        {
+            "type": "color",
+            "id": "bcl",
+            "label": "Text Color",
+            "default": "#000"
+        },
+        {
+            "type": "color",
+            "id": "bd",
+            "label": "Border Color",
+            "default": "#eee"
+        },
+        {
+            "type": "color",
+            "id": "fbg",
+            "label": "background Color",
+            "default": "#f4f4f4"
+        },
+		{
+            "type": "paragraph",
+            "content": "Button ===="
+        },
+        {
+            "type": "select",
+            "id": "btn",
+            "label": "Button Design",
+            "default": "btn1",
+            "options": [
+              {
+                "label": "Button 1",
+                "value": "btn1"
+              },
+              {
+                "label": "Button 2",
+                "value": "btn2"
+              },
+              {
+                "label": "Button 3",
+                "value": "btn3"
+              },
+              {
+                "label": "Button 4",
+                "value": "btn4"
+              },
+              {
+                "label": "Button 5",
+                "value": "btn5"
+              },
+			  {
+                "label": "Button 6",
+                "value": "btn6"
+              },
+               {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              },
+			  {
+                "label": "Link",
+                "value": "btnLink"
+              } 
+            ]
+        },
+        {
+            "type": "select",
+            "id": "btnsz",
+            "label": "Button Size",
+            "default": "btn-md",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                } 		  
+            ]
+        },
+		{
+            "type": "header",
+            "content": "Section ==="
+        },		
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top spacing",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom spacing",
+			"unit": "px",
+			"default":80
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top spacing (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom spacing (mobile)",
+			"unit": "px",
+			"default":30
+        },       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background"        
+        }       
+  ] 
+}
+{% endschema %}

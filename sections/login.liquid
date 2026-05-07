@@ -1,0 +1,290 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'customer.js' | asset_url }}" defer></script>
+{% assign section_st = section.settings %}
+<div class="sec_cov" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">
+    <div class="page-width" style="--cl:{{ section_st.cl }};--fbg:{{ section_st.fbg }};--bd:{{ section_st.bd }};max-width:600px;">
+        
+
+                <div id="recover" class="mb30 hide">
+                    <h2 class="page-title mb5 {{ settings.title_align }}">{{ 'customer.recover_password.title' | t }}</h2>
+                    <p class="{{ settings.title_align }}">{{ 'customer.recover_password.subtext' | t }}</p>
+                    <div class="customerform form-vertical">
+                        {% form 'recover_customer_password' %}
+                            {{ form.errors | default_errors }}
+                            {% if form.posted_successfully? %} <span class="hide reset-password-success"></span> {% endif %}
+                            <label for="RecoverEmail" class="hide">{{ 'customer.recover_password.email' | t }}</label>
+                            <input type="email" value="" name="email" id="RecoverEmail" placeholder="{{ 'customer.recover_password.email' | t }}" class="input-full"autocorrect="off" autocapitalize="off">
+                            <div class="fl gap" style="--gap:15px;">
+                              <button type="submit" class="btn {{ section_st.lgbtn }} {{ section_st.lgbtnsz }}">{{ 'customer.recover_password.submit' | t }}</button>
+                              <a href="#LoginForm" id="HideRecoverPassword" class="btn btn2 cancel">{{ 'customer.recover_password.cancel' | t }}</a>
+                            </div>
+                        {% endform %}
+                    </div>
+                </div>
+                <div id="LoginForm">
+                    <h1 class="page-title mb5 {{ settings.title_align }}">{{ 'customer.login.page_title' | t }}</h1>
+                    <p class="{{ settings.title_align }}">{{ 'customer.login.sub_title' | t }}</p>
+                    <div class="customerform form-vertical mb30">
+                        <div class="border form-success hide" id="ResetSuccess">{{ 'customer.recover_password.success' | t }}</div>
+                        {%- form 'customer_login' -%}			
+                            {{ form.errors | default_errors }}
+                            <label for="CustomerEmail" class="hide">{{ 'customer.login.email' | t }}</label>
+                            <input type="email" name="customer[email]"  placeholder="{{ 'customer.login.email' | t }}"	id="CustomerEmail" class="{% if form.errors contains 'email' %} input--error{% endif %}" autocorrect="off" autocapitalize="off" autofocus>
+                            {% if form.password_needed %}
+                                <label for="CustomerPassword" class="hide">{{ 'customer.login.password' | t }}</label>
+                                <input type="password" value="" name="customer[password]" placeholder="{{ 'customer.login.password' | t }}" id="CustomerPassword" class="{% if form.errors contains 'password' %} input--error{% endif %}">
+                            {% endif %}
+                            <div class="fl hover-line f-aic f-jcsb">
+                                <button type="submit" class="btn {{ section_st.lgbtn }} {{ section_st.lgbtnsz }}">{{ 'customer.login.sign_in' | t }}</button>
+                                {% if form.password_needed %}
+                                   <a href="#recover" class="clr_body">{{ 'customer.login.forgot_password' | t }}</a>
+                                {% endif %}
+                            </div>
+                        {%- endform -%}
+                        {%- if shop.checkout.guest_login -%}
+                          <hr />
+                          <div class="fl f-wrap f-aic f-jcsb">
+                              <h5 class="mb0" style="color:{{ section_st.cl }};">{{ 'customer.login.guest_title' | t }}</h5>
+                              {% form 'guest_login' %}
+                                  <button type="submit" class="btn {{ section_st.lgbtn }} {{ section_st.lgbtnsz }}">{{ 'customer.login.guest_continue' | t }}</button>
+                              {% endform %}
+                          </div>
+                        {%- endif -%} 
+                    </div>
+                </div>
+                {% comment %}
+                    If accounts are set as optional, the following will be shown as an option
+                    during checkout, not on the default /login page.
+                {% endcomment %}
+
+
+              <div class="fl f-wrap f-aic f-jcsb">
+                <h6 class="mb0" style="color:{{ section_st.cl }};">{{ 'customer.register.form_title' | t }}</h6>
+                <a href="{{ routes.account_register_url }}" class="btn {{ section_st.cabtn }} {{ section_st.cabtnsz }}">{{ 'customer.register.button' | t }}</a>
+            </div>
+
+        <div class="gitem wd40-md mb20"></div>
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Login", 
+  "settings": [
+		{
+            "type": "paragraph",
+            "content": "Box ===="
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Text Color",
+            "default": "#000"
+        },
+        {
+            "type": "color",
+            "id": "bd",
+            "label": "Border Color",
+            "default": "#eee"
+        },
+        {
+            "type": "color",
+            "id": "fbg",
+            "label": "background Color",
+            "default": "#f4f4f4"
+        },
+		{
+            "type": "paragraph",
+            "content": "Login Button ===="
+        },
+        {
+            "type": "select",
+            "id": "lgbtn",
+            "label": "Button Design",
+            "default": "btn1",
+            "options": [
+              {
+                "label": "Button 1",
+                "value": "btn1"
+              },
+              {
+                "label": "Button 2",
+                "value": "btn2"
+              },
+              {
+                "label": "Button 3",
+                "value": "btn3"
+              },
+              {
+                "label": "Button 4",
+                "value": "btn4"
+              },
+              {
+                "label": "Button 5",
+                "value": "btn5"
+              },
+			  {
+				"label": "Button 6",
+				"value": "btn6"
+			  },
+              {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              },
+			  {
+				"label": "Link",
+				"value": "btnLink"
+		 	  }  
+            ]
+          },
+        {
+            "type": "select",
+            "id": "lgbtnsz",
+            "label": "Button Size",
+            "default": "btn-md",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                } 		  
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": "Create Account Button ===="
+        },
+        {
+            "type": "select",
+            "id": "cabtn",
+            "label": "Button Design",
+            "default": "btn1",
+            "options": [
+              {
+                "label": "Button 1",
+                "value": "btn1"
+              },
+              {
+                "label": "Button 2",
+                "value": "btn2"
+              },
+              {
+                "label": "Button 3",
+                "value": "btn3"
+              },
+              {
+                "label": "Button 4",
+                "value": "btn4"
+              },
+              {
+                "label": "Button 5",
+                "value": "btn5"
+              },
+			  {
+				"label": "Button 6",
+				"value": "btn6"
+			  },
+              {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              },
+			  {
+				"label": "Link",
+				"value": "btnLink"
+			  }  
+            ]
+          },
+        {
+            "type": "select",
+            "id": "cabtnsz",
+            "label": "Button Size",
+            "default": "btn-md",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                } 		  
+            ]
+        },
+		{
+            "type": "header",
+            "content": "SECTION"
+        },
+		{
+            "type": "paragraph",
+            "content": "Section Spacing ===="
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":80
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":80
+        },
+		{
+            "type": "paragraph",
+            "content": "Spacing (mobile) ===="
+        },
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":15
+        },       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background"        
+        }       
+  ] 
+}
+{% endschema %}

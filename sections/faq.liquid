@@ -1,0 +1,549 @@
+{% assign section_st = section.settings %}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+    {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>
+	<div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}">		
+        {% render 'sec-title' %}
+
+        {% liquid
+          assign is_links = false
+          for block in section.blocks
+            if block.type == 'ttl' or block.type == 'link' 
+              if section_st.links
+                assign is_links = true
+              endif
+            endif
+          endfor
+        %}
+        {%- if is_links -%}
+            <div class="fl f-ais gap f-col f-row-md" style="--gap:50px;--gapm:20px;">
+              <div class="faqLinks {% render 'animate-data', css:true %}" style="--cl:{{ section_st.lcl }};--clh:{{ section_st.lclh }};--fs:{{ section_st.lfs }}px;--fsm:{{ section_st.lfsm }}px;--fw:{{ section_st.lfw }};--bg:{{ section_st.lbg }};--bd:{{ section_st.lbd }};--icns:14px;">
+                {% for block in section.blocks %}
+                    {% if block.type == 'ttl' or block.type == 'link' %}
+                      <a href="{% if block.type == 'link' %}{{ block.settings.link }}{% else %}#tt{{ block.id }}{% endif %}" class="rgTxt fl f-aic f-jcsb">
+                        {{ block.settings.title }}
+                        <svg class="at-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m19.389 11.123c-.331 0-.6.269-.6.6v6.222c0 1.63-1.326 2.956-2.956 2.956h-9.777c-1.63 0-2.956-1.326-2.956-2.956v-9.777c0-1.63 1.326-2.956 2.956-2.956h6.222c.332 0 .6-.269.6-.6s-.269-.6-.6-.6h-6.222c-2.292 0-4.156 1.864-4.156 4.155v9.777c0 2.291 1.864 4.155 4.156 4.155h9.777c2.291 0 4.155-1.864 4.155-4.155v-6.222c0-.331-.269-.6-.6-.6z"/><path d="m21.5 1.9h-4.802c-.331 0-.6.269-.6.6s.269.6.6.6h3.354l-7.672 7.671c-.234.233-.234.614 0 .848.117.117.271.176.424.176s.307-.059.424-.176l7.671-7.671v3.384c0 .331.269.6.6.6s.6-.269.6-.6v-4.832c0-.331-.269-.6-.6-.6z"/></svg>
+                      </a>
+                    {% endif %}
+                {% endfor %}
+              </div>
+        {%- endif -%}
+      
+		<div id="faq{{ section.id }}" class="m_auto{% if is_links %} fl1{% endif %}{% if section_st.accor %} accor{% else %} no-accor{% endif %}" style="max-width:{{ section_st.page_width }}px;--cl:{{ section_st.an }};--fs:{{ section_st.fst }}px;--fsm:{{ section_st.fsmt }}px;--qcl:{{ section_st.qu }};--qfs:{{ section_st.fs }}px;--qfsm:{{ section_st.fsm }}px;--qfw:{{ section_st.fw }};--bdr:{{ section_st.bdr }};">     
+			{% for block in section.blocks %}
+				{% if block.type == 'ttl' %}
+					{% if block.settings.title != blank %}<h3 id="tt{{ block.id }}" class="rgTxt mb5{% unless forloop.first %} mt15{% endunless %} {% render 'animate-data', css:true, text:true %}" {% render 'animate-data' %} style="--cl:{{ section_st.tcl }};--fs:{{ section_st.tfs }}px;--fsm:{{ section_st.tfsm }}px;--fw:{{ section_st.tfw }};" {{ block.shopify_attributes }}>{{ block.settings.title }}</h3>{% endif %}         
+				{% endif %}
+				{% if block.type == 'faqs' %}
+                    {%- capture faq_data -%}
+                        <summary class="quest m0 fl f-jcsb f-aic {{ section_st.fw }}">
+                            {{ block.settings.title }}
+                            {% if section_st.accor %}
+                                {%- if section_st.acc_style == '1' -%}
+                                    <svg class="at-icon ml10"><use class="plus" xlink:href="#icon-plus"></use><use class="minus" xlink:href="#icon-minus"></use></svg>
+                                {%- else -%}
+                                    <svg class="at-icon arw ml10"><use xlink:href="#icon-arrow"></use></svg>
+                                {%- endif -%}
+                            {% endif %}
+                        </summary>
+						<div class="ans rte">{{ block.settings.answer }}</div>
+                    {%- endcapture -%}
+                    {% if section_st.accor %}
+                        <details {% if block.settings.open %}open{% endif %} class="faq-body {% render 'animate-data', css:true, text:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                            {{- faq_data -}}
+                        </details>
+                    {% else %}
+                        <div class="faq-body {% render 'animate-data', css:true, text:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                            {{- faq_data -}}
+                        </div>
+                    {% endif %}
+				{% endif %}
+			{% endfor %}
+		</div>
+        {% if is_links %}</div>{% endif %}
+	</div>  
+</div>
+{% schema %}
+  {
+    "name": "FAQ",
+     "disabled_on": {
+        "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [
+	 {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Heading"
+      },
+ 	  {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub heading",
+        "default": "Provides answers to a list of typical questions that users might ask"
+      },     
+      {
+        "type":"header",
+        "content":"FAQ Design ==="
+      },
+       {
+            "type": "range",
+            "id": "page_width",
+            "label": "FAQ's Max width",
+            "default": 1000,
+            "min": 600,
+            "max": 2000,
+            "step": 20,
+            "unit": "px"
+       },  
+ 	    {	
+        "type": "checkbox",
+        "id": "accor",
+        "label": "Enable accordion?",
+        "default": false
+      },
+	   {
+        "type": "select",
+        "id": "acc_style",
+        "label": "Icons",
+        "default": "1",
+        "options": [
+          {
+          "value": "1",
+          "label": "Plus/Minus"
+          },
+          {
+          "value": "2",
+          "label": "Up/Down Arrows"
+          }
+          ],
+          "visible_if": "{{section.settings.accor }}"
+       },
+       {
+            "type": "paragraph",
+            "content": "----------------------------------------------"
+        }, 
+       {
+            "type": "paragraph",
+            "content": "Titles ==="
+        },
+      {
+        "type": "color",
+        "id": "tcl",
+        "label": "Color",
+        "default": "#444"
+      }, 		
+      {
+			"type": "range",
+			"id": "tfs",
+			"min": 10,
+			"max": 100,
+			"step": 1,
+			"label": "Font size",
+			"unit": "px",
+			"default":22
+         },
+        {
+			"type": "range",
+			"id": "tfsm",
+			"min": 9,
+			"max": 100,
+			"step": 1,
+			"label": "Font size (mobile)",
+			"unit": "px",
+			"default":20
+         },        
+       {
+        "type": "select",
+        "id": "tfw",
+        "label": "Font weight",
+        "default": "600",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Regular"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi Bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+       {
+            "type": "paragraph",
+            "content": "----------------------------------------------"
+        }, 
+       {
+            "type": "paragraph",
+            "content": "Questions ==="
+        },
+      {
+        "type": "color",
+        "id": "qu",
+        "label": "Color",
+        "default": "#444"
+      }, 		
+      {
+			"type": "range",
+			"id": "fs",
+			"min": 10,
+			"max": 40,
+			"step": 1,
+			"label": "Font size",
+			"unit": "px",
+			"default":14
+         },
+        {
+			"type": "range",
+			"id": "fsm",
+			"min": 10,
+			"max": 40,
+			"step": 1,
+			"label": "Font size (mobile)",
+			"unit": "px",
+			"default":14
+         },        
+       {
+        "type": "select",
+        "id": "fw",
+        "label": "Font weight",
+        "default": "600",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Regular"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi Bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+            "type": "paragraph",
+            "content": "----------------------------------------------"
+        }, 
+       {
+            "type": "paragraph",
+            "content": "Answers ==="
+        },
+       {
+        "type": "color",
+        "id": "an",
+        "label": "Color",
+        "default": "#444"
+      }, 		
+       {
+			"type": "range",
+			"id": "fst",
+			"min": 10,
+			"max": 40,
+			"step": 1,
+			"label": "Font size",
+			"unit": "px",
+			"default":13
+         },
+        {
+			"type": "range",
+			"id": "fsmt",
+			"min": 10,
+			"max": 40,
+			"step": 1,
+			"label": "Font size (mobile)",
+			"unit": "px",
+			"default":13
+         },
+       {
+        "type": "color",
+        "id": "bdr",
+        "label": "Borders",
+        "default": "#eee"
+      },  
+	  {
+            "type": "header",
+            "content": "Link List ==="
+      },
+      {
+            "type":"checkbox",
+            "id":"links",
+            "label":"Enable?",
+            "default": false,
+            "info":"show for faq's titles"
+      }, 		
+      {
+			"type": "range",
+			"id": "lfs",
+			"min": 10,
+			"max": 40,
+			"step": 1,
+			"label": "Font size",
+			"unit": "px",
+			"default":14,
+           "visible_if": "{{ section.settings.links }}"
+         },
+        {
+			"type": "range",
+			"id": "lfsm",
+			"min": 10,
+			"max": 40,
+			"step": 1,
+			"label": "Font size (mobile)",
+			"unit": "px",
+			"default":14,
+            "visible_if": "{{ section.settings.links }}"
+         },        
+       {
+        "type": "select",
+        "id": "lfw",
+        "label": "Font weight",
+        "default": "600",
+        "visible_if": "{{ section.settings.links }}",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Regular"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi Bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "lcl",
+        "label": "Color",
+        "default": "#444",
+        "visible_if": "{{ section.settings.links }}"
+      },
+      {
+        "type": "color",
+        "id": "lclh",
+        "label": "Hover Color",
+        "default": "#000",
+        "visible_if": "{{ section.settings.links }}"
+      },
+      {
+        "type": "color",
+        "id": "lbg",
+        "label": "Background",
+        "default": "#fff",
+        "visible_if": "{{ section.settings.links }}"
+      },
+      {
+        "type": "color",
+        "id": "lbd",
+        "label": "Border",
+        "default": "#eee",
+        "visible_if": "{{ section.settings.links }}"
+      },
+	  {
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },		                     
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background Image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image Overlay",
+            "default": "#3d4246"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay Opacity",
+            "unit": "%",
+            "default": 0
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on Desktop?",
+            "default": false
+        }
+	],
+   "blocks":[
+     {
+        "type": "ttl",
+        "name": "FAQ's Title",
+		"settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "FAQ's Title Text"
+          }
+		]
+      },
+	  {
+	    "type":"faqs",
+		"name":"FAQs",
+		"settings":[			
+			{
+    			"type":"text",
+    			"id":"title",
+    			"label":"Question",
+    			"default":"Is Revone compatible with Shopify Online Store 2.0?"
+			},
+			{
+    			"type":"richtext",
+    			"id":"answer",
+    			"label":"Answer",
+    			"default":"<p>Yes, Revone is fully compatible and supports Sections on every page.</p>"		
+			},
+            {
+                "type": "checkbox",
+                "id": "open",
+                "label": "Enable auto open?",
+                "default": false
+            }
+	    ]
+      },
+	  {
+	    "type":"link",
+		"name":"Other Link",
+		"settings":[			
+			{
+    			"type":"text",
+    			"id":"title",
+    			"label":"Title",
+    			"default":"Other Link",
+                "info":"display with link list"
+			},
+			{
+    			"type":"url",
+    			"id":"link",
+    			"label":"Link"
+			}        
+	    ]
+      }
+	],
+   "presets": [
+      {
+        "name": "FAQs", 
+        "category": "Text",
+        "blocks": [
+          {
+            "type": "faqs"
+          },
+          {
+            "type": "faqs"
+          },
+		  {
+            "type": "faqs"
+          } 
+        ]
+      }
+    ]
+ }
+{% endschema %}

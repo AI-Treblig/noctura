@@ -1,0 +1,375 @@
+{% assign section_st = section.settings %}
+{% style %}
+  .storeItems { padding-right:10px; }
+  .storeBox, .mapBox { padding:25px; border-radius:var(--tbbdr); }
+  .mapBox { padding:0; border:1px solid {{ section_st.bd }}; }
+  .mapBox:after { content:""; padding-bottom:100%; }
+  iframe { width:100%; }
+{% endstyle %}
+<div class="contact-page sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--cl:{{ section_st.cl }};--cl:{{section_st.headings_cl }};--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+   {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>  	
+  <div class="page-width">        
+
+      {% render 'sec-title' %}
+
+      {% capture tabs_style %}
+        --n_fs:{{ section_st.name_fs }}px;--n_fsm:{{ section_st.name_fsm }}px;--tbfs:{{ section_st.tfs }}px;--tbfsm:{{ section_st.tfsm }}px;--tbcl:{{ section_st.cl }};--tbcla:{{ section_st.cla }};--tbbg:{{ section_st.tbg }};--tbbga:{{ section_st.tbga }};--tbbd:{{ section_st.bd }};--tbbda:{{ section_st.bda }};
+        --tbbdr:{{ section_st.bdr }}px;
+      {% endcapture %}
+      <tabs-section class="fl f-col f-row-md gap tabSection" style="--gap:20px;{{ tabs_style }}">
+        <div class="pr wd30-md hide-sm">
+          <div class="storeItems ctScroll cpointer of_auto pa w_100 h_100">
+              {% for block in section.blocks %}
+                {% assign blk_st = block.settings %}
+                <div class="storeBox gap anim tabBtn fl f-col mb30{% if forloop.first %} active{% endif %} {% render 'animate-data', css:true %}" data-id="tab{{ block.id }}" style="--gap:7px;">
+                    {% if blk_st.logo %}
+                    <p class="mb0" {{ block.shopify_attributes }}>
+                        {%- assign logo_alt = blk_st.logo.alt | default: shop.name | escape -%}
+                        {% capture sizes %}(max-width: {{ blk_st.logowd | times: 2 }}px) 50vw, {{ blk_st.logowd }}px{% endcapture %}
+                        {% capture widths %}{{ blk_st.logowd }}, {{ blk_st.logowd | times: 1.5 | round }}, {{ blk_st.logowd | times: 2 }}{% endcapture %}
+                        {%- assign logo_ht = blk_st.logowd | divided_by: blk_st.logo.aspect_ratio -%}
+                        {{ blk_st.logo | image_url: width: 600 | image_tag: loading:'lazy', class:'h_auto', widths:widths, height:logo_ht, width:blk_st.logowd, alt:logo_alt, sizes:sizes }}
+                    </p>
+                    {% endif %}
+                    {% if blk_st.name != blank %}<h3 class="name mb5" style="color:var(--cl);">{{ blk_st.name }}</h3>{% endif %}
+                    {% if blk_st.address != blank %}<div class="address">{{ blk_st.address }}</div>{% endif %}
+                    {% if blk_st.phone != blank %}<p class="phone mb0">{{ blk_st.phone }}</p>{% endif %}
+                    {% if blk_st.email != blank %}<p class="email mb0">{{ blk_st.email }}</p>{% endif %}
+                 </div>
+              {% endfor %}
+          </div>
+        </div>
+        <div class="fl1">
+          {% for block in section.blocks %}
+            {% assign blk_st = block.settings %}
+            {%- if blk_st.name != blank -%}
+              <h2 class="accordion_tab js-toggle fl f-aic hide-md hide-lg mb10{% if forloop.first %} active{% endif %}">{{ blk_st.name }} <svg class="at-icon ml_auto updown"><use xlink:href="#icon-arrow"></use></svg></h2>
+            {%- endif -%}
+            <div id="tab{{ block.id }}" class="mapBox tab_panel mb20 mb0-md of_hidden {% render 'animate-data', css:true %}{% if forloop.first %} active{% endif %}">
+                <div class="vd-wrap" style="--ratio:80%;">
+                  {% if blk_st.map != blank %}
+                    {{ blk_st.map }}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg imgFt' }}
+                  {% endif %}
+                </div>
+                <div class="storeBox gap anim fl f-col hide-md hide-lg {% render 'animate-data', css:true %}" data-id="tab{{ block.id }}" style="--gap:7px;">
+                        {% if blk_st.logo %}
+                        <p class="mb0" {{ block.shopify_attributes }}>
+                            {%- assign logo_alt = blk_st.logo.alt | default: shop.name | escape -%}
+                            {% capture sizes %}(max-width: {{ blk_st.logowd | times: 2 }}px) 50vw, {{ blk_st.logowd }}px{% endcapture %}
+                            {% capture widths %}{{ blk_st.logowd }}, {{ blk_st.logowd | times: 1.5 | round }}, {{ blk_st.logowd | times: 2 }}{% endcapture %}
+                            {%- assign logo_ht = blk_st.logowd | divided_by: blk_st.logo.aspect_ratio -%}
+                            {{ blk_st.logo | image_url: width: 600 | image_tag: loading:'lazy', class:'h_auto', widths:widths, height:logo_ht, width:blk_st.logowd, alt:logo_alt, sizes:sizes }}
+                        </p>
+                        {% endif %}
+                        {% if blk_st.name != blank %}<h3 class="name mb5" style="color:var(--cl);">{{ blk_st.name }}</h3>{% endif %}
+                        {% if blk_st.address != blank %}<div class="address">{{ blk_st.address }}</div>{% endif %}
+                        {% if blk_st.phone != blank %}<p class="phone mb0">{{ blk_st.phone }}</p>{% endif %}
+                        {% if blk_st.email != blank %}<p class="email mb0">{{ blk_st.email }}</p>{% endif %}
+                  </div>
+            </div>
+          {% endfor %}
+        </div>
+      </tabs-section>       
+  </div>
+</div>
+{% schema %}
+{
+    "name": "Store locator",
+    "class":"store-locator",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [
+       {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Store locator"		
+      },
+ 	 {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading"
+      },
+      {
+            "type": "header",
+            "content": "Store Box ==="
+        },
+        {
+          "type": "range",
+          "id": "name_fs",
+          "label": "Store Name Font",
+          "default": 18,
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "name_fsm",
+          "label": "Store Name Font (Mobile)",
+          "default": 16,
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "tfs",
+          "label": "Address Font",
+          "default": 14,
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "tfsm",
+          "label": "Address Font (Mobile)",
+          "default": 14,
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+        "type": "select",
+        "id": "color",
+        "label": "Color",
+		    "default": "1",      
+        "options": [
+          {
+            "value": "1",
+            "label": "Normal"
+          },
+          {
+            "value": "2",
+            "label": "Active"
+          }		 
+        ]
+       },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Text",
+            "default":"#555",
+            "visible_if": "{{ section.settings.color == '1' }}"	
+        },      
+        {
+            "type": "color",
+            "id": "tbg",
+            "label": "Background",
+            "default":"#fff",
+            "visible_if": "{{ section.settings.color == '1' }}"		
+        },      
+        {
+            "type": "color",
+            "id": "bd",
+            "label": "Border",
+            "default":"#eee",
+            "visible_if": "{{ section.settings.color == '1' }}"	
+        },
+        {
+            "type": "color",
+            "id": "cla",
+            "label": "Text",
+            "default":"#000",
+            "visible_if": "{{ section.settings.color == '2' }}"		
+        },      
+        {
+            "type": "color",
+            "id": "tbga",
+            "label": "Background",
+            "default":"#f5f5f5",
+            "visible_if": "{{ section.settings.color == '2' }}"		
+        },      
+        {
+            "type": "color",
+            "id": "bda",
+            "label": "Border",
+            "default":"#ccc",
+            "visible_if": "{{ section.settings.color == '2' }}"	
+        },
+        {
+          "type": "range",
+          "id": "bdr",
+          "label": "Box Rounded",
+          "default": 0,
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "unit": "px"
+        },
+      {
+            "type": "header",
+            "content": "Section Design ==="
+        },      
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }
+],
+"blocks": [
+      {
+        "type": "store",
+        "name": "Store item",
+        "settings": [
+		     {
+                "type": "image_picker",
+                "id": "logo",
+                "label": "Logo image"
+              },
+              {
+                "type": "range",
+                "id": "logowd",
+                "label": "Logo Width",
+                "default": 100,
+                "min": 50,
+                "max": 500,
+                "step": 10,
+                "unit": "px"
+              }, 
+              {
+                "type": "text",
+                "id": "name",
+                "label": "Store Name",
+                "default":" Store name"
+              },
+              {
+                "type": "richtext",
+                "id": "address",
+                "label": "Address",
+                "default": "<p><b>Address</b><br />55 Gallaxy Enque, 2568 steet, 23568 NY</p>"
+              },             
+              {
+                "type": "inline_richtext",
+                "id": "phone",
+                "label": "Phone Number",
+                "default":"<b>PHONE</b>: +1 (440) 568 4568"
+              }, 
+              {
+                "type": "inline_richtext",
+                "id": "email",
+                "label": "Email",
+                "default":" <b>EMAIL</b>: sales@yousite.com"
+             },
+             {
+                "type": "liquid",
+                "id": "map",
+                "label": "Map",
+                "info": "[You can get the map at here](https://www.google.com/maps), need to use iframes"
+             }
+		]
+	  }
+	],
+    "presets": [
+      {
+        "name": "Store Locator",
+        "category": "Contact",
+          "blocks": [         
+          {
+            "type": "store"
+          },   
+          {
+            "type": "store"
+          },
+          {
+            "type": "store"
+          }
+        ]
+	}
+    ]
+}
+{% endschema %}

@@ -1,0 +1,114 @@
+{%- liquid
+    assign is_rtl = false
+    assign list_rtl = 'ar,dv,ha,he,ku,fa,ur,ug' | split: ','
+    if list_rtl contains request.locale.iso_code or settings.rtl
+        assign is_rtl = true
+    endif
+    
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+-%}
+{%- capture sizes -%}
+(min-width:1024px) calc({{ page_width }} / {{ section_st.grid }}),(min-width:768px) calc(100vw / {{ section_st.gridtb }}), calc(100vw / {{ section_st.gridmb }})
+{%- endcapture -%}
+<style>
+#wishlist .addwishlist {display:none;}
+#wishlist .removeItem { position:absolute; {% if is_rtl %}left{% else %}right{% endif %}:15px; top:10px; z-index:2; opacity:1; visibility:visible; }
+#wishlist .removeItem .tooltip-label { bottom:auto; right:50px; left:inherit; }
+</style>
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">  
+	 <div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}">
+        {% unless section_st.hidettl %} <h1 class="page-title {{ settings.title_align }}">{{ page.title }}</h1>{% endunless %}
+        <div class="empty-page wlnull tc">      
+             <p>{{ 'products.wishlist.wishlist-empty' | t }}</p>
+             <a href="{{ routes.root_url }}" class="btn">{{ 'products.wishlist.shop_link' | t }}</a>
+        </div>
+        <wishlist-items id="wishlist" data-url="{{ routes.search_url }}" class="mt20 grid rwcols-2 rwcols-md-3 rwcols-lg-4 grid-products">
+          {% for item in search.results %}
+            <div class="{% if section_st.carousel %}swiper-slide {% endif %}gitem {% render 'animate-data', css:true %}" {% render 'animate-data' %}>{% render 'product-card-grid', product: item, section_st:section_st, sizes: sizes %}</div>
+          {% endfor %}
+        </wishlist-items>
+	</div>
+</div>
+<script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+{% schema %}
+  {
+    "name": "Wishlist Page",
+    "class": "index-section",
+    "settings": [	
+        {
+            "type": "checkbox",
+            "id": "hidettl",
+            "label": "Hide Page Title?",
+            "default": false            
+        },		
+	    {
+            "type": "header",
+            "content": "Section"
+        },
+		{
+            "type": "paragraph",
+            "content": "Spacing ===="
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":40
+        },
+		{
+            "type": "paragraph",
+            "content": "Spacing (mobile) ===="
+        },
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":20
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":20
+        },
+       {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "info":"select light color"
+        },	
+        {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        }       
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,368 @@
+{%- capture promotion_bar -%}
+{%- assign section_st = section.settings -%}
+{%- if section_st.arr_show == 'forever' -%}
+<style>.top-promo .swarw { opacity:1;}</style>  
+{%- endif -%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sstn }}px;--ssb:{{ section_st.ssbn }}px;--sstm:{{ section_st.sstmn }}px;--ssbm:{{ section_st.ssbmn }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+  {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}> 
+	
+  <div id="{{ section.id }}" class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %} top-promo zi1 pr" style="--fs:{{ section_st.fts }}px;--fs_dot:{{ section_st.fts | minus : 1 }}px;--fsl:{{ section_st.fts }}px;--fsm:{{ section_st.ftsm }}px;--lh:{{ section_st.lh }};--fw:{{ section_st.fw }};--mwidth:{{ section_st.fts | plus: 5 }}px;--cl:{{ section_st.cl }};--clhl:{{ section_st.clhl }};--btncl:{{ section_st.btncl }};--btnbg:{{ section_st.btnbg }};">
+	
+  	{% if section.blocks.size > 1 %}
+        <slide-section class="flslieds swiper" data-swiper='{ "slidesPerView":"1", "loop":true, {% if section_st.autoplay %}"autoplay":{ "delay":"{{ section_st.speed | times: 1000 }}" },{% endif %}{% if section_st.fade %}"effect":"fade",{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" }}'>
+        <div class="swiper-wrapper f-aic">
+    {% endif %}
+	
+	{% for block in section.blocks limit: section.blocks.size %}
+        {% assign blk_st = block.settings %}
+      	<div class="swiper-slide w_100 fckSl" id="{{ block.id }}" {{ block.shopify_attributes }}>
+      	{% capture countdown %}
+      		{% if blk_st.title contains '[countdown]' %}
+         		<countdown-time class="atCounter inline_timer fl f-aic ttu" style="--cl:{{ section_st.cnt_txt }};" data-date="{{ blk_st.date }}">
+                    <span><span class="tm days">00</span> {{ 'date_formats.days_short' | t }} <span class="timerdot">:</span></span>
+                    <span><span class="tm hours">00</span> {{ 'date_formats.hours_short' | t }} <span class="timerdot">:</span></span>
+                    <span><span class="tm minutes">00</span> {{ 'date_formats.minuts_short' | t }} <span class="timerdot">:</span></span>
+                    <span><span class="seconds">00</span> {{ 'date_formats.seconds_short' | t }}</span>
+                </countdown-time>
+      		{% endif %}
+      	{% endcapture %}
+
+      	{% capture button %}
+      		{% if blk_st.title contains '[button]' and blk_st.btn_txt != blank -%}
+          		<span class="pr btn btn-sm{% if blk_st.hdbtn %} hide-sm{% endif %}">{{ blk_st.btn_txt }}</span>        
+      		{% endif %}
+      	{% endcapture %}
+
+      	{% if blk_st.title != blank %}
+			<a {% if blk_st.link != blank %}href="{{ blk_st.link }}"{% else %}role="link" aria-disabled="true"{% endif %} class="promo_msg rgTxt fl f-jcc f-aic col-gap {{ section_st.fontFm }} tc" style="--gap:10px">
+        		{{ blk_st.title | replace:"[countdown]", countdown | replace:"[button]", button }}
+      		</a>
+      	{% endif %}
+      	</div>
+	{% endfor %}	
+  	{% if section.blocks.size > 1 %}
+        </div>
+        {% render 'swiper-navigation', id:section.id, section_st:section_st %}
+        </slide-section>
+    {% endif %}
+    </div>
+</div>
+{%- endcapture -%}
+{{- promotion_bar | strip_newlines | remove: "  " | remove: "	" -}}
+{% schema %}
+  {
+    "name": "Promotion Bar",
+    "class": "index-section",
+	"max_blocks": 5,
+    "disabled_on": {
+      "groups": ["custom.overlay"]
+    },
+	"settings":[	 		
+       {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },         
+	 {
+        "type": "select",
+        "id": "fontFm",
+        "label": "Font family",
+        "default": "ft1",
+        "options": [
+          { "value": "ft1", "label": "Font 1" },
+          { "value": "ft2", "label": "Font 2" },
+          { "value": "ft3", "label": "Font 3" }
+        ]
+      },
+	  {
+          "type": "range",
+          "id": "fts",
+          "label": "Font size",
+          "default": 18,
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
+      },
+      {
+          "type": "range",
+          "id": "ftsm",
+          "label": "Font size (mobile)",
+          "default": 13,
+          "min": 10,
+          "max": 50,
+          "step": 1,
+          "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "fw",
+        "label": "Font weight",
+        "default": "600",
+        "options": [
+            {
+                "value": "300",
+                "label": "Light"
+            },
+            {
+                "value": "400",
+                "label": "Regular"
+            },
+            {
+                "value": "500",
+                "label": "Medium"
+            },
+            {
+                "value": "600",
+                "label": "Semi Bold"
+            },
+            {
+                "value": "700",
+                "label": "Bold"
+            }
+        ]
+    },
+    {
+        "type": "range",
+        "id": "lh",
+        "label": "Line height",
+        "default": 1.0,
+        "min": 1.0,
+        "max": 2.0,
+        "step": 0.1
+    }, 	
+      {
+            "type": "color",
+            "id": "cl",
+            "label": "Text color",
+            "default": "#fff"
+          },                             
+          {
+            "type": "color",
+            "id": "clhl",
+            "label": "Highlight text",
+            "default": "#ffde00"
+          },         
+          {
+            "type": "color",
+            "id": "cnt_txt",
+            "label": "Countdown text",
+            "default": "#e74646"
+          },
+          {
+            "type": "color",
+            "id": "btncl",
+            "label": "Button text",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "id": "btnbg",
+            "label": "Button background",
+            "default": "#333"
+          }, 
+       {
+            "type": "header",
+            "content": "Slider Settings ==="
+        },
+	  {
+        "type": "checkbox",
+        "id": "fade",
+        "label": "Slide fade effect",
+        "default": true
+      }, 	  
+	  {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Auto-rotate slide",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "speed",
+        "label": "Change slide every",
+        "default": 5,
+        "min": 1,
+        "max": 30,
+        "step": 1,
+		"unit": "Sec"
+      },
+      {
+            "type": "checkbox",
+            "id": "arrow",
+            "label": "Show arrows (desktop)",
+            "default": true			
+        },
+		{
+            "type": "checkbox",
+            "id": "arrowm",
+            "label": "Show arrows (on Mobile)",
+            "default": false			
+        },
+      {
+        "type": "select",
+        "id": "arr_show",
+        "label": "Arrows visibility",
+        "default": "hover",
+        "options": [
+          {
+            "value": "hover",
+            "label": "Show on Hover"
+          },
+          {
+            "value": "forever",
+            "label": "Always Show"
+          }
+        ]
+      },
+	 {
+            "type": "header",
+            "content": "Section Design ==="
+        },
+      {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": true           
+        },		                     
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#000"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+		  {
+			"type": "range",
+			"id": "sstn",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":10
+        },
+		{
+			"type": "range",
+			"id": "ssbn",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":10
+        },		
+		{
+			"type": "range",
+			"id": "sstmn",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":8
+        },
+		{
+			"type": "range",
+			"id": "ssbmn",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":8
+        },
+       {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }
+	],
+    "blocks": [
+      {
+        "type": "bar",
+        "name": "Promotion text",
+        "settings": [         
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Promotion text",
+            "default": "UP TO 80% OFF ON THE ENTIRE STORE! hurry up!",
+			"info": "Use shortcode [countdown] to show Countdown, [button] to show button and <span class=\"hl\">text</span> for text highlight "
+          },
+          {
+            "type": "text",
+            "id": "date",
+            "label": "End date",
+            "info": "Format - mm/dd/yyyy",
+            "default": "06\/20\/2025"
+          },
+          {
+            "type": "text",
+            "id": "btn_txt",
+            "label": "Button text",
+            "default": "Shop Now"
+          },			          
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Button link"
+          },
+          {
+            "type": "checkbox",
+            "id": "hdbtn",
+            "label": "Hide button in mobile?",
+            "default": true
+          }                
+        ]
+      }
+    ],  
+  "presets": [
+    {
+    "name": "Promotion Bar",
+    "category": "Promotion",
+      "blocks": [
+            {
+            "type": "bar"
+            },
+            {
+            "type": "bar"
+            }  
+        ]
+    }
+   ]
+  }
+{% endschema %}

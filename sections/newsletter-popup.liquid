@@ -1,0 +1,669 @@
+{% capture newsletter_popup %}
+{%- liquid 
+    assign section_st = section.settings
+    assign imgsize = '450px'
+    if section_st.style == 'st1'
+      assign imgsize = '700px'
+    endif
+-%}
+{% capture showexitpp %}{% if section_st.index %}index,{% endif %}{% if section_st.product %}product,{% endif %}{% if section_st.collection %}collection,{% endif %}{% if section_st.article %}article,{% endif %}{% if section_st.blog %}blog,{% endif %}{% if section_st.cart %}cart,{% endif %}{% if section_st.page %}page{% endif %}{% endcapture %}
+{% if showexitpp contains request.page_type %}
+<newsletter-popup id="{{ section.id }}" class="tinglebox {{ section_st.style }} pp-hide of_hidden" data-time="{{ section_st.seconds | times: 1000 }}" style="--bg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--bdr:{{ section_st.brad }}px;">
+    <div id="newsletter_pp" class="{{ section_st.style }} m_auto{% if section_st.style == "st2" %} fl f-aic f-col f-row-md{% endif %}">
+        {% if section_st.image != blank %}
+           <div class="newsl_img pr{% if section_st.style == "st2" %} col-1 wd50-md{% endif %}{% if section_st.hide_img %} hide-sm{% endif %}">
+             {{ section_st.image | image_url: width: section_st.image.width | image_tag: loading:'lazy', class:'imgFl', sizes: imgsize, widths:"320,460,600,760,900,1200" }}
+           </div>
+        {% endif %}
+      <div class="newsl_txt fl1 {{ section_st.talign }}">
+          {% for block in section.blocks %}
+              {%- assign block_st = block.settings -%}
+              {% if block.type == 'heading' %}
+                  <{{ block_st.htag }} class="rgTxt mb{{ block_st.mbm }} mb{{ block_st.mb }}-md {{ block_st.ff }}" style="--cl:{{ block_st.cl }};--fs:{{ block_st.fs }}px;--fsm:{{ block_st.fsm }}px;--fw:{{ block_st.fw }};--lh:{{ block_st.lh }};" {{ block.shopify_attributes }}>{{ block_st.title }}</{{ block_st.htag }}>
+              {% elsif block.type == 'text' %}
+                  <div class="rgTxt mb{{ block_st.mbm }} mb{{ block_st.mb }}-md" style="--cl:{{ block_st.cl }};--fs:{{ block_st.fs }}px;--fsm:{{ block_st.fsm }}px;--lh:{{ block_st.lh }};" {{ block.shopify_attributes }}>{{ block_st.title }}</div>
+              {% elsif block.type == 'form' %}
+                  <div class="mb{{ block_st.mbm }} mb{{ block_st.mb }}-md" style="--cl:{{ block_st.ccl }};--tf_txt:{{ block_st.cl }};--tf_bg:{{ block_st.bg }};--tf_bdr:{{ block_st.bdr }};--btncl:{{ block_st.btncl }};--btnbg:{{ block_st.btnbg }};--btnclh:{{ block_st.btnclh }};--btnbgh:{{ block_st.btnbgh }};" {{ block.shopify_attributes }}>
+                      {%-liquid
+                         assign verticle = false
+                         if section_st.style == "st2"
+                          	assign verticle = true
+                            assign btn_class = 'w_100'
+                         endif
+                         assign formid = 'newsletterPopup'
+                      -%}
+                      {% render 'newsletter-form', formid:formid, verticle:verticle, btn_class: btn_class %}
+                      {% if block_st.c_msg != blank %}
+                        <p class="donotnwpp rgTxt cpointer mb0 mt25" style="--fs:10px;--fsm:10px;--fw:500;"><u>{{ block_st.c_msg }}</u></p>
+                      {% endif %}
+                  </div>
+              {% elsif block.type == 'button' %}
+                  {% if block_st.ol_link != true %}
+                      <p class="mb{{ block_st.mbm }} mb{{ block_st.mb }}-md" {{ block.shopify_attributes }}>
+                        <a href="{{ block_st.link }}" class="btn {{ block_st.btn-size }} {{ block_st.btn-style }}">{{ block_st.title | escape }}</a>
+                      </p>
+                  {% endif %}
+              {% elsif block.type == 'social' %}
+                  <div class="mb{{ block_st.mbm }} mb{{ block_st.mb }}-md" style="--cl:{{ block_st.cl }};--icns:{{ block_st.icn }}px;">{% render 'social-media' %}</div>
+              {% endif %}
+          {% endfor %}
+      </div>
+    </div>
+</newsletter-popup>
+{% endif %}
+{% endcapture %}
+{{ newsletter_popup | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+  {
+    "name": "Newsletter Popup",
+    "class": "hide newsletterPopup",
+    "limit": 1,
+    "enabled_on": {
+        "groups": ["custom.overlay"]
+    },
+    "settings": [
+      {
+          "type": "range",
+          "id": "seconds",
+          "label": "Show After seconds",
+          "default": 5,
+          "min": 1,
+          "max": 50,
+          "step": 1
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "Recommanded Size --> Vertical : maximum width:1000px. Horizontal: width:500px, height:650px."
+      },
+       {
+        "type": "checkbox",
+        "id": "hide_img",
+        "label": "Hide image in mobile?",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "style",
+        "label": "Select Style",
+        "default": "st1",
+        "options": [
+          {
+            "value": "st1",
+            "label": "Vertical "
+          },
+          {
+            "value": "st2",
+            "label": "Horizontal"
+          }
+        ]
+      },
+      {
+          "type": "select",
+          "id": "talign",
+          "label": "Text Align",
+          "default": "tl",
+          "options": [
+              { "value": "tl", "label": "Left" },
+              { "value": "tc", "label": "Center" },
+              { "value": "tr", "label": "Right" }
+          ]
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background",
+        "default": "#fafafa"
+      },
+      {
+          "type": "color_background",
+          "id": "bgg",
+          "label": "Gradient Background"
+      },
+      {
+        "type": "range",
+        "id": "brad",
+        "label": "Popup Rounded",
+        "default":10,
+        "min": 0,
+        "max": 30,
+        "step": 1
+      },
+      {
+        "type": "header",
+        "content": "Select page to display: ====="
+      },
+      {
+        "type": "checkbox",
+        "id": "index",
+        "label": "Home page",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product",
+        "label": "Product page"
+      },
+      {
+        "type": "checkbox",
+        "id": "collection",
+        "label": "Collection page"
+      },
+      {
+        "type": "checkbox",
+        "id": "article",
+        "label": "Article page"
+      },
+      {
+        "type": "checkbox",
+        "id": "blog",
+        "label": "Blog page"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart",
+        "label": "Cart page"
+      },
+      {
+        "type": "checkbox",
+        "id": "page",
+        "label": "Other page"
+      }
+    ],
+    "blocks": [
+        {
+            "type": "heading",
+            "name": "Heading",  
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "title",
+                    "label": "Text",
+                    "default": "Join Our Mailing List"
+                },
+              {
+                    "type": "select",
+                    "id": "htag",
+                    "label": "Heading tag",
+                   "info":"Specify heading types for SEO and search engines for crawling purposes.",
+                    "default": "p",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "H1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "H2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "H3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "H4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "H5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "H6"
+                        },
+                       {
+                            "value": "p",
+                            "label": "P"
+                        }
+                    ]
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font Size",
+                    "default": 22,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font Size (mobile)",
+                    "default": 18,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                },               
+               {
+                    "type": "select",
+                    "id": "ff",
+                    "label": "Font Family",
+                    "default": "ft2",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+                }, 
+               {
+                    "type": "select",
+                    "id": "fw",
+                    "label": "Font Weight",
+                    "default": "400",
+                    "options": [
+                        {
+                            "value": "300",
+                            "label": "Light"
+                        },
+                        {
+                            "value": "400",
+                            "label": "Regular"
+                        },
+                        {
+                            "value": "500",
+                            "label": "Medium"
+                        },
+                        {
+                            "value": "600",
+                            "label": "Semi Bold"
+                        },
+                        {
+                            "value": "700",
+                            "label": "Bold"
+                        }
+                    ]
+                }, 	
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line Height",
+                    "default": 1.2,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1                   
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 15,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "name": "Text",
+            "settings":[        
+                {
+                    "type": "richtext",
+                    "id": "title",
+                    "label": "Text",
+                    "default": "<p>Stay Informed! Monthly Tips, Tracks and Discount.</p>"
+                },          
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide text in mobile?",
+                    "default": true			
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#000"
+                },              
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font Size",
+                    "default": 14,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font Size (mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }, 		
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line Height",
+                    "default": 1.5,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1                  
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        },    
+        {
+            "type": "form",
+            "name": "Form",  
+            "limit":1,
+            "settings": [
+              {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Textfield Text",
+                    "default": "#000"
+              },
+              {
+                    "type": "color",
+                    "id": "bg",
+                    "label": "Textfield Background",
+                    "default": "#fff"
+              },
+              {
+                    "type": "color",
+                    "id": "bdr",
+                    "label": "Textfield Border",
+                    "default": "#eee"
+              },
+              {
+                    "type": "color",
+                    "id": "btncl",
+                    "label": "Button Text",
+                    "default": "#fff"
+              },
+              {
+                    "type": "color",
+                    "id": "btnbg",
+                    "label": "Button Background",
+                    "default": "#444"
+              },
+              {
+                    "type": "color",
+                    "id": "btnclh",
+                    "label": "Button Text Hover",
+                    "default": "#fff"
+              },
+              {
+                    "type": "color",
+                    "id": "btnbgh",
+                    "label": "Button Background hover",
+                    "default": "#000"
+                },
+                {
+                  "type": "text",
+                  "id": "c_msg",
+                  "label": "Close Text",
+                  "default": "No,Thanks! Don't show this again.",
+                  "info": "Keep empty to disable this option"
+                },
+                {
+                    "type": "color",
+                    "id": "ccl",
+                    "label": "Color",
+                    "default": "#555"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },				            
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        },    
+        {
+            "type": "button",
+            "name": "Button",  
+            "limit":1,    
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Button Label",
+                    "default":"SHOP NOW"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Button Link"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide on mobile?",
+                    "default": false		
+                },
+                {
+					"type": "select",
+					"id": "btn-style",
+					"label": "Button Design",
+					"default": "btn1",
+					"options": [
+					  {
+						"label": "Button 1",
+						"value": "btn1"
+					  },
+					  {
+						"label": "Button 2",
+						"value": "btn2"
+					  },
+					  {
+						"label": "Button 3",
+						"value": "btn3"
+					  },
+					  {
+						"label": "Button 4",
+						"value": "btn4"
+					  },
+					 {
+						"label": "Button 5",
+						"value": "btn5"
+					  },
+					 {
+						"label": "Button 6",
+						"value": "btn6"
+					  },
+                        {
+                          "label": "Button 7 Gradient",
+                          "value": "btn7"
+                      },
+                      {
+                          "label": "Button 8 Gradient",
+                          "value": "btn8"
+                      },
+                     {
+						"label": "Link",
+						"value": "btnLink"
+					  }  
+					]
+				  },
+                {
+                    "type": "select",
+                    "id": "btn-size",
+                    "label": "Button Size",
+                    "default": "btn-md",
+                    "options": [
+                        {
+                            "label": "Small",
+                            "value": "btn-sm"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "btn-md"
+                        },
+                        {
+                            "label": "Large",
+                            "value": "btn-lg"
+                        } 		  
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },				            
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        },    
+        {
+            "type": "social",
+            "name": "Social Icons",  
+            "limit":1,
+            "settings": [
+                {
+                  "type": "color",
+                  "id": "cl",
+                  "label": "Color",
+                  "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "icn",
+                    "label": "Icons Size",
+                    "default": 16,
+                    "min": 10,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },				            
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Newsletter Popup",
+            "blocks": {
+          "heading": {
+            "type": "heading",
+            "settings": {
+              "title": "<b>BLACK FRIDAY <br>SALE!<b></b></b>"
+            }
+          },
+          "text": {
+            "type": "text",
+            "settings": {
+              "title": "<p>Stay Informed! Monthly Tips, Tracks and Discount.</p>"
+            }
+          },
+          "button": {
+            "type": "button",
+            "settings": {
+              "title": "SHOP NOW",
+              "link": "shopify://collections/new-arrivals"
+            }
+          }
+        },
+        "block_order": [
+          "heading",
+          "text",
+          "button"
+        ],
+        "settings": {
+          
+        }
+        }
+    ]
+  }
+{% endschema %}

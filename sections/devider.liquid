@@ -1,0 +1,165 @@
+{%- assign section_st = section.settings  -%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}" id="dv{{ section.id }}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">
+    <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %} tc" data-section-id="{{ section.id }}" data-section-type="devider">
+        {%- if section_st.isbdr -%}<hr style="margin:0;border-bottom:{{ section_st.lht }}px {{ section_st.lns }} {{ section_st.bdr }};">{%- endif -%}
+        {%- if section_st.image != blank -%}
+            {{ section_st.image | image_url: width: section_st.image.width | image_tag: class:'h_auto', width:section_st.image.width, height:section_st.image.height, widths:"600,800,1000,1200,1400,1600,2000" }}
+        {%- endif -%}
+    </div>
+</div>
+{% schema %}
+  {
+    "name": "Section Divider",   
+    "disabled_on": {
+    "groups": ["custom.overlay"]
+    },
+    "settings": [
+        {
+            "type":"header",
+            "content":"Line ==="
+        },
+		{
+            "type": "checkbox",
+            "id": "isbdr",
+            "label": "Show?",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "lns",
+            "label": "Line Style",
+            "default": "solid",
+            "options": [
+              {
+                "label": "Solid",
+                "value": "solid"
+              },
+              {
+                "label": "Dashed",
+                "value": "dashed"
+              },
+              {
+                "label": "Dotted",
+                "value": "dotted"
+              },
+              {
+                "label": "Double",
+                "value": "double"
+              }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "lht",
+            "label": "Line height",
+            "default": 1,
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "unit": "px"
+        },       
+        {
+            "type": "color",
+            "id": "bdr",
+            "label": "Border Color",
+            "default": "#f5f5f5"
+        },
+        {
+            "type":"header",
+            "content":"Image ==="
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Divider Image"
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": true           
+        },	
+       {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No Padding?",
+            "default": true,
+            "info":"Remove left/right padding when fullwidth"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        },	   
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top",
+			"unit": "px",
+			"default":25
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom",
+			"unit": "px",
+			"default":25
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top (mobile)",
+			"unit": "px",
+			"default":10
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom (mobile)",
+			"unit": "px",
+			"default":10
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on Desktop?",
+            "default": false
+        }
+    ],
+	 "presets": [
+      {
+        "name": "Devider",
+        "category": "Other"
+      }
+    ]
+  }
+{% endschema %}
+

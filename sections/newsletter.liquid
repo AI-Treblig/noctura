@@ -1,0 +1,296 @@
+{%- capture newsletter -%}
+{%- liquid 
+    assign section_st = section.settings
+    assign cnt_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign cnt_width = '100vw'
+    endif
+    assign verticle = false
+    if section_st.style == "3"
+      assign verticle = true
+      assign btn_class = 'w_100'
+    endif
+    assign formid = 'newsletter' | append: section.id
+-%}
+<div id="{{ section.id }}" class="sec_cov pr of_hidden{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank and section_st.style != '3' %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+  	   {% if section_st.bgimg != blank and section_st.style != "3" %} data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>
+  
+	 <div class="{% if section.settings.sw %}fw-sec{% if section.settings.npd %} npd{% endif %}{% else %}page-width{% endif %} newsletter_sec pr zi1 stl{{ section.settings.style }}" style="--bg:{{ section_st.bg }}; --cl:{{ section_st.cl }};--tf_bg:{{ section_st.tf_bg }};--tf_bdr:{{ section_st.tf_bdr }};--tf_txt:{{ section_st.tf_txt }};--btnbg:{{ section_st.btnbg }}; --btncl:{{ section_st.btncl }};--btnbgh:{{ section_st.btnbgh }};--btnclh:{{ section.settings.btnclh }};">   			                          
+                <div class="fl f-aic f-col f-row-md">
+					{% if section.settings.style == "3" %}
+                    <div class="fl1 {% render 'animate-data', css:true %}" {% render 'animate-data' %}>
+                        {% if section.settings.bgimg == blank %}
+                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}        
+                        {% else %}
+                            {%- capture sizes -%}
+                              (min-width:1024px) calc({{ cnt_width }} / 2), 100vw
+                            {%- endcapture -%}
+                            {{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: loading:'lazy', width:section_st.bgimg.width, height:section_st.bgimg.height, class:'imgAt', sizes:sizes, widths:"560,740,900,1200,1400,1600,2000,2400" }}
+                        {% endif %}
+                    </div>
+					{% endif %}
+                    <div class="fl1{% if section_st.style == "3" %} pd20{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %}>         
+						<div class="{% if section_st.style == "2" %}fl-md f-aic-md{% endif %}">
+							{%- if section_st.title != blank  or section_st.subtitle != blank -%}
+								<div class="sec-ttl pd0{% if section_st.style == "2" %} fl1 mr30 tl{% else %} mb25 tc{% endif %}">
+									<h3 class="h3 mb10" style="--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;">{{ section_st.title }}</h3>     
+									{%- if section_st.subtitle != blank -%}<p style="--fs:{{ section_st.fst }}px;--fsm:{{ section_st.fstm }}px;">{{ section_st.subtitle }}</p>{%- endif -%}
+								</div>
+							{% endif %}
+							{% render 'newsletter-form', formid:formid, verticle:verticle, btn_class: btn_class  %}
+						</div>						
+					</div>		 
+ 	 		</div>
+     </div>     
+</div>
+{%- endcapture -%}
+{{ newsletter | strip_newlines | remove: '  ' | remove: '	' }}
+{% schema %}
+{
+    "name": "Newsletter",
+    "class": "index-section",
+    "disabled_on": {
+      "groups": ["header", "custom.overlay"]
+    },
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default":"Newsletter"
+        },
+        {
+            "type": "textarea",
+            "id": "subtitle",
+            "label":"Subheading",
+            "default":"Sign up to stay in the loop. Receive updates,<br/> access to exclusive deals, and more."
+        },
+        {
+            "type": "paragraph",
+            "content":"Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+        },       
+        {
+            "type": "select",
+            "id": "style",
+            "label": "Select Style",
+            "default": "1",
+            "options": [
+                { "value": "1", "label": "Style 1" },
+                { "value": "2", "label": "Style 2" },
+                { "value": "3", "label": "Style 3" }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Appearance Text ==="
+        },
+        {
+            "type": "range",
+            "id": "fs",
+            "label": "Heading font",
+            "default": 22,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Heading font (mobile)",
+            "default": 18,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fst",
+            "label": "Subheading font",
+            "default": 14,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fstm",
+            "label": "Subheading font (mobile)",
+            "default": 13,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Color",
+            "default": "#000"
+        },
+      {
+            "type": "header",
+            "content": "Appearance Form ==="
+        },
+        {
+            "type": "color",
+            "id": "tf_bg",
+            "label": "Textfield background",
+            "default": "#eee"
+        },
+        {
+            "type": "color",
+            "id": "tf_bdr",
+            "label": "Textfield border",
+            "default": "#eee"
+        },
+ 		{
+            "type": "color",
+            "id": "tf_txt",
+            "label": "Textfield text",
+            "default": "#000"
+        },
+        {
+            "type": "color",
+            "id": "btncl",
+            "label": "Button text",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "btnbg",
+            "label": "Button background",
+            "default": "#000"
+        },
+        {
+            "type": "color",
+            "id": "btnclh",
+            "label": "Button hover Text",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "btnbgh",
+            "label": "Button hover background",
+            "default": "#86BBBF"
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No Padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+         }, 
+       {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }	
+    ],
+    "presets": [
+        {
+            "name":"Newsletter",
+            "category": "Contact"
+        }
+    ]
+}
+{% endschema %}

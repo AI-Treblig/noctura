@@ -1,0 +1,457 @@
+{%- capture page_banner -%}
+{%- assign section_st = section.settings -%}
+   <div class="sec_cov npd" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};">             
+         {%- liquid
+                assign banner_img = blog.metafields.custom.banner_image.value.image
+                assign banner_imgm = blog.metafields.custom.mobile_banner_image.value.image
+                assign banner_imgm_srcset = banner_imgm | image_url: width: banner_imgm.width | image_tag: widths: '360,480,760' | split: 'srcset="' | last | split: '"' | first
+         -%}
+         {%- if banner_img != blank -%}
+            <picture class="overlay" style="--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};">
+                {% if blog.metafields.custom.mobile_banner_image != blank %}
+                    <source media="(max-width: 767px)" srcset="{{ banner_imgm_srcset }}" width="{{ banner_imgm.width }}" height="{{ banner_imgm.height }}">
+                {% endif %}
+                {{ banner_img | image_url: width: banner_img.width | image_tag: class:'imgFt heroImg', width:banner_img.width, height:banner_img.height, widths:"400,600,800,1000,1200,1400,1600,2000,2400,3000" }}
+            </picture>
+         {%- endif -%}
+        {% if section.blocks.size > 0 %}
+              <div class="hero_wrap fl{% if section_st.text-align %} f-jcc tc{% endif %} f-aic m_auto" style="--mht:{{ section_st.hit }}px;--mhtt:{{ section_st.hitt }}px;--mhtm:{{ section_st.hitm }}px;--mwd:{{ section_st.cntwd }}px;">
+                <div class="pr zi1 {% render 'animate-data', css:true %}">       
+                  {% for block in section.blocks %}
+                        {%- assign block_st = block.settings -%}
+                        {% if block.type == 'title' %}
+                            <{{ block_st.htag }} class="rgTxt {{ block_st.tff}} mb{{ block_st.mbm }} mb{{ block_st.mb }}-md{% if block_st.tuu %} ttu{% endif %}" style="--cl:{{ block_st.cl }};--fs:{{ block_st.fts }}px;--fsm:{{ block_st.ftsm }}px;--fw:{{ block_st.fw }};" {{ block.shopify_attributes }}>{{ blog.title }}</{{ block_st.htag }}>
+                        {% elsif block.type == 'text' %}
+                            <div class="rgTxt mb{{ block_st.mbm }} mb{{ block_st.mb }}-md{% if block_st.hidemb %} hide-sm{% endif %}" style="--cl:{{ block_st.cl }};--fs:{{ block_st.fs }}px;--fsm:{{ block_st.fsm }}px;--lh:{{ block_st.lh }};" {{ block.shopify_attributes }}>{{ block_st.title }}</div>
+                        {% elsif block.type == 'bc' %}
+                            <nav class="breadcrumb inline fl f-wrap f-aic f-jcc{% if block_st.hidemb %} hide-sm{% endif %}" role="navigation" aria-label="breadcrumbs" style="--cl:{{ block_st.cl }};--fs:{{ block_st.fs }}px;--fsm:{{ block_st.fsm }}px">
+                                <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+                                <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+                                {% if current_tags %}
+                                    {{ blog.title | link_to: blog.url }}
+                                       <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+                                    <span>{{ current_tags | join: " + " }}</span>
+                                {% else %}
+                                    <span class="fwm">{{ blog.title }}</span>
+                                {% endif %}
+                            </nav>
+                            <script type="application/ld+json">
+                                {
+                                    "@context": "https://schema.org",
+                                    "@type": "BreadcrumbList",
+                                    "itemListElement": [
+                                        {
+                                            "@type": "ListItem",
+                                            "position": 1,
+                                            "item": {
+                                                "@id": "{{ routes.root_url }}",
+                                                "name": "{{ 'general.breadcrumbs.home' | t }}"
+                                            }
+                                         }
+                                         ,{
+                                            "@type": "ListItem",
+                                            "position": 2,
+                                            "item": {
+                                              "@id": "{{ blog.url }}",
+                                              "name": "{{ blog.title }}"
+                                            }
+                                         }
+                                         {% if current_tags %}
+                                            ,{
+                                                "@type": "ListItem",
+                                                "position": 3,
+                                                "item": {
+                                                    "@id": "{{ blog.url }}",
+                                                    "name": "{{ current_tags | join: " + " }}"
+                                                }
+                                            }
+                                         {% endif %}
+                                    ]
+                                }
+                                </script>
+                        {% endif %}
+                      {% if block.type == 'title' %}
+                        <style>
+                            {% if block.type == 'title' %}.blogHead {display:none}{% endif %}                            
+                        </style>
+                      {% endif %}
+                    {% endfor %}          
+                </div>
+            </div>
+        {% endif %}       
+    </div>
+{%- endcapture -%}
+{{ page_banner | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Blog Banner",
+     "class": "pgbnr",
+    "enabled_on": {
+      "templates": ["blog"]
+    },
+    "settings": [        
+        {
+            "type": "paragraph",
+            "content": "[How do I set blog banners?](https://www.adornthemes.com/knowledge-base/blog-banner/)"
+        },
+        {
+            "type":"paragraph",
+            "content":"Height ==="
+        },
+        {
+            "type": "range",
+            "id": "hit",
+            "label": "Desktop",
+            "default": 180,
+            "min": 80,
+            "max": 900,
+            "step": 10
+        },
+        {
+            "type": "range",
+            "id": "hitt",
+            "label": "Tablet",
+            "default": 160,
+            "min": 80,
+            "max": 900,
+            "step": 10
+        },  
+        {
+            "type": "range",
+            "id": "hitm",
+            "label": "Mobile",
+            "default": 100,
+            "min": 30,
+            "max": 900,
+            "step": 10
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background color",
+            "default": "#f5f5f5"
+        },	 
+       {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0
+        },                      
+        {
+            "type": "range",
+            "id": "cntwd",
+            "min": 600,
+            "max": 1600,
+            "step": 10,
+            "label": "Container max. width (desktop)",
+            "unit": "px",
+            "default": 1000
+        },
+        {
+            "type": "checkbox",
+            "id": "text-align",
+            "label": "Text align center?",
+            "default": true
+        }	
+    ],
+    "blocks": [
+        {
+            "type": "title",
+            "name": "Blog Title",
+            "limit":1,
+            "settings": [
+                    {
+                      "type": "select",
+                      "id": "htag",
+                      "label": "Heading tag",
+                      "info":"Specify heading types for SEO and search engines for crawling purposes.",
+                      "default": "h2",
+                      "options": [
+                          {
+                              "value": "h1",
+                              "label": "H1"
+                          },
+                          {
+                              "value": "h2",
+                              "label": "H2"
+                          },
+                          {
+                              "value": "h3",
+                              "label": "H3"
+                          },
+                          {
+                              "value": "h4",
+                              "label": "H4"
+                          },
+                          {
+                              "value": "h5",
+                              "label": "H5"
+                          },
+                          {
+                              "value": "h6",
+                              "label": "H6"
+                          },
+                         {
+                              "value": "p",
+                              "label": "P"
+                          }
+                      ]
+                },               
+               {
+                    "type": "select",
+                    "id": "tff",
+                    "label": "Font family",
+                    "default": "ft2",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+                },                   
+                {
+                    "type": "range",
+                    "id": "fts",
+                    "label": "Font size",
+                    "default": 22,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "ftsm",
+                    "label": "Font size (mobile)",
+                    "default": 20,
+                    "min": 10,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px"
+                }, 	
+              {
+                  "type": "select",
+                  "id": "fw",
+                  "label": "Font weight",
+                  "default": "600",
+                  "options": [
+                    {
+                      "value": "300",
+                      "label": "Light"
+                    },
+                    {
+                      "value": "400",
+                      "label": "Regular"
+                    },
+                    {
+                      "value": "500",
+                      "label": "Medium"
+                    },
+                    {
+                      "value": "600",
+                      "label": "Semi Bold"
+                    },
+                    {
+                      "value": "700",
+                      "label": "Bold"
+                    }
+                  ]
+                },  
+                {
+                    "type": "checkbox",
+                    "id": "tuu",
+                    "label": "Use uppercase?",
+                    "default": false			
+                },
+              {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text color",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 5,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 5,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "name": "Text",
+            "limit":5,
+            "settings":[
+                {
+                    "type": "richtext",
+                    "id": "title",
+                    "label": "Text",                 
+                    "info": "Use dynamic source to show different text for each blog page."
+                },
+                {
+                    "type": "checkbox",
+                    "id": "hidemb",
+                    "label": "Hide on mobile?",
+                    "default": true			
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 14,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line height",
+                    "default": 1.5,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1                  
+                },
+               {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text color",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        },
+        {      
+            "type": "bc",
+            "name": "Breadcrumb",
+            "limit":1,    
+            "settings":[
+                {
+                    "type": "checkbox",
+                    "id": "hidemb",
+                    "label": "Hide on mobile?",
+                    "default": true			
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 13,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 12,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#eee"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 0,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 0,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        }
+    ],
+  "presets": [
+    {
+      "name": "Blog Banner"
+    }
+  ]
+}
+{% endschema %}

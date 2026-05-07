@@ -1,0 +1,413 @@
+{%- capture gallery -%}
+{%- liquid 
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+-%}
+{%- capture icon -%}						
+    {% if section_st.icony %}
+		{% if section_st.icon == '1' %}
+    		<svg class="at-icon anim gicon{{ section_st.icon }} m_auto" style="--icns:18px;--icns_cl:{{ section_st.cl }}"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 409.61 409.61" style="enable-background:new 0 0 409.61 409.61;" xml:space="preserve"> <path d="M307.205,0h-204.8C46.09,0,0.005,46.085,0.005,102.4v204.81c0,56.3,46.085,102.4,102.4,102.4h204.8 c56.315,0,102.4-46.1,102.4-102.4V102.4C409.605,46.085,363.52,0,307.205,0z M375.47,307.21c0,37.632-30.612,68.265-68.265,68.265 h-204.8c-37.637,0-68.265-30.633-68.265-68.265V102.4c0-37.642,30.628-68.265,68.265-68.265h204.8 c37.653,0,68.265,30.623,68.265,68.265V307.21z"/> <path d="M204.805,102.4c-56.566,0-102.4,45.839-102.4,102.4c0,56.54,45.834,102.41,102.4,102.41c56.55,0,102.4-45.87,102.4-102.41 C307.205,148.239,261.355,102.4,204.805,102.4z M204.805,273.075c-37.699,0-68.265-30.566-68.265-68.275 s30.566-68.265,68.265-68.265s68.265,30.556,68.265,68.265S242.504,273.075,204.805,273.075z"/> </svg>
+          {% elsif section_st.icon == '2' %}
+    		<svg class="at-icon anim gicon{{ section_st.icon }} m_auto" style="--icns:18px;--icns_cl:{{ section_st.cl }}" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" ><path d="m181.2 32a32 32 0 0 1 -32 32h-85.2v85.2a32 32 0 0 1 -64 0v-117.2a32 32 0 0 1 32-32h117.2a32 32 0 0 1 32 32zm-32 416h-85.2v-85.2a32 32 0 0 0 -64 0v117.2a32 32 0 0 0 32 32h117.2a32 32 0 1 0 0-64zm330.8-117.2a32 32 0 0 0 -32 32v85.2h-85.2a32 32 0 1 0 0 64h117.2a32 32 0 0 0 32-32v-117.2a32 32 0 0 0 -32-32zm0-330.8h-117.2a32 32 0 0 0 0 64h85.2v85.2a32 32 0 1 0 64 0v-117.2a32 32 0 0 0 -32-32z"/></svg>
+          {% elsif section_st.icon == '3' %}
+            <svg class="at-icon anim gicon{{ section_st.icon }} m_auto" style="--icns:18px;--icns_cl:{{ section_st.cl }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M252.9,234.1l-53.4-53.4c-3.1-3.1-7.5-4.3-11.5-3.4c16.3-18.7,26.2-43.2,26.2-69.9c0-58.9-47.9-106.8-106.8-106.8 S0.6,48.5,0.6,107.3s47.9,106.8,106.8,106.8c27.1,0,51.9-10.2,70.8-26.9c-0.8,4,0.4,8.3,3.5,11.4L235,252c2.5,2.5,5.7,3.7,8.9,3.7 c3.2,0,6.5-1.2,8.9-3.7C257.8,247.1,257.8,239.1,252.9,234.1z M107.3,193.9c-47.7,0-86.6-38.8-86.6-86.6s38.8-86.6,86.6-86.6 s86.6,38.8,86.6,86.6S155.1,193.9,107.3,193.9z"/></svg>     
+          {% else %}
+            <svg class="at-icon anim gicon{{ section_st.icon }} m_auto" style="--icns:18px;--icns_cl:{{ section_st.cl }}"><use xlink:href="#icon-cart"></use></svg>
+          	{% endif %}
+    {% endif %}
+{%- endcapture -%}
+
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px" id="{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="masonary"> 	   
+ 
+        <div class="insta-{{ section.id }}{% if section_st.sw %} fw-sec{% if section_st.npd %} npd{% endif %}{% else %} page-width{% endif %}">     
+			
+            {% render 'sec-title' %}
+            <grid-masonary class="grid grid-masonary gspace atgallery" style="--grsp:{{ section_st.gspace | divided_by: 2.0 }}px;--grspm:{{ section_st.gspacem | divided_by: 2.0 }}px;--rounded:{{ section_st.radius }}px;--cl:{{ section_st.cl }};--imgbg:{{ section_st.imgbg }};--bbdr:{{ section_st.txtbg | color_darken:5 }};--mob-col:{{ section_st.col-m }};">
+                <div class="grid-sizer col-{{ section_st.col }} pa"></div>
+                {% for block in section.blocks limit: section.blocks.size %}
+				    {% assign block_st = block.settings %}
+                    {%- capture sizes -%}
+                        {%- if block_st.width == 'wd20' -%}
+                            (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace | times:4 }}px) / 5),(min-width:768px) calc((100vw - {{ section_st.gspace | times:4 }}px) / 5), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif block_st.width == 'wd25' -%}
+                            (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace | times:3 }}px) / 4),(min-width:768px) calc((100vw - {{ section_st.gspace | times:3 }}px) / 4), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif block_st.width == 'wd33' -%}
+                            (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace | times:2 }}px) / 3),(min-width:768px) calc((100vw - {{ section_st.gspace | times:2 }}px) / 3), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif block_st.width == 'wd50' -%}
+                          (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 2),(min-width:768px) calc((100vw - {{ section_st.gspace }}px) / 2), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif block_st.width == 'wd66' -%}
+                          (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 3 * 2),(min-width:768px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 3 * 2), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif block_st.width == 'wd75' -%}
+                          (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 5 * 3),(min-width:768px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 5 * 3), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif block_st.width == 'w_100' -%}
+                          (min-width:1024px) {{ page_width }}, 100vw
+                        {%- endif -%}
+                    {%- endcapture -%}								
+				                
+                    <div class="msitem gitem {{ section_st.col-m }} {{ block_st.width }}-md {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                        <div class="gallery_wrap of_hidden brad pr" >							
+                            <a {% if section_st.imgclick == '1' %}class="zoom pr db ltbx"{% endif %} {% if block_st.newtab and section_st.imgclick == '2' %} target="_blank" {% endif %} href="{% if section_st.imgclick == '1' %}{{ block_st.image | image_url: block_st.image.width }}{% else %}{{ block_st.imgurl }}{% endif %}" data-pswp-width="{{ block_st.image.width }}" data-pswp-height="{{ block_st.image.height }}">
+                                {% if block_st.image!= blank %}
+                                    {{ block_st.image | image_url: width: block_st.image.width | image_tag: loading:'lazy', class:'imgAt m_auto', sizes:sizes, widths:"180,320,460,600,800,1000,1200,1400,1600,2000" }}
+                                {% else %} 
+                                    {% capture current %}{% cycle 1, 2, 3, 4 %}{% endcapture %}{{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}    
+                                {% endif %}																
+                                <div class="gallery_text fl f-jcc f-col all0 pa anim pd25 tc">
+                                    {{ icon }}
+                                    {% if block_st.title != blank %}<div class="fl f-col mt10"><span class="db anim fwm">{{ block_st.title }}</span></div>{% endif %}
+                                </div>												 
+                            </a>							                           															
+                        </div>
+                    </div>        
+                {% endfor %}
+            </grid-masonary>
+        </div>  
+</div>
+<link href="{{ 'photoswipe.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+<script type="module">
+    import PhotoSwipeLightbox from '{{ 'photoswipe-lightbox.min.js' | asset_url }}';
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '.atgallery{{ section_st.style }}',
+        children: 'a.ltbx',
+        pswpModule: () => import('{{ 'photoswipe.min.js' | asset_url }}')
+    });
+    lightbox.init();
+</script>
+{%- endcapture -%}
+{{ gallery | strip_newlines | remove: '  ' | remove: '	' }}
+
+{% schema %}
+{
+    "name": "Instagram Masonry",
+    "class":"index-section",
+     "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+    "max_blocks":50,
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Instagram Gallery"
+        },
+        {
+            "type": "textarea",
+            "id": "subtitle",
+            "label": "Sub Heading",
+            "default": "Showcase your product pictures from instagram"
+        },        
+        {
+            "type": "select",
+            "id": "grid_design",
+            "label": "Grid",
+            "default": "1",      
+            "options": [
+            {
+                "value": "1",
+                "label": "Gap"
+            },
+            {
+                "value": "2",
+                "label": "Columns"
+            }		 
+            ]
+        },        
+        {
+            "type": "range",
+            "id": "gspace",
+            "label": "Gap",
+            "default": 30,
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit":"px",
+            "visible_if": "{{section.settings.grid_design == '1' }}"           
+        },
+        {
+            "type": "range",
+            "id": "gspacem",
+            "label": "Gap (mobile)",
+            "default": 15,
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "unit":"px",
+            "visible_if": "{{section.settings.grid_design == '1' }}"
+        },
+        {
+            "type": "range",
+            "id": "col",
+            "label": "Desktop",
+            "default": 4,
+            "min": 2,
+            "max": 5,
+            "step": 1,
+            "info":"[Column Selection guide](https://www.adornthemes.com/masonry-column-selection/)",
+            "visible_if": "{{section.settings.grid_design == '2' }}"
+        },
+       {
+            "type": "select",
+            "id": "col-m",
+            "label": "Mobile",
+            "default": "wd50",
+            "options": [
+                {
+                    "value": "wd100",
+                    "label": "1"
+                },
+                {
+                    "value": "wd50",
+                    "label": "2"
+                },
+               {
+                    "value": "wd33",
+                    "label": "3"
+               },             
+              {
+                    "value": "wd25",
+                    "label": "4"
+              } 
+            ],
+            "visible_if": "{{section.settings.grid_design == '2' }}"
+        },		
+      {
+            "type": "header",
+            "content": "Gallery Design ==="
+        },		
+      {
+            "type": "select",
+            "id": "imgclick",
+            "label": "On Click",
+            "default": "1",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "Lightbox Popup"
+                },
+                {
+                    "value": "2",
+                    "label": "Redirect to Url"
+                }               
+            ]
+        },		
+		{
+            "type":"checkbox",
+            "id":"icony",
+            "label":"Show image hover icon?",
+            "default":true
+        },
+		 {
+            "type": "select",
+            "id": "icon",
+            "label": "Icon",
+            "default": "1",
+            "visible_if": "{{ section.settings.icony }}",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "Instagram"
+                },
+                {
+                    "value": "2",
+                    "label": "Expand"
+                },
+                {
+                    "value": "3",
+                    "label": "Search"
+                },
+                {
+                    "value": "4",
+                    "label": "Bag"
+                }
+            ]
+        },		 		  
+       {
+            "type":"color",
+            "id":"cl",
+            "label":"Icon & Text",
+            "default":"#111"
+        },		
+       {
+            "type":"color",
+            "id":"imgbg",
+            "label":"Image Overlay",
+            "default":"#000000A2",
+            "alpha": true
+        },		
+        {
+            "type": "range",
+            "id": "radius",
+            "label": "Image Rounded",
+            "default": 0,
+            "min": 0,
+            "max": 20,
+            "step": 1
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No Padding?",
+            "default": false,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        },	       
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on Desktop?",
+            "default": false
+        }	 
+    ],
+    "blocks":[
+        {
+            "name":"Image",
+            "type":"lookbook1",
+            "settings":[
+                {
+                    "type": "select",
+                    "id": "width",
+                    "label": "Column width",
+                    "default": "wd25",
+                    "info":"Total width of all block should be 100%",
+                    "options": [
+                        { "value": "wd20", "label": "20%" },
+                        { "value": "wd25", "label": "25%" },
+                        { "value": "wd33", "label": "33%" },
+                        { "value": "wd40", "label": "40%" },
+                        { "value": "wd50", "label": "50%" },
+                        { "value": "wd60", "label": "60%" },
+                        { "value": "wd66", "label": "66%" },
+                        { "value": "wd75", "label": "75%" },
+                        { "value": "wd80", "label": "80%" },
+                        { "value": "w_100", "label": "100%" }
+                    ]
+                },
+                {
+                    "type":"image_picker",
+                    "id":"image",
+                    "label":"Add Image"
+                },               
+                {
+                    "type":"text",
+                    "id":"title",
+                    "label":"Text",
+                    "default":"<b>Insta Style</b>"
+                },                
+                {
+                    "type":"url",
+                    "id":"imgurl",
+                    "label":"Url"                   
+                }, 
+                {
+                  "type": "checkbox",
+                  "id": "newtab",
+                  "label": "Open in new tab?",
+                  "default": false
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Instagram Masonry",
+            "category": "Images",
+            "blocks": [
+                {
+                    "type": "lookbook1"
+                },
+                {
+                    "type": "lookbook1"
+                },
+                {
+                    "type": "lookbook1",
+                    "settings": {
+                      "width":"wd50"
+                    }
+                },
+                {
+                    "type": "lookbook1"
+                },
+               {
+                    "type": "lookbook1"
+                }                
+            ]
+        }
+    ]
+}
+{% endschema %}

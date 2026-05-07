@@ -1,0 +1,849 @@
+{%- liquid 
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+-%}
+{%- capture info_banner -%}  
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+   {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>
+        <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %}">
+            <div class="ft_row fl f-aist f-jcsb w_100 row-{{ section.id }} f-col f-row-md brad of_hidden"  style="--rounded:{{ section_st.sbrad }}px;--bg:{% if section_st.tbgg != blank %}{{ section_st.tbgg }}{% else %}{{ section_st.tbg }}{% endif %};--mwd:{{ section_st.image.width }}px;">				
+				<div class="fl fl1 f-aic jcc tc{% if section_st.layout == 'right' %} order2-md{% endif %} w_100 of_hidden {% render 'animate-data', css:true %}" {% render 'animate-data' %}>
+                    {% if section_st.image != blank %}
+                        {%- capture sizes -%} (min-width:1024px) calc({{ page_width }} / 2),(min-width:768px) calc(100vw / 2), calc(100vw - 30px){%- endcapture -%}
+                        {% if section_st.link != blank %}<a class="db w_100" href="{{ section_st.link }}">{% endif %}
+                            {{ section_st.image | image_url: width: section_st.image.width | image_tag: loading:'lazy', width:section_st.image.width, height:section_st.image.height, class:'h_auto', sizes:sizes, widths:"1500,1200,900,740,560,400" }}
+                        {% if section_st.link != blank %}</a>{% endif %}
+                    {% else %}
+                        {{ 'blog-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                </div>				
+                <div class="row_text fl fl1 of_hidden w_100 {{ section_st.talignv }}" style="--cl:{{ section_st.cl }};--cwd:{{ section_st.maxwd }}%;--icon_cl:{{section_st.icon_cl }};">
+                     <div class="row-text {{ section_st.talign }}{% if section_st.txtpd %} nobg{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %}>
+						
+                        {% if section_st.title != blank %}<h3 class="rgTxt mb15 {{ section_st.tff }}" style="--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;--fw:{{ section_st.fw }};--lh:{{ section_st.lh }};">{{ section_st.title }}</h3>{% endif %}
+                        {% if section_st.text != blank %}<div class="rgTxt rte mb30" style="--fs:{{ section_st.tfs }}px;--fsm:{{ section_st.tfsm }}px;--lh:{{ section_st.tlh }};">{{ section_st.text }}</div>{% endif %}
+
+                        {% if section.blocks.size > 0 %}
+                        <ul class="grid {{ section_st.style }} rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }}{% if section_st.talign == 'tc' %} tc{% endif %}">
+                            {% for block in section.blocks limit: section.blocks.size %}
+                                {%- assign block_st = block.settings -%}
+                                <li class="rgTxt gitem mb25" {{ block.shopify_attributes }} style="--fs:{{ section_st.ftfs }}px;--fsm:{{ section_st.ftfsm }}px;">
+                                    <div class="{% if section_st.style == 'stl2' %} fl f-ais{% elsif section_st.style == 'stl3'%} fl f-aic{% endif %}">                                          
+                                        {% if section_st.showicn %}
+                                        <div class="at_box_icons{% if section_st.style == 'stl1' %} mb15{% else %} mt2 mr15{% endif %}" style="--icons:{{ section_st.icns }}px;--iconsm:{{ section_st.icnsm }}px;">
+                                             {% if block_st.image != blank %}                                                          
+                                                <img loading="lazy" class="at-icon" src="{{ block_st.image | image_url: width: '60' }}" width="" height="" alt="" />
+                                            {%- else -%}
+                                                {% render 'icons', icon: block_st.icon %} 
+                                            {%- endif -%} 
+                                        </div>
+                                        {% endif %}                                                                                                        
+                                        <div class="fl1">
+                                            {% if block_st.title %}<div class="rgTxt {% if section_st.style != 'stl3' %}mb5{% endif %}" style="--fs:{{ section_st.fttfs }}px;--fsm:{{ section_st.fttfsm }}px;--lh:{{ section_st.ftlh }};--fw:{{ section_st.ftfw }};">{{ block_st.title }}</div>{% endif %}
+                                            {% if section_st.style != 'stl3' and block_st != blank %}{{ block_st.text }}{% endif %}
+                                        </div>                              
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <br />
+						{% endif %}
+                        {% if section_st.btn != blank and section_st.link != blank %}
+                            <a href="{{ section_st.link }}" class="btn {{ section_st.btn-size }} {{ section_st.btn-style }}">{{ section_st.btn }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{%- endcapture -%}
+{{ info_banner | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Featured Banner",
+    "class": "featured-banner",
+    "disabled_on": {
+        "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [	  	 	
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },  
+        {
+            "type": "select",
+            "id": "layout",
+            "label":"Image alignment",
+            "default": "left",
+            "options": [
+                { "value": "left","label":"Left"},
+                { "value": "right","label":"Right"}
+            ]
+        }, 			  
+        {
+            "type": "paragraph",
+            "content": "----------------------------------------------"
+        },       
+        {
+            "type": "color",
+            "id": "tbg",
+            "label": "Background Color",
+            "default": "#f5f5f5"
+        },
+        {
+            "type": "color_background",
+            "id": "tbgg",
+            "label": "Gradient Background"
+        },	  
+        {
+            "type": "select",
+            "id": "talign",
+            "label": "Text Align",
+            "default": "tc",
+            "options": [
+                { "value": "tl", "label": "Left" },
+                { "value": "tc", "label": "Center" },
+                { "value": "tr", "label": "Right" }
+            ]
+        },
+       {
+            "type": "select",
+            "id": "talignv",
+            "label": "Text Align (vertical)",
+            "default": "f-aic",
+            "options": [
+                { "value": "f-ais", "label": "Top" },
+                { "value": "f-aic", "label": "Middle" },
+                { "value": "f-aie", "label": "Bottom" }
+            ]
+        },
+        {
+    		"type": "range",
+    		"id": "maxwd",
+    		"label": "Text maximum width",
+    		"default": 90,
+    		"min": 50,
+    		"max": 100,
+    		"step": 5,
+    		"unit": "%"
+    	},
+        {
+				"type": "checkbox",
+				"id": "txtpd",
+				"label": "Remove Text Padding(mobile)?",
+				"info": "Text left and right space for mobile view",
+                "default":false
+                
+		},
+       {
+            "type": "paragraph",
+            "content": "----------------------------------------------"
+        },    
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Our Story, Our Promise"
+        },     
+       {
+            "type": "select",
+            "id": "tff",
+            "label": "Font Family",
+            "default": "ft1",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 25,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font Size (mobile)",
+            "default": 20,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },       
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "500",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+        {
+            "type": "range",
+            "id": "lh",
+            "label": "Line Height",
+            "default": 1.3,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1          
+        },         
+        {
+            "type": "paragraph",
+            "content": "----------------------------------------------"
+        },  
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Pair text with an image to give customers insight into your brand. Tell a story, explain a product detail, or describe a new promotion.</p>"
+        },        
+        {
+            "type": "range",
+            "id": "tfs",
+            "label": "Font Size",
+            "default": 15,
+            "min": 12,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "tfsm",
+            "label": "Font Size (mobile)",
+            "default": 13,
+            "min": 12,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        }, 	      
+        {
+            "type": "range",
+            "id": "tlh",
+            "label": "Line Height",
+            "default": 1.8,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1
+         
+        }, 	     
+        {
+            "type": "header",
+            "content": "Features Point ===="
+        },	
+       {
+            "type": "select",
+            "id": "style",
+            "label": "Select Style",
+            "default": "stl1",            
+            "options": [
+                {
+                    "value": "stl1",
+                    "label": "Style 1 : Multiple Line Text"
+                },
+                {
+                    "value": "stl2",
+                    "label": "Style 2 : 2 Line Text"
+                },
+                {
+                    "value": "stl3",
+                    "label": "Style 3 : 1 Line Text"
+                }                           
+            ]
+        },
+       {
+            "type":"checkbox",
+            "id":"showicn",
+            "label":"Show Icons?",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "icns",
+            "label": "Icons Size",
+            "default": 30,
+            "min": 16,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "visible_if": "{{ section.settings.showicn }}"
+        },
+        {
+            "type": "range",
+            "id": "icnsm",
+            "label": "Icons Size (mobile)",
+            "default": 30,
+            "min": 16,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+           "visible_if": "{{ section.settings.showicn }}"
+        },
+        {
+            "type": "range",
+            "id": "fttfs",
+            "label": "Title Font",
+            "default": 15,
+            "min": 10,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fttfsm",
+            "label": "Title Font (mobile)",
+            "default": 13,
+            "min": 10,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        },
+      {
+            "type": "select",
+            "id": "ftfw",
+            "label": "Font Weight",
+            "default": "600",
+            "options": [
+              {
+                "value": "300",
+                "label": "Light"
+              },
+              {
+                "value": "400",
+                "label": "Regular"
+              },
+              {
+                "value": "500",
+                "label": "Medium"
+              },
+              {
+                "value": "600",
+                "label": "Semi Bold"
+              },
+              {
+                "value": "700",
+                "label": "Bold"
+              }
+            ]
+        },
+       {
+            "type": "range",
+            "id": "ftlh",
+            "label": "Line Height",
+            "default": 1.3,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1          
+        }, 			        
+        {
+            "type": "range",
+            "id": "ftfs",
+            "label": "Text",
+            "default": 13,
+            "min": 10,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "ftfsm",
+            "label": "Text (mobile)",
+            "default": 13,
+            "min": 10,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        }, 
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Color",
+            "default": "#222"
+        },
+        {
+            "type": "color",
+            "id": "icon_cl",
+            "label": "Icons Color",
+            "default":"#333"
+        },
+        {
+            "type": "paragraph",
+            "content": "Columns Per Row ==="
+        },
+        {
+            "type": "range",
+            "id": "grid",
+            "label": "Desktop",
+            "default": 2,
+            "min": 1,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "gridtb",
+            "label": "Tablet",
+            "default": 2,
+            "min": 1,
+            "max": 3,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "gridmb",
+            "label": "Mobile",
+            "default": 1,
+            "min": 1,
+            "max": 3,
+            "step": 1
+        },
+        {
+            "type": "header",
+            "content": "Button ==="
+        },
+        {
+            "type": "text",
+            "id": "btn",
+            "label": "Button label",
+            "default":"Read More"
+        },
+        {
+            "type": "url",
+            "id": "link",
+            "label": "Button link",
+            "default":"/"
+        },
+       {
+            "type": "select",
+            "id": "btn-style",
+            "label": "Button Design",
+            "default": "btn1",
+            "options": [
+                {
+                    "label": "Button 1",
+                    "value": "btn1"
+                },
+                {
+                    "label": "Button 2",
+                    "value": "btn2"
+                },
+                {
+                    "label": "Button 3",
+                    "value": "btn3"
+                },
+                {
+                    "label": "Button 4",
+                    "value": "btn4"
+                },
+                {
+                    "label": "Button 5",
+                    "value": "btn5"
+                },
+			    {
+					"label": "Button 6",
+					"value": "btn6"
+			    },
+                  {
+                      "label": "Button 7 Gradient",
+                      "value": "btn7"
+                  },
+                  {
+                      "label": "Button 8 Gradient",
+                      "value": "btn8"
+                  },
+			    {
+					"label": "Link",
+					"value": "btnLink"
+			    }  
+            ]
+        },
+        {
+            "type": "select",
+            "id": "btn-size",
+            "label": "Button Size",
+            "default": "btn-sm",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                } 		  
+            ]
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+              "type": "range",
+              "id": "sbrad",
+              "label": "Rounded corner",
+              "default": 0,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "unit":"px"		
+        },	 
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+          {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff",	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0
+        },      
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        } 
+    ],
+    "blocks": [
+        {
+            "type": "feature",
+            "name": "Feature",
+            "settings": [
+                {
+					"type": "select",
+					"id": "icon",
+					"label": "Icon",
+					"default": "none",
+					"options": [
+                       {
+							"value": "none",
+							"label": "None"
+						},
+					    {
+							"value": "custom",
+							"label": "Custom"
+						},
+						{
+							"value": "check",
+							"label": "Check"
+						},
+                       {
+							"value": "check2",
+							"label": "Check 2"
+						},	
+						{
+							"value": "truck",
+							"label": "Truck"
+						},
+                        {
+							"value": "email",
+							"label": "Email"
+						},
+                        {
+							"value": "phone",
+							"label": "Phone"
+						},
+                       {
+							"value": "phone2",
+							"label": "Phone 2"
+						},
+                        {
+							"value": "comment",
+							"label": "Comment"
+						},
+						{
+							"value": "support",
+							"label": "Support"
+						},
+                        {
+							"value": "dollar",
+							"label": "Dollar"
+						},												
+						{
+							"value": "package",
+							"label": "Package"
+						},
+                        {
+							"value": "return",
+							"label": "Return"
+						},
+                        {
+							"value": "rocket",
+							"label": "Rocket"
+						},	
+                       {
+							"value": "plan",
+							"label": "Plane"
+						},
+						{
+							"value": "measure",
+							"label": "Measure"
+						},                      
+                        {
+							"value": "file",
+							"label": "File"
+						},                       
+						{
+							"value": "shield",
+							"label": "Shield"
+						},	                     
+                      {
+							"value": "lock",
+							"label": "Lock"
+						},	
+                      {
+							"value": "payment",
+							"label": "Payment"
+						},	
+                      {
+							"value": "progress",
+							"label": "Progress"
+						},	
+					   {
+							"value": "heart",
+							"label": "Heart"
+						},										
+						{
+							"value": "star",
+							"label": "Star"
+						},
+                        {
+							"value": "like",
+							"label": "Like"
+						}, 
+						{
+							"value": "tag",
+							"label": "Tag"
+						},
+                        {
+							"value": "tag2",
+							"label": "Tag"
+						},								
+                        {
+							"value": "info",
+							"label": "Info."
+						}, 
+						{
+							"value": "globe",
+							"label": "Globe"
+						},
+                       {
+							"value": "earth",
+							"label": "Earth"
+						},
+                       {
+							"value": "gift",
+							"label": "Gift"
+						},
+                       {
+							"value": "location",
+							"label": "Location"
+						},
+                       {
+							"value": "shop",
+							"label": "Shop"
+						},
+                       {
+							"value": "rain",
+							"label": "Rain"
+						},
+                       {
+							"value": "sun",
+							"label": "Sun"
+						},
+                       {
+							"value": "cloud",
+							"label": "Cloud"
+						},
+                        {
+							"value": "leaf",
+							"label": "Leaf"
+						},
+                       {
+							"value": "care",
+							"label": "Care"
+						}, 
+                       {
+							"value": "care2",
+							"label": "Care 2"
+						},  
+                       {
+							"value": "rabit",
+							"label": "Rabbit"
+						},
+                       {
+							"value": "paraben",
+							"label": "Paraben"
+						}                                    
+					]                   
+				},            
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Custom Icon",
+                    "visible_if":"{{ block.settings.icon == 'custom' }}"
+				},          
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Heading",
+                    "default": "Add a title or tagline"                   
+                },
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "label": "Text",
+                    "default":"<p>Add feature short description</p>"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Featured Banner",
+            "category": "Storytelling",
+            "blocks": [
+                {
+                    "type": "feature"
+                },
+                {
+                    "type": "feature"
+                },
+                {
+                    "type": "feature"
+                },
+                {
+                    "type": "feature"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

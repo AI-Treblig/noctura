@@ -1,0 +1,545 @@
+{%- capture lookbook -%}
+{%- liquid 
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+-%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--ttp:{{ section_st.tbp }}px;--tbp:{{ section_st.tbp | plus : 4 }}px">   
+   <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %}" id="{{ section.id }}">        
+     
+       {% render 'sec-title' %}
+
+       <grid-masonary class="grid grid-masonary gspace" style="--grsp:{{ section_st.gspace | divided_by: 2.0 }}px;--grspm:{{ section_st.gspacem | divided_by: 2.0 }}px;--mob-col:{{ section_st.col-m }};">        
+        <div class="grid-sizer col-{{ section_st.col }} pa"></div>        
+          {% for block in section.blocks limit: section.blocks.size %}
+                 {%- assign blk_st = block.settings -%}
+                 {%- capture sizes -%}
+                        {%- if blk_st.width == 'wd20' -%}
+                            (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace | times:4 }}px) / 5),(min-width:768px) calc((100vw - {{ section_st.gspace | times:4 }}px) / 5), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif blk_st.width == 'wd25' -%}
+                            (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace | times:3 }}px) / 4),(min-width:768px) calc((100vw - {{ section_st.gspace | times:3 }}px) / 4), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif blk_st.width == 'wd33' -%}
+                            (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace | times:2 }}px) / 3),(min-width:768px) calc((100vw - {{ section_st.gspace | times:2 }}px) / 3), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif blk_st.width == 'wd50' -%}
+                          (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 2),(min-width:768px) calc((100vw - {{ section_st.gspace }}px) / 2), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif blk_st.width == 'wd66' -%}
+                          (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 3 * 2),(min-width:768px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 3 * 2), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif blk_st.width == 'wd75' -%}
+                          (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 5 * 3),(min-width:768px) calc(({{ page_width }} - {{ section_st.gspace }}px) / 5 * 3), calc((100vw - 15px) / {{ section_st.col-m }})
+                        {%- elsif blk_st.width == 'w_100' -%}
+                          (min-width:1024px) {{ page_width }}, 100vw
+                        {%- endif -%}
+                {%- endcapture -%}             
+                {% if blk_st.image != blank %}
+                    <div class="msitem gitem {{ section_st.col-m }} {{ blk_st.width }}-md {% render 'animate-data', css:true %}" {% render 'animate-data' %} id="{{ block.id }}" {{ block.shopify_attributes }}>
+                      <a class="db igshop popup-link pr brad of_hidden" href="#igpp{{ block.id }}" data-popup="igpp{{ block.id }}" title="{{ blk_st.title | escape}}" style="--rounded:{{ section_st.irad }}px;">
+                        <span class="insta_shop pa fl f-aic f-jcc"> <svg class="at-icon" style="--icns:13px;"><use xlink:href="#icon-cart"></use></svg></span>                                                                                
+                        {{ blk_st.image | image_url: width: blk_st.image.width | image_tag: loading:'lazy', width:blk_st.image.width, height:blk_st.image.height, class:'imgAt m_auto', sizes:sizes, widths:"320,400,560,780" }}
+                      </a>
+                    </div>
+                {% else %}
+                    <div class="msitem gitem {{ section_st.col-m }} {{ blk_st.width }}-md {% render 'animate-data', css:true %}" {% render 'animate-data' %} id="{{ block.id }}" {{ block.shopify_attributes }}>
+                     {% capture current %}{% cycle 1, 2, 3, 4 %}{% endcapture %}{{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                {% endif %}
+            {% endfor %}                      
+    </grid-masonary>
+  </div>
+</div>
+  {% for block in section.blocks %}
+    {%- assign blk_st = block.settings -%}
+    {% if blk_st.image != blank %}
+            <div id="igpp{{ block.id }}" class="tinglebox pp-hide cm">
+                <div class="grid">
+                    <div class="gitem wd60-md">
+                        <div class="pr lookbook" style="--icns:14px;">
+                        {%- assign imgsizes = '(min-width:1024px) calc((840px / 5) * 3), calc((100vw / 5) * 3)' -%}
+                        {{ blk_st.image | image_url: width: blk_st.image.width | image_tag: loading:'lazy', width:blk_st.image.width, height:blk_st.image.height, class:'imgAt m_auto', sizes:imgsizes, widths:"330,400,540,660,800" }}
+                            {% if blk_st.product1 != blank %}
+                                <a class="pa products" href="{{blk_st.product1.url}}" target="_blank" style="top:{{ blk_st.p1_top}}%;left:{{ blk_st.p1_left}}%;" title="{{ blk_st.product1.title | escape }}"><span class="fl f-jcc f-aic btn-shop db"><svg class="at-icon"><use xlink:href="#icon-plus"></use></svg></span></a>
+                            {% endif %}
+                            {% if blk_st.product2 != blank %}
+                                <a class="pa products" href="{{blk_st.product2.url}}" target="_blank" style="top:{{ blk_st.p2_top}}%;left:{{ blk_st.p2_left}}%;" title="{{ blk_st.product2.title | escape }}"><span class="fl f-jcc f-aic btn-shop db"><svg class="at-icon"><use xlink:href="#icon-plus"></use></svg></span></a>
+                            {% endif %}
+                            {% if blk_st.product3 != blank %}
+                                <a class="pa products" href="{{blk_st.product3.url}}" target="_blank" style="top:{{ blk_st.p3_top}}%;left:{{ blk_st.p3_left}}%;" title="{{ blk_st.product3.title | escape }}"><span class="fl f-jcc f-aic btn-shop db"><svg class="at-icon"><use xlink:href="#icon-plus"></use></svg></span></a>
+                            {% endif %}
+                            {% if blk_st.product4 != blank %}
+                                <a class="pa products" href="{{blk_st.product4.url}}" target="_blank" style="top:{{ blk_st.p4_top}}%;left:{{ blk_st.p4_left}}%;" title="{{ blk_st.product4.title | escape }}"><span class="fl f-jcc f-aic btn-shop db"><svg class="at-icon"><use xlink:href="#icon-plus"></use></svg></span></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="gitem wd40-md">
+                      
+                        {% if blk_st.title != blank %}
+                            <div class="fs16 fwm mb10">
+                                {% if blk_st.url != blank %}
+                                <a href="{{ blk_st.url }}" class="db fl f-aic" target="_blank">                                    
+                                     {{ blk_st.title }}<svg id="elink" class="ml10 at-icon" style="--icns:16px" enable-background="new 0 0 128 128" height="512" viewBox="0 0 128 128" width="512" xmlns="http://www.w3.org/2000/svg"><path id="External_Link" d="m124 8v36c0 2.211-1.789 4-4 4s-4-1.789-4-4v-26.344l-57.172 57.172c-.781.781-1.805 1.172-2.828 1.172s-2.047-.391-2.828-1.172c-1.563-1.563-1.563-4.094 0-5.656l57.172-57.172h-26.344c-2.211 0-4-1.789-4-4s1.789-4 4-4h36c2.211 0 4 1.789 4 4zm-16 104v-48c0-2.211-1.789-4-4-4s-4 1.789-4 4v48c0 2.207-1.793 4-4 4h-80c-2.207 0-4-1.793-4-4v-80c0-2.207 1.793-4 4-4h48c2.211 0 4-1.789 4-4s-1.789-4-4-4h-48c-6.617 0-12 5.383-12 12v80c0 6.617 5.383 12 12 12h80c6.617 0 12-5.383 12-12z"/></svg>
+                                </a>
+                                 {% else %}   
+                                    {{ blk_st.title }}
+                                 {% endif %}
+                            </div>
+                        {% endif %}
+                                      
+                        {% if blk_st.cpt != blank  %}<div class="mb20">{{ blk_st.cpt }}</div>{% endif %}                      
+
+                        <div class="fl f-col row-gap" style="--gap:10px">
+                        {% if blk_st.product1 != blank %}{% render 'product-card-columns', product: blk_st.product1, postion: blk_st.dis-pstn1 %}{% endif %}
+                        {% if blk_st.product2 != blank %}{% render 'product-card-columns', product:blk_st.product2, postion: blk_st.dis-pstn2 %}{% endif %}
+                        {% if blk_st.product3 != blank %}{% render 'product-card-columns', product:blk_st.product3, postion: blk_st.dis-pstn3 %}{% endif %}
+                        {% if blk_st.product4 != blank %}{% render 'product-card-columns', product:blk_st.product4, postion: blk_st.dis-pstn4 %}{% endif %}
+                        </div>
+                          
+                        {% if section_st.btn != blank and blk_st.url != blank %}
+                          <p class="tc mt30">  <a href="{{ blk_st.url }}" class="btn {{section_st.btn-size-desk}} {{section_st.btn-style}}" target="_blank">{{ section_st.btn }}</a></p>
+                        {% endif %}
+                                      
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+{% endfor %}
+{%- endcapture -%}
+{{lookbook | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+  {
+    "name": "Instagram Shop",
+    "max_blocks":50,
+    "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [	  
+     {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Instagram Shop"
+      },
+      {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "This feature enable seamless users' browsing experiences"
+      },	  	                
+       {
+            "type": "select",
+            "id": "grid_design",
+            "label": "Grid",
+            "default": "1",      
+            "options": [
+            {
+                "value": "1",
+                "label": "Gap"
+            },
+            {
+                "value": "2",
+                "label": "Columns"
+            }		 
+            ]
+        },    
+        {
+            "type": "range",
+            "id": "gspace",
+            "label": "Gap",
+            "default": 30,
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit":"px",
+            "visible_if": "{{section.settings.grid_design == '1' }}"               
+        },
+        {
+            "type": "range",
+            "id": "gspacem",
+            "label": "Gap (mobile)",
+            "default": 15,
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "unit":"px",
+            "visible_if": "{{section.settings.grid_design == '1' }}"    
+        },
+        {
+            "type": "range",
+            "id": "col",
+            "label": "Desktop",
+            "default": 4,
+            "min": 2,
+            "max": 5,
+            "step": 1,
+            "info":"[Column Selection guide](https://www.adornthemes.com/masonry-column-selection/)",
+            "visible_if": "{{section.settings.grid_design == '2' }}"    
+        },
+         {
+            "type": "select",
+            "id": "col-m",
+            "label": "Mobile",
+            "default": "wd50",
+            "options": [
+                {
+                    "value": "wd100",
+                    "label": "1"
+                },
+                {
+                    "value": "wd50",
+                    "label": "2"
+                },
+               {
+                    "value": "wd33",
+                    "label": "3"
+               },             
+              {
+                    "value": "wd25",
+                    "label": "4"
+              } 
+            ],
+            "visible_if": "{{section.settings.grid_design == '2' }}"
+        },		
+       {
+            "type": "range",
+            "id": "irad",
+            "label": "Image rounded",
+            "default": 0,
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "unit":"px"		
+       },	  
+      {
+		"type":"paragraph",
+		"content":"----------------------------------------"
+	  }, 	 	 		
+	  {
+		"type": "text",
+		"id": "btn",
+		"label": "Button Text",
+		"default": "View on Instagram",
+        "info": "display button in popup.keep empty to hide"
+	  },
+	   {
+            "type": "select",
+            "id": "btn-style",
+            "label": "Button Design",
+            "default": "btn1",
+            "options": [
+              {
+            "label": "Button 1",
+            "value": "btn1"
+          },
+          {
+            "label": "Button 2",
+            "value": "btn2"
+          },
+          {
+            "label": "Button 3",
+            "value": "btn3"
+          },
+          {
+            "label": "Button 4",
+            "value": "btn4"
+          },
+          {
+            "label": "Button 5",
+            "value": "btn5"
+          },
+          {
+            "label": "Button 6",
+            "value": "btn6"
+          },
+         {
+              "label": "Button 7 Gradient",
+              "value": "btn7"
+          },
+          {
+              "label": "Button 8 Gradient",
+              "value": "btn8"
+          },
+           {
+            "label": "Button Link",
+            "value": "btnLink"
+          }
+        ]
+        },
+		{
+          "type": "select",
+          "id": "btn-size-desk",
+          "label": "Button Size",
+          "default": "btn-sm",
+          "options": [
+			  {
+			  "label": "Small",
+			  "value": "btn-sm"
+			  },
+			  {
+			  "label": "Medium",
+			  "value": "btn-md"
+			  },
+			  {
+			  "label": "Large",
+			  "value": "btn-lg"
+			  }	
+          	]
+          },             		 				
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No Padding?",
+            "default": false,
+            "info":"Remove left/right padding for fullwidth"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        },	
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on Desktop?",
+            "default": false
+        }  
+	 ],
+	"blocks":[
+		{
+			"name":"Image",
+			"type":"img",
+		 	"settings":[
+                {
+                    "type": "select",
+                    "id": "width",
+                    "label": "Column width",
+                    "default": "wd25",                   
+                    "options": [
+                        { "value": "wd20", "label": "20%" },
+                        { "value": "wd25", "label": "25%" },
+                        { "value": "wd33", "label": "33%" },
+                        { "value": "wd40", "label": "40%" },
+                        { "value": "wd50", "label": "50%" },
+                        { "value": "wd60", "label": "60%" },
+                        { "value": "wd66", "label": "66%" },
+                        { "value": "wd75", "label": "75%" },
+                        { "value": "wd80", "label": "80%" },
+                        { "value": "w_100", "label": "100%" }
+                    ]
+                },
+                {
+                    "type":"image_picker",
+                    "id":"image",
+                     "label":"Image"
+                },
+                {
+                    "type":"text",
+                    "id":"title",
+                    "label":"Instagram Title"
+                },
+                {
+                    "type":"richtext",
+                    "id":"cpt",
+                    "label":"Instagram Caption"			 
+                },
+                {
+                    "type":"url",
+                    "id":"url",
+                    "label":"Instagram Link"
+                },              
+              {
+                "type":"header",
+                "content":"Add Products"
+               },
+              {
+                "type": "product",
+                "id": "product1",
+                "label": "Product 1"
+              },
+               {
+                "type": "range",
+                "id": "p1_top",
+                "label": "Top Position",
+                "default": 1,
+                "min": 1,
+                "max": 90,
+                "step": 1,
+                "unit": "%"
+              },
+              {
+                "type": "range",
+                "id": "p1_left",
+                "label": "Left Position",
+                "default": 1,
+                "min": 1,
+                "max": 90,
+                "step": 1,
+                "unit": "%"
+              },
+		 {
+            "type": "product",
+            "id": "product2",
+            "label": "Product 2"
+          },
+		 {		
+            "type": "range",
+            "id": "p2_top",
+            "label": "Top Position",
+            "default": 1,
+            "min": 1,
+            "max": 90,
+            "step": 1,
+            "unit": "%"
+          },
+		  {
+            "type": "range",
+            "id": "p2_left",
+            "label": "Left Position",
+            "default": 1,
+            "min": 1,
+            "max": 90,
+            "step": 1,
+            "unit": "%"
+          },
+		{
+            "type": "product",
+            "id": "product3",
+            "label": "Product 3"
+          },
+		 {		
+            "type": "range",
+            "id": "p3_top",
+            "label": "Top Position",
+            "default": 1,
+            "min": 1,
+            "max": 90,
+            "step": 1,
+            "unit": "%"
+          },
+		  {
+            "type": "range",
+            "id": "p3_left",
+            "label": "Left Position",
+            "default": 1,
+            "min": 1,
+            "max": 90,
+            "step": 1,
+            "unit": "%"
+          },
+		{
+            "type": "product",
+            "id": "product4",
+            "label": "Product 4"
+          },
+		 {		
+            "type": "range",
+            "id": "p4_top",
+            "label": "Top Position",
+            "default": 1,
+            "min": 1,
+            "max": 90,
+            "step": 1,
+            "unit": "%"
+          },
+		  {
+            "type": "range",
+            "id": "p4_left",
+            "label": "Left Position",
+            "default": 1,
+            "min": 1,
+            "max": 90,
+            "step": 1,
+            "unit": "%"
+          }
+		 ]
+	   }       
+     ],
+	"presets": [
+      {
+        "name": "Instagram Shop",
+        "category": "Images",
+        "blocks": [
+          {
+            "type": "img"
+          },
+          {
+            "type": "img"
+          },
+          {
+            "type": "img"
+          },
+          {
+            "type": "img"
+          }          	  
+        ]
+      }
+    ]
+  }
+{% endschema %}
+

@@ -1,0 +1,373 @@
+{%- capture products_list -%}
+{% assign section_st = section.settings %}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+    {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>  
+        <div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}"> 
+            <div class="grid" style="--cl:{{ section_st.tcl }};--fs:{{ section_st.tfs }}px;--fsm:{{ section_st.tfsm }}px;--fw:{{ section_st.tfw }};--lh:{{ section_st.tlh }};">
+                {% for block in section.blocks limit: section.blocks.size %}
+                    {% assign blk_st = block.settings %}
+                    <div class="gitem {{ blk_st.width }}-md mb20">
+                        {%- assign collection = collections[blk_st.collection] -%}        
+
+                        <h2 class="rgTxt mb20 {{ section_st.ttl-align }} {{ section_st.tft }}">{{ blk_st.title }}</h2>	                         
+                        <div class="grid fl row-gap rwcols-{{ blk_st.gridmb }} rwcols-md-{{ blk_st.gridtb }} rwcols-lg-{{ blk_st.grid }}" style="--gap:25px;--gapm:10px;"> 
+                            {% if blk_st.collection != blank %}
+                                {% for product in collection.products limit: blk_st.rows %}
+                                    <div class="gitem {% render 'animate-data', css:true %}" {% render 'animate-data', i:forloop.index %} style="--bdr:{{ section_st.prbdr }};--pd:10px;">
+                                      {%- render 'product-card-columns', product: product, block: block.settings, section_st: section_st -%}
+                                    </div>
+                                {% endfor %} 
+                            {% else %}
+                                {% for i in (1..blk_st.rows) %}
+                                    <div class="gitem {% render 'animate-data', css:true %}" {% render 'animate-data', i:forloop.index %} style="--bdr:{{ section_st.prbdr }};--pd:10px;">
+                                        <div class="pr_list fl f-aic mb15">
+                                            <div class="pr_list_img">
+                                                <a class="db" href="#">{% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}{% capture pl_class %}placeholder-svg svgcl{{ current }}{% endcapture %}{{ 'product-' | append: current | placeholder_svg_tag: pl_class }}</a>
+                                            </div>
+                                            <div class="fl1 pr_list_detail">
+                                                <a href="#" class="pr_list_ttl">{{ 'homepage.onboarding.product_title' | t }}</a>
+                                                <div class="pr_list_meta mt5">{% render 'product-price' %}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}   
+                            {% endif %} 			  
+                        </div>			 			  
+                    </div>			
+                {% endfor %} 	
+            </div>		
+        </div> 
+</div>
+{%- endcapture -%}
+{{ products_list | strip_newlines | remove: "  " | remove: "	" }}
+<style>
+  .pr_list_img {margin:0;}
+  .pr_list_detail {padding:15px;}
+</style>
+{% schema %}
+{
+    "name": "Products List",
+   "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+    "max_blocks": 8,
+    "settings": [ 	        
+        {
+            "type": "select",
+            "id": "ttl-align",
+            "label": "Title align",
+            "default": "tl",
+            "options": [            
+                { "value":"tl", "label":"Left" },
+                { "value":"tc", "label":"Center" },
+                { "value":"tr", "label":"Right" }
+            ]
+        },
+        {
+            "type": "color",
+            "id": "prbdr",
+            "label": "Product box border",
+            "default":"#eee"
+        },
+      {
+            "type": "range",
+            "id": "brad",
+            "label": "Box rounded",
+            "default": 0,
+            "min": 0,
+            "max": 20,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "header",
+            "content": "Title Appearance ==="
+        },
+      {
+            "type": "select",
+            "id": "tft",
+            "label": "Font family",
+            "default": "ft1",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },       
+        {
+            "type": "range",
+            "id": "tfs",
+            "label": "Font size",
+            "default": 16,
+            "min": 12,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "tfsm",
+            "label": "Font size (mobile)",
+            "default": 16,
+            "min": 12,
+            "max": 40,
+            "step": 1,
+            "unit": "px"
+        },        
+        {
+            "type": "select",
+            "id": "tfw",
+            "label": "Font weight",
+            "default": "500",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+            {
+                "type": "range",
+                "id": "tlh",
+                "label": "Line height",
+                "default": 1.3,
+                "min": 1.0,
+                "max": 2.0,
+                "step": 0.1                
+            },
+       {
+            "type": "color",
+            "id": "tcl",
+            "label": "Color",
+            "default": "#000"
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": false,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        } 
+    ],
+    "blocks": [
+        {
+            "type": "collection_column",
+            "name": "Collection",
+            "settings": [                
+                {
+                    "id": "collection",
+                    "type": "collection",
+                    "label": "Select collection"
+                },
+              {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Column name",
+                    "default": "Column Name"          
+                },
+                {
+                    "type": "select",
+                    "id": "width",
+                    "label": "Column width",
+                    "default": "wd25",
+                    "info":"Total width of all blocks should be 100%",
+                    "options": [
+                        { "value": "wd20", "label": "20%" },
+                        { "value": "wd25", "label": "25%" },
+                        { "value": "wd33", "label": "33%" },
+                        { "value": "wd40", "label": "40%" },
+                        { "value": "wd50", "label": "50%" },
+                        { "value": "wd60", "label": "60%" },
+                        { "value": "wd66", "label": "66%" },
+                        { "value": "wd75", "label": "75%" },
+                        { "value": "wd80", "label": "80%" },
+                        { "value": "wd100", "label": "100%" }
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "content": "Maximum products to show ==="
+                }, 	
+                {
+                    "type": "range",
+                    "id": "grid",
+                    "label": "Desktop",
+                    "default": 1,
+                    "min": 1,
+                    "max": 4,
+                    "step": 1
+                },
+                {
+                    "type": "range",
+                    "id": "gridtb",
+                    "label": "Tablet",
+                    "default": 1,
+                    "min": 1,
+                    "max": 3,
+                    "step": 1
+                },
+                {
+                    "type": "range",
+                    "id": "gridmb",
+                    "label": "Mobile",
+                    "default": 1,
+                    "min": 1,
+                    "max": 3,
+                    "step": 1
+                },
+                {
+                    "type": "range",
+                    "id": "rows",
+                    "label": "Products limit",
+                    "default": 4,
+                    "min": 1,
+                    "max": 50,
+                    "step": 1
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Products List",   
+            "category": "Products",
+            "blocks": [
+                {
+                    "type": "collection_column"
+                },
+                {
+                    "type": "collection_column"
+                },
+                {
+                    "type": "collection_column"
+                },
+                {
+                    "type": "collection_column"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

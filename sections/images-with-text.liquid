@@ -1,0 +1,915 @@
+{%- capture richtext -%}
+{% assign section_st = section.settings %}
+{% capture image_main %}
+  {% if section_st.image1 != blank %}
+       {{ section_st.image1 | image_url: width:section_st.image1.width | image_tag: loading:'lazy', class:'imgFt', widths:"180,320,400,560,740,900,1200" }}
+  {% else %}
+      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg imgFt' }}
+  {%- endif -%}
+{% endcapture %}
+{% capture image_sec %}
+  {% if section_st.image2 != blank %}
+     {{ section_st.image2 | image_url: width:section_st.image2.width | image_tag: loading:'lazy', class:'imgFt', widths:"180,320,400,560,740,900,1200" }}
+  {% else %}
+     {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg imgFt' }}
+  {%- endif -%}
+{% endcapture %}
+{% capture image_third %}
+  {% if section_st.image3 != blank %}
+     {{ section_st.image3 | image_url: width:section_st.image3.width | image_tag: loading:'lazy', class:'imgFt', widths:"180,320,400,560,740,900,1200" }}
+  {% else %}
+     {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg imgFt' }}
+  {%- endif -%}
+{% endcapture %}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"  	
+  {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>  
+	<div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}{% unless section_st.lefta %} tc{% endunless %}">
+
+     <div class="fl fl1 f-col f-row-md ft_row images_text">
+        {%- capture images_styles -%}
+          --wd:{{ section_st.img_width }}%;--rounded:{{ section_st.brad }}px;
+          {%- if section_st.style == '3' -%}
+            --row:10;--gap:25px;
+          {%- elsif section_st.style == '6' -%}
+            --row:11;
+          {%- elsif section_st.style == '8' or section_st.style == '10' -%}
+            --row:10;--gap:25px;
+          {%- endif -%}
+        {%- endcapture -%}
+        <div class="row_image img_collage gap zoom {{ section_st.order }}-md" style="{{ images_styles }}">
+           {%- if section_st.style == '1' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 10;--row:1 / 13">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:7 / 13;--row:4 / 10">{{ image_sec }}</div>
+           {%- elsif section_st.style == '2' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 10;--row:1 / 12">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:7 / 13;--row:7 / 13">{{ image_sec }}</div>
+           {%- elsif section_st.style == '3' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 7;--row:1 / 9">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:7 / 13;--row:3 / 11">{{ image_sec }}</div>
+           {%- elsif section_st.style == '4' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:5 / 13;--row:3 / 13">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 7;--row:2 / 10">{{ image_sec }}</div>
+           {%- elsif section_st.style == '4' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:4 / 13;--row:3 / 13">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 7;--row:1 / 7">{{ image_sec }}</div>
+           {%- elsif section_st.style == '5' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:4 / 13;--row:1 / 13">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 6;--row:4 / 11">{{ image_sec }}</div>
+           {%- elsif section_st.style == '6' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:3 / 11;--row:1 / 13">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 5;--row:2 / 7">{{ image_sec }}</div>
+             <div class="img pr of_hidden brad img3 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:8 / 13;--row:7 / 11">{{ image_third }}</div>
+           {%- elsif section_st.style == '7' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:3 / 11;--row:3 / 11">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 5;--row:1 / 5">{{ image_sec }}</div>
+             <div class="img pr of_hidden brad img3 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:8 / 13;--row:8 / 13">{{ image_third }}</div>
+           {%- elsif section_st.style == '8' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 7;--row:2 / 10">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:7 / 13;--row:1 / 5">{{ image_sec }}</div>
+             <div class="img pr of_hidden brad img3 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:7 / 13;--row:5 / 11">{{ image_third }}</div>
+           {%- elsif section_st.style == '9' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:3 / 11;--row:2 / 12">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:9 / 13;--row:3 / 7">{{ image_sec }}</div>
+             <div class="img pr of_hidden brad img3 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 6;--row:7 / 13">{{ image_third }}</div>
+           {%- elsif section_st.style == '10' -%}
+             <div class="img pr of_hidden brad img1 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:4 / 13;--row:2 / 10">{{ image_main }}</div>
+             <div class="img pr of_hidden brad img2 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:1 / 7;--row:1 / 6">{{ image_sec }}</div>
+             <div class="img pr of_hidden brad img3 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--col:3 / 8;--row:8 / 11">{{ image_third }}</div>
+           {%- endif -%}
+        </div>  
+        <div class="row_text fl fl1 {{ section_st.v_pos }}"> 
+    		<div class="row-text wd100 {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--cwd:{{ section_st.maxwd }}px;">
+    			{% for block in section.blocks %} 
+                    {% assign block_set = block.settings %}
+    				{% case block.type %}    
+                    {% when 'heading' %}
+                      <{{ block_set.htag }} class="rgTxt {{ block_set.tff }} mb{{ block_set.mbm }} mb{{ block_set.mb }}-md" style="--cl:{{ block_set.cl }};--fs:{{ block_set.fs }}px;--fsm:{{ block_set.fsm }}px;--fw:{{ block_set.fw }};--lh:{{ block_set.lh }};" {{ block.shopify_attributes }} >{{ block_set.title }}</{{ block_set.htag }}>                          
+    				{%  when 'text' %}
+    					<div class="rgTxt {{ block_set.tff }} mb{{ block_set.mb }}"  style="--cl:{{ block_set.cl }};--fs:{{ block_set.fs }}px;--fsm:{{ block_set.fsm }}px;--fw:{{ block_set.fw }};--lh:{{ block_set.lh }};">{{ block_set.ttl }}</div>
+                    {% when 'countdown' %}
+                          <countdown-time class="atCounter box_timer fl tc ttu mb{{ block_set.mb }}{% unless section_st.lefta %} f-jcc{% endunless %}" data-date="{{ block_set.date }}" style="--cl:{{ block_set.cl }};--bg:{{ block_set.bg }};--border:{{ block_set.bdr }};--rounded:{{ block_set.radius }}px;--fs:{{ block_set.fs }}px;--fsl:{{ block_set.fsl }}px;--fw:{{ block_set.fw}};" {{ block.shopify_attributes }}>
+                              <span class="pd15"><span class="tm days">00</span>{{ 'date_formats.days' | t }}</span>
+                              <span class="pd15"><span class="tm hours">00</span>{{ 'date_formats.hours' | t }}</span>
+                              <span class="pd15"><span class="tm minutes">00</span>{{ 'date_formats.minuts' | t }}</span>
+                              <span class="pd15"><span class="tm seconds">00</span>{{ 'date_formats.seconds' | t }}</span>
+                          </countdown-time>  
+    				{%  when 'button' %}
+    					<div class="mb{{ block_set.mb }} fl{% unless section_st.lefta %} f-jcc{% endunless %}">
+    						{% if block_set.btntxt != blank %}                             
+    							<a class="btn {{ block_set.btn-size }} {{ block_set.btn-style }}" {%  if block_set.newtab1 %}target="_blank"{% endif %} href="{{ block_set.url }}">{{ block_set.btntxt }}</a>
+    						{% endif %}
+    						{% if block_set.btntxt1 != blank %}                             
+    							<a class="btn ml20 {{ block_set.btn-size }} {{ block_set.btn-style1 }}" {%  if block_set.newtab2 %}target="_blank"{% endif %} href="{{ block_set.url1 }}">{{ block_set.btntxt1 }}</a>
+    						{% endif %}
+    					</div>
+    				{% endcase %}
+    			{% endfor %}  
+    		</div>  
+       </div>
+	</div> 
+      
+  </div>
+</div> 
+{%- endcapture -%}
+{{ richtext | strip_newlines | remove: '  ' | remove: '	' }}
+{% schema %}
+{
+"name": "Images Collage with Text",
+"disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+"settings":[    
+   {
+		"type": "header",
+		"content": "Images ==="		
+	},
+   {
+		"type": "image_picker",
+		"id": "image1",
+		"label": "Image 1"
+	},
+    {
+		"type": "image_picker",
+		"id": "image2",
+		"label": "Image 2"
+	},
+    {
+		"type": "image_picker",
+		"id": "image3",
+		"label": "Image 3",
+    "visible_if": "{{ section.settings.style == '6' or section.settings.style == '7' or section.settings.style == '8' or section.settings.style == '9' or section.settings.style == '10' }}"
+	},  
+    {
+          "type": "select",
+          "id": "style",
+          "label": "Images Style",
+          "default": "1",
+          "options": [
+              {
+                  "value": "1",
+                  "label": "2 Images (1)"
+              },
+              {
+                  "value": "2",
+                  "label": "2 Images (2)"
+              },
+              {
+                  "value": "3",
+                  "label": "2 Images (3)"
+              },
+              {
+                  "value": "4",
+                  "label": "2 Images (4)"
+              },
+              {
+                  "value": "5",
+                  "label": "2 Images (5)"
+              },
+              {
+                  "value": "6",
+                  "label": "3 Images (1)"
+              },
+              {
+                  "value": "7",
+                  "label": "3 Images (2)"
+              },
+              {
+                  "value": "8",
+                  "label": "3 Images (3)"
+              },
+              {
+                  "value": "9",
+                  "label": "3 Images (4)"
+              },
+              {
+                  "value": "10",
+                  "label": "3 Images (5)"
+              }
+          ]
+     },
+     {
+              "type": "range",
+              "id": "brad",
+              "label": "Image rounded",
+              "default": 10,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "unit":"px"		
+     },
+     {
+            "type": "range",
+            "id": "img_width",
+            "min": 20,
+            "max": 70,
+            "step": 1,
+            "label": "Column width",
+            "default": 60,
+            "unit": "%"
+    },  
+    {
+          "type": "select",
+          "id": "order",
+          "label": "Images position",
+          "default": "order0",
+          "options": [
+              {
+                  "value": "order0",
+                  "label": "Left"
+              },
+              {
+                  "value": "order1",
+                  "label": "Right"
+              },             
+          ]
+   },  
+    {
+		"type": "header",
+		"content": "Text ==="		
+	},
+	{
+		"type": "range",
+		"id": "maxwd",
+		"label": "Maximum width (desktop)",
+		"default": 400,
+		"min": 200,
+		"max": 1000,
+		"step": 10,
+		"unit": "px"
+	},
+	{
+		"type": "checkbox",
+		"id": "lefta",
+		"label": "Align left?",
+		"default":true
+	},
+  {
+          "type": "select",
+          "id": "v_pos",
+          "label": "Verticle alignment",
+          "default": "f-aic",
+          "options": [
+              {
+                  "value": "f-ais",
+                  "label": "Top"
+              },
+              {
+                  "value": "f-aic",
+                  "label": "Middle"
+              },  
+             {
+                  "value": "f-aie",
+                  "label": "Bottom"
+              }   
+          ]
+   }, 
+    {
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No Padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	                
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        }, 
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":60
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":60
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":25
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":25
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }	 	    	
+],
+"blocks": [
+  {
+		"type": "heading",
+		"name": "Heading",
+		"settings": [
+			{
+				"type": "text",
+				"id": "title",
+				"label": "Heading",
+				"default": "<p><b>TALK ABOUT YOUR BRANDS, PRODUCTS</b></p>"
+			},
+            {
+                    "type": "select",
+                    "id": "htag",
+                    "label": "Heading tag",
+                   "info":"Specify heading types for SEO and search engines for crawling purposes.",
+                    "default": "h2",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "H1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "H2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "H3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "H4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "H5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "H6"
+                        },
+                       {
+                            "value": "p",
+                            "label": "P"
+                        }
+                    ]
+                },               
+               {
+                    "type": "select",
+                    "id": "tff",
+                    "label": "Font family",
+                    "default": "ft1",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+             },
+			{
+				"type": "range",
+				"id": "fs",
+				"label": "Font size",
+				"default": 18,
+				"min": 10,
+				"max": 100,
+				"step": 1,
+				"unit": "px"
+			  },
+			  {
+				"type": "range",
+				"id": "fsm",
+				"label": "Font size (mobile)",
+				"default": 16,
+				"min": 10,
+				"max": 60,
+				"step": 1,
+				"unit": "px"
+			   },
+              {
+                "type": "select",
+                "id": "fw",
+                "label": "Font weight",
+                "default": "400",
+                "options": [
+                  {
+                    "value": "300",
+                    "label": "Light"
+                  },
+                  {
+                    "value": "400",
+                    "label": "Regular"
+                  },
+                  {
+                    "value": "500",
+                    "label": "Medium"
+                  },
+                  {
+                    "value": "600",
+                    "label": "Semi Bold"
+                  },
+                  {
+                    "value": "700",
+                    "label": "Bold"
+                  }
+                ]
+               },
+               {
+                "type": "range",
+                "id": "lh",
+                "label": "Line height",
+                "default": 1.6,
+                "min": 1.0,
+                "max": 2.0,
+                "step": 0.1              
+               },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#000"
+                },
+				 {
+				"type": "range",
+				"id": "mb",
+				"label": "Margin bottom",
+				"default": 15,
+				"min": 5,
+				"max": 50,
+				"step": 5,
+				"unit": "px"
+			  }
+
+
+		]
+	  },
+	{
+		"type": "text",
+		"name": "Text",
+		"settings": [
+			{
+				"type": "richtext",
+				"id": "ttl",
+				"label": "Text",
+				"default": "<p><b>TALK ABOUT YOUR BRANDS, PRODUCTS</b></p>"
+			},           
+               {
+                    "type": "select",
+                    "id": "tff",
+                    "label": "Font family",
+                    "default": "ft1",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+             },
+			{
+				"type": "range",
+				"id": "fs",
+				"label": "Font size",
+				"default": 18,
+				"min": 10,
+				"max": 100,
+				"step": 1,
+				"unit": "px"
+			  },
+			  {
+				"type": "range",
+				"id": "fsm",
+				"label": "Font size (mobile)",
+				"default": 16,
+				"min": 10,
+				"max": 60,
+				"step": 1,
+				"unit": "px"
+			   },
+              {
+                "type": "select",
+                "id": "fw",
+                "label": "Font weight",
+                "default": "400",
+                "options": [
+                  {
+                    "value": "300",
+                    "label": "Light"
+                  },
+                  {
+                    "value": "400",
+                    "label": "Regular"
+                  },
+                  {
+                    "value": "500",
+                    "label": "Medium"
+                  },
+                  {
+                    "value": "600",
+                    "label": "Semi Bold"
+                  },
+                  {
+                    "value": "700",
+                    "label": "Bold"
+                  }
+                ]
+               },
+               {
+                "type": "range",
+                "id": "lh",
+                "label": "Line height",
+                "default": 1.6,
+                "min": 1.0,
+                "max": 2.0,
+                "step": 0.1              
+               },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#000"
+                },
+				 {
+				"type": "range",
+				"id": "mb",
+				"label": "Margin bottom",
+				"default": 15,
+				"min": 5,
+				"max": 50,
+				"step": 5,
+				"unit": "px"
+			  }
+
+
+		]
+	  },
+      {      
+            "type": "countdown",
+            "name": "Countdown Timer",  
+            "limit":1,    
+            "settings":[
+                {
+                    "type": "text",
+                    "id": "date",
+                    "label": "Enter Date",
+					"info":"Format - mm/dd/yyyy"
+                },
+                {
+                    "type": "color",
+                    "id": "bg",
+                    "label": "Background",
+                    "default": "#000"
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text",
+                    "default": "#eee"
+                },
+                {
+                    "type": "color",
+                    "id": "bdr",
+                    "label": "Border",
+                    "default": "#000"
+                },
+              {
+                    "type": "range",
+                    "id": "fs",
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "label": "Font Size Digit",
+                    "unit": "px",
+                    "default": 22
+                },
+               {
+                    "type": "range",
+                    "id": "fsl",
+                    "min": 10,
+                    "max": 20,
+                    "step": 1,
+                    "label": "Font Size Label",
+                    "unit": "px",
+                    "default": 12
+                },
+               {
+                "type": "select",
+                "id": "fw",
+                "label": "Font weight",
+                "default": "400",
+                "options": [
+                  {
+                    "value": "300",
+                    "label": "Light"
+                  },
+                  {
+                    "value": "400",
+                    "label": "Regular"
+                  },
+                  {
+                    "value": "500",
+                    "label": "Medium"
+                  },
+                  {
+                    "value": "600",
+                    "label": "Semi Bold"
+                  },
+                  {
+                    "value": "700",
+                    "label": "Bold"
+                  }
+                ]
+               },
+                {
+                    "type": "range",
+                    "id": "radius",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "label": "Rounded Corners",
+                    "unit": "px",
+                    "default": 5
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                }				                         
+            ]
+        },   
+	  {
+		"type": "button",
+		"name": "Button",
+		"limit":3,
+		"settings": [
+			{
+				"type": "text",
+				"id": "btntxt",
+				"label": "Button text",
+				"default": "SHOP NOW"
+			},
+			{
+				"type": "url",
+				"id": "url",
+				"label": "URL",
+				"default": "/"
+			},
+            {
+				"type": "checkbox",
+				"id": "newtab1",
+				"label": "Open in new tab?",
+				"default": false
+            },
+			{
+				"type": "text",
+				"id": "btntxt1",
+				"label": "Button text 2"				
+			},
+			{
+				"type": "url",
+				"id": "url1",
+				"label": "URL"			
+			},
+            {
+				"type": "checkbox",
+				"id": "newtab2",
+				"label": "Open in new tab?",
+				"default": false
+            },
+			{
+				"type": "select",
+				"id": "btn-style",
+				"label": "Button 1 design",
+				"default": "btn1",
+				"options": [
+				  {
+					"label": "Button 1",
+					"value": "btn1"
+				  },
+				  {
+					"label": "Button 2",
+					"value": "btn2"
+				  },
+				  {
+					"label": "Button 3",
+					"value": "btn3"
+				  },
+				  {
+					"label": "Button 4",
+					"value": "btn4"
+				  },
+				  {
+					"label": "Button 5",
+					"value": "btn5"
+				  },
+				  {
+					"label": "Button 6",
+					"value": "btn6"
+				  },
+                 {
+                      "label": "Button 7 Gradient",
+                      "value": "btn7"
+                  },
+                  {
+                      "label": "Button 8 Gradient",
+                      "value": "btn8"
+                  },
+				  {
+					"label": "Link",
+					"value": "btnLink"
+				  }
+				]
+            },
+			{
+				"type": "select",
+				"id": "btn-style1",
+				"label": "Button 2 design",
+				"default": "btn1",
+				"options": [
+				  {
+					"label": "Button 1",
+					"value": "btn1"
+				  },
+				  {
+					"label": "Button 2",
+					"value": "btn2"
+				  },
+				  {
+					"label": "Button 3",
+					"value": "btn3"
+				  },
+				  {
+					"label": "Button 4",
+					"value": "btn4"
+				  },
+				  {
+					"label": "Button 5",
+					"value": "btn5"
+				  },
+				  {
+					"label": "Button 6",
+					"value": "btn6"
+				  },
+                  {
+                      "label": "Button 7 Gradient",
+                      "value": "btn7"
+                  },
+                  {
+                      "label": "Button 8 Gradient",
+                      "value": "btn8"
+                  },
+				  {
+					"label": "Link",
+					"value": "btnLink"
+				  }
+				]
+            },	
+			{
+				"type": "select",
+				"id": "btn-size",
+				"label": "Button size",
+				"default": "btn-md",
+				"options": [
+					{
+						"label": "Small",
+						"value": "btn-sm"
+					},
+					{
+						"label": "Medium",
+						"value": "btn-md"
+					},
+					{
+						"label": "Large",
+						"value": "btn-lg"
+					}
+				]
+			},
+           {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+          }		
+		]
+	}
+],
+"presets": [
+	{
+		"name": "Images Collage with Text",
+        "category": "Storytelling",
+		"blocks": [
+          {
+				"type": "heading",
+				 "settings": {
+                    "title": "TALK ABOUT YOUR BRANDS",
+                    "fs": 24,
+                    "fsm":18,
+                    "fw":"700",
+                    "htag":"h2",
+                    "tff":"ft2",
+                    "mb":15
+                }
+			},
+			{
+				"type": "text",
+				"settings": {
+                    "ttl": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+                    "fs": 14,
+                    "fsm":14,
+                    "mb":25
+                }
+			},
+			{
+				"type": "button"
+			}
+		]
+	}
+]
+}
+{% endschema %}

@@ -1,0 +1,246 @@
+{% assign section_st = section.settings %}
+<div class="sec_cov" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">
+    <div class="page-width" style="--cl:{{ section_st.cl }};--fbg:{{ section_st.fbg }};--bd:{{ section_st.bd }};max-width:600px;">
+        <h1 class="page-title tc">{{ 'customer.activate_account.title' | t }}</h1>
+        <p class="tc">{{ 'customer.activate_account.subtext' | t }}</p>
+          <div class="customerform form-vertical">
+            {% form 'activate_customer_password' %}
+    
+            {{ form.errors | default_errors }}
+    
+            <label for="CustomerPassword" class="hidden_txt">{{ 'customer.activate_account.password' | t }}</label>
+            <input type="password" value="" name="customer[password]" id="CustomerPassword" placeholder="{{ 'customer.activate_account.password' | t }}">
+    
+            <label for="CustomerPasswordConfirmation" class="hidden_txt">{{ 'customer.activate_account.password_confirm' | t }}</label>
+            <input type="password" value="" name="customer[password_confirmation]" id="CustomerPasswordConfirmation" placeholder="{{ 'customer.activate_account.password_confirm' | t }}">
+    
+            <div class="fl f-aic f-col f-row-md gap" style="--gap:10px;">
+              <button type="submit" class="btn fl1 {{ section_st.acbtn }} {{ section_st.acbtnsz }}">{{ 'customer.activate_account.submit' | t }}</button>
+              <button type="submit" class="btn fl1 {{ section_st.cnbtn }} {{ section_st.cnbtnsz }}" name="decline">{{ 'customer.activate_account.cancel' | t }}</button>
+            </div>
+            {% endform %}
+          </div>
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Active Account", 
+  "settings": [
+        {
+            "type": "paragraph",
+            "content": "Box ===="
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Text Color",
+            "default": "#000"
+        },
+        {
+            "type": "color",
+            "id": "bd",
+            "label": "Border Color",
+            "default": "#eee"
+        },
+        {
+            "type": "color",
+            "id": "fbg",
+            "label": "background Color",
+            "default": "#f4f4f4"
+        },
+		{
+            "type": "paragraph",
+            "content": "Active Buttons ===="
+        },
+        {
+            "type": "select",
+            "id": "acbtn",
+            "label": "Button Design",
+            "default": "btn1",
+            "options": [
+              {
+                "label": "Button 1",
+                "value": "btn1"
+              },
+              {
+                "label": "Button 2",
+                "value": "btn2"
+              },
+              {
+                "label": "Button 3",
+                "value": "btn3"
+              },
+              {
+                "label": "Button 4",
+                "value": "btn4"
+              },
+              {
+                "label": "Button 5",
+                "value": "btn5"
+              },
+			  {
+				"label": "Button 6",
+				"value": "btn6"
+			  },
+              {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              },
+			  {
+				"label": "Link",
+				"value": "btnLink"
+		 	  }  
+            ]
+          },
+        {
+            "type": "select",
+            "id": "acbtnsz",
+            "label": "Button Size",
+            "default": "btn-md",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                } 		  
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": "Cancel Button ===="
+        },
+        {
+            "type": "select",
+            "id": "cnbtn",
+            "label": "Button Design",
+            "default": "btn2",
+            "options": [
+              {
+                "label": "Button 1",
+                "value": "btn1"
+              },
+              {
+                "label": "Button 2",
+                "value": "btn2"
+              },
+              {
+                "label": "Button 3",
+                "value": "btn3"
+              },
+              {
+                "label": "Button 4",
+                "value": "btn4"
+              },
+              {
+                "label": "Button 5",
+                "value": "btn5"
+              },
+			  {
+				"label": "Button 6",
+				"value": "btn6"
+			  },
+              {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              },
+			  {
+				"label": "Link",
+				"value": "btnLink"
+			  }  
+            ]
+          },
+        {
+            "type": "select",
+            "id": "cnbtnsz",
+            "label": "Button Size",
+            "default": "btn-md",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                } 		  
+            ]
+        },
+		{
+            "type": "header",
+            "content": "SECTION"
+        },
+		{
+            "type": "paragraph",
+            "content": "Section Spacing ===="
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":80
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":80
+        },
+		{
+            "type": "paragraph",
+            "content": "Spacing (mobile) ===="
+        },
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":15
+        },       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background"        
+        }       
+  ] 
+}
+{% endschema %}

@@ -1,0 +1,3580 @@
+{%- capture grid_banners -%}
+{% assign section_st = section.settings %}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+  {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>    
+        <div class="banners_wrap {% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %}" style="--tfs:{{ section_st.tfs }}px;--tfsm:{{ section_st.tfsm }}px;--tfw:{{ section_st.tfw }};--tfs2:{{ section_st.tfs2 }}px;--tfsm2:{{ section_st.tfsm2 }}px;--tfw2:{{ section_st.tfw2 }};--tfs3:{{ section_st.tfs3 }}px;--tfsm3:{{ section_st.tfsm3 }}px;--tfw3:{{ section_st.tfw3 }};--rounded:{{ section_st.brad }}px;--grsp:{{ section_st.gspace }}px;--grspm:{{ section_st.gspacem }}px;
+        --font1:var(--{{ section_st.font_text1 }});--font2:var(--{{ section_st.font_text2 }});--font3:var(--{{ section_st.font_text3 }})">
+          
+            {% render 'sec-title' %}
+            {%- for block in section.blocks -%}
+                {%  assign block_set = block.settings %} 
+                {%- if block.type == '1' -%}
+                    <div class="grbnr st{{ block.type }}{% if section_st.zoom %} zoom_hov{% endif %} mb10" {{ block.shopify_attributes }} style="--gtc:2;">
+                        <div class="img-bnr brad of_hidden pr b1{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b1tpd }}px;--cl:{{ block_set.b1_txt }};--bdr:{{ block_set.b1_bgr }}px;--bg:{{ block_set.b1_bg | color_modify:'alpha', block_set.b1_bgo }};">
+                            {% render 'image-grid', image: block_set.img1, text1: block_set.b1_text1, text2: block_set.b1_text2, text3: block_set.b1_text3, text_a: block_set.b1_ta, pos: block_set.b1_tp, pos_m:block_set.b1_tpm, hidetxt1:block_set.b1t1_hide, hidetxt2:block_set.b1t2_hide, hidetxt3:block_set.b1t3_hide, 
+							link:block_set.link1, imgSize:'930x620', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b2{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b2tpd }}px;--cl:{{ block_set.b2_txt }};--bdr:{{ block_set.b2_bgr }}px;--bg:{{ block_set.b2_bg | color_modify:'alpha', block_set.b2_bgo }};">
+                            {% render 'image-grid', image: block_set.img2, text1: block_set.b2_text1, text2: block_set.b2_text2, text3: block_set.b2_text3, text_a: block_set.b2_ta, pos: block_set.b2_tp, pos_m:block_set.b2_tpm, hidetxt1:block_set.b2t1_hide, hidetxt2:block_set.b2t2_hide, hidetxt3:block_set.b2t3_hide, 
+							link: block_set.link2, imgSize:'930x620', blockId:block.id %}
+                        </div>         
+                    </div>
+                {%- elsif block.type == '2' -%}
+                    <div class="grbnr st{{ block.type }}{% if section_st.zoom %} zoom_hov{% endif%} mb10" {{ block.shopify_attributes }} style="--gtc:2;--gtcm:1;--gtrm:4;">
+                        <div class="img-bnr brad of_hidden pr b1{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b1tpd }}px;--cl:{{ block_set.b1_txt }};--bdr:{{ block_set.b1_bgr }}px;--bg:{{ block_set.b1_bg | color_modify:'alpha', block_set.b1_bgo }};">
+                            {% render 'image-grid', image: block_set.img1, fullimg:true, text1: block_set.b1_text1, text2: block_set.b1_text2, text3: block_set.b1_text3, text_a: block_set.b1_ta, pos: block_set.b1_tp, pos_m:block_set.b1_tpm, hidetxt1:block_set.b1t1_hide, hidetxt2:block_set.b1t2_hide, hidetxt3:block_set.b1t3_hide, link:block_set.link1, imgSize:'930x455', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b2{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b2tpd }}px;--cl:{{ block_set.b2_txt }};--bdr:{{ block_set.b2_bgr }}px;--bg:{{ block_set.b2_bg | color_modify:'alpha', block_set.b2_bgo }};">
+                            {% render 'image-grid', image: block_set.img2, fullimg:true, text1: block_set.b2_text1, text2: block_set.b2_text2, text3: block_set.b2_text3, text_a: block_set.b2_ta, pos: block_set.b2_tp, pos_m:block_set.b2_tpm, hidetxt1:block_set.b2t1_hide, hidetxt2:block_set.b2t2_hide, hidetxt3:block_set.b2t3_hide, link: block_set.link2, imgSize:'930x455', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b3{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:2;--gce:3;--grs:1;--gre:3;--grsm:3;--grem:5;--tpd:{{ block_set.b3tpd }}px;--cl:{{ block_set.b3_txt }};--bdr:{{ block_set.b3_bgr }}px;--bg:{{ block_set.b3_bg | color_modify:'alpha', block_set.b3_bgo }};">
+                            {% render 'image-grid', image: block_set.img3, text1: block_set.b3_text1, text2: block_set.b3_text2, text3: block_set.b3_text3, text_a: block_set.b3_ta, pos: block_set.b3_tp, pos_m:block_set.b3_tpm, hidetxt1:block_set.b3t1_hide, hidetxt2:block_set.b3t2_hide, hidetxt3:block_set.b3t3_hide, link: block_set.link3, imgSize:'930x930', blockId:block.id %}
+                        </div>
+                    </div>
+                {%- elsif block.type == '3' -%}
+                    <div class="grbnr st{{ block.type }}{% if section_st.zoom %} zoom_hov{% endif%} mb10" {{ block.shopify_attributes }} style="--gtc:5;--gtcm:1;--gtrm:4;">
+                        <div class="img-bnr brad of_hidden pr b1{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:1;--gce:3;--grs:1;--gre:2;--tpd:{{ block_set.b1tpd }}px;--cl:{{ block_set.b1_txt }};--bdr:{{ block_set.b1_bgr }}px;--bg:{{ block_set.b1_bg | color_modify:'alpha', block_set.b1_bgo }};">
+                            {% render 'image-grid', image: block_set.img1, fullimg:true, text1: block_set.b1_text1, text2: block_set.b1_text2, text3: block_set.b1_text3, text_a: block_set.b1_ta, pos: block_set.b1_tp, pos_m:block_set.b1_tpm, hidetxt1:block_set.b1t1_hide, hidetxt2:block_set.b1t2_hide, hidetxt3:block_set.b1t3_hide, link:block_set.link1, imgSize:'712x340', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b2{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:1;--gce:3;--grs:2;--gre:3;--tpd:{{ block_set.b2tpd }}px;--cl:{{ block_set.b2_txt }};--bdr:{{ block_set.b2_bgr }}px;--bg:{{ block_set.b2_bg | color_modify:'alpha', block_set.b2_bgo }};">
+                            {% render 'image-grid', image: block_set.img2, fullimg:true, text1: block_set.b2_text1, text2: block_set.b2_text2, text3: block_set.b2_text3, text_a: block_set.b2_ta, pos: block_set.b2_tp, pos_m:block_set.b2_tpm, hidetxt1:block_set.b2t1_hide, hidetxt2:block_set.b2t2_hide, hidetxt3:block_set.b2t3_hide, link: block_set.link2, imgSize:'712x340', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b3{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:3;--gce:6;--grs:1;--gre:3;--grsm:3;--grem:5;--tpd:{{ block_set.b3tpd }}px;--cl:{{ block_set.b3_txt }};--bdr:{{ block_set.b3_bgr }}px;--bg:{{ block_set.b3_bg | color_modify:'alpha', block_set.b3_bgo }};">
+                            {% render 'image-grid', image: block_set.img3, text1: block_set.b3_text1, text2: block_set.b3_text2, text3: block_set.b3_text3, text_a: block_set.b3_ta, pos: block_set.b3_tp, pos_m:block_set.b3_tpm, hidetxt1:block_set.b3t1_hide, hidetxt2:block_set.b3t2_hide, hidetxt3:block_set.b3t3_hide,  link: block_set.link3, imgSize:'1068x700', blockId:block.id %}
+                        </div>
+                    </div>
+                {%- elsif block.type == '4' -%}
+                    <div class="grbnr st{{ block.type }}{% if section_st.zoom %} zoom_hov{% endif%} mb10" {{ block.shopify_attributes }} style="--gtc:4;--gtcm:2;--gtrm:2;">
+                        <div class="img-bnr brad of_hidden pr b1{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:1;--gce:3;--gcsm:1;--gcem:3;--tpd:{{ block_set.b1tpd }}px;--cl:{{ block_set.b1_txt }};--bdr:{{ block_set.b1_bgr }}px;--bg:{{ block_set.b1_bg | color_modify:'alpha', block_set.b1_bgo }};">                        
+                            {% render 'image-grid', image: block_set.img1, text1: block_set.b1_text1, text2: block_set.b1_text2, text3: block_set.b1_text3, text_a: block_set.b1_ta, pos: block_set.b1_tp, pos_m:block_set.b1_tpm, hidetxt1:block_set.b1t1_hide, hidetxt2:block_set.b1t2_hide, hidetxt3:block_set.b1t3_hide,  link:block_set.link1, imgSize:'1280x620', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b2{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcsm:1;--gcem:2;--grsm:2;--grem:3;--tpd:{{ block_set.b2tpd }}px;--cl:{{ block_set.b2_txt }};--bdr:{{ block_set.b2_bgr }}px;--bg:{{ block_set.b2_bg | color_modify:'alpha', block_set.b2_bgo }};">
+                            {% render 'image-grid', image: block_set.img2, fullimg:true, text1: block_set.b2_text1, text2: block_set.b2_text2, text3: block_set.b2_text3, text_a: block_set.b2_ta, pos: block_set.b2_tp, pos_m:block_set.b2_tpm, hidetxt1:block_set.b2t1_hide, hidetxt2:block_set.b2t2_hide, hidetxt3:block_set.b2t3_hide,  link: block_set.link2, imgSize:'640x640', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b3{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b3tpd }}px;--cl:{{ block_set.b3_txt }};--bdr:{{ block_set.b3_bgr }}px;--bg:{{ block_set.b3_bg | color_modify:'alpha', block_set.b3_bgo }};">
+                            {% render 'image-grid', image: block_set.img3, fullimg:true, text1: block_set.b3_text1, text2: block_set.b3_text2, text3: block_set.b3_text3, text_a: block_set.b3_ta, pos: block_set.b3_tp, pos_m:block_set.b3_tpm, hidetxt1:block_set.b3t1_hide, hidetxt2:block_set.b3t2_hide, hidetxt3:block_set.b3t3_hide, link: block_set.link3, imgSize:'640x640', blockId:block.id %}
+                        </div>
+                    </div>
+                {%- elsif block.type == '5' -%}
+                    <div class="grbnr st{{ block.type }}{% if section_st.zoom %} zoom_hov{% endif%} mb10" {{ block.shopify_attributes }} style="--gtc:3;--gtcm:2;--gtrm:3;">
+                        <div class="img-bnr brad of_hidden pr b1{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:1;--gce:2;--grs:1;--gre:3;--gcsm:1;--gcem:2;--grsm:1;--grem:3;--tpd:{{ block_set.b1tpd }}px;--cl:{{ block_set.b1_txt }};--bdr:{{ block_set.b1_bgr }}px;--bg:{{ block_set.b1_bg | color_modify:'alpha', block_set.b1_bgo }};">
+                            {% render 'image-grid', image: block_set.img1, text1: block_set.b1_text1, text2: block_set.b1_text2, text3: block_set.b1_text3, text_a: block_set.b1_ta, pos: block_set.b1_tp, pos_m:block_set.b1_tpm, hidetxt1:block_set.b1t1_hide, hidetxt2:block_set.b1t2_hide, hidetxt3:block_set.b1t3_hide,  link:block_set.link1, imgSize:'460x620', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b2{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:2;--gce:3;--grs:1;--gre:2;--gcsm:2;--gcem:3;--grsm:1;--grem:2;--tpd:{{ block_set.b2tpd }}px;--cl:{{ block_set.b2_txt }};--bdr:{{ block_set.b2_bgr }}px;--bg:{{ block_set.b2_bg | color_modify:'alpha', block_set.b2_bgo }};">
+                            {% render 'image-grid', image: block_set.img2, fullimg:true, text1: block_set.b2_text1, text2: block_set.b2_text2, text3: block_set.b2_text3, text_a: block_set.b2_ta, pos: block_set.b2_tp, pos_m:block_set.b2_tpm, hidetxt1:block_set.b2t1_hide, hidetxt2:block_set.b2t2_hide, hidetxt3:block_set.b2t3_hide,link: block_set.link2, imgSize:'460x300', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b3{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:2;--gce:3;--grs:2;--gre:3;--gcsm:1;--gcem:2;--grsm:3;--grem:4;--tpd:{{ block_set.b3tpd }}px;--cl:{{ block_set.b3_txt }};--bdr:{{ block_set.b3_bgr }}px;--bg:{{ block_set.b3_bg | color_modify:'alpha', block_set.b3_bgo }};">
+                            {% render 'image-grid', image: block_set.img3, fullimg:true, text1: block_set.b3_text1, text2: block_set.b3_text2, text3: block_set.b3_text3, text_a: block_set.b3_ta, pos: block_set.b3_tp, pos_m:block_set.b3_tpm, hidetxt1:block_set.b3t1_hide, hidetxt2:block_set.b3t2_hide, hidetxt3:block_set.b3t3_hide,link: block_set.link3, imgSize:'460x300', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b4{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:3;--gce:4;--grs:1;--gre:3;--grsm:2;--grem:4;--tpd:{{ block_set.b4tpd }}px;--cl:{{ block_set.b4_txt }};--bdr:{{ block_set.b4_bgr }}px;--bg:{{ block_set.b4_bg | color_modify:'alpha', block_set.b4_bgo }};">
+                            {% render 'image-grid', image: block_set.img4, fullimg:true, text1: block_set.b4_text1, text2: block_set.b4_text2, text3: block_set.b4_text3, text_a: block_set.b4_ta, pos: block_set.b4_tp, pos_m:block_set.b4_tpm, hidetxt1:block_set.b4t1_hide, hidetxt2:block_set.b4t2_hide, hidetxt3:block_set.b4t3_hide,link: block_set.link4, imgSize:'460x620', blockId:block.id %}
+                        </div>
+                    </div>
+                {%- elsif block.type == '6' -%}
+                    <div class="grbnr st{{ block.type }}{% if section_st.zoom %} zoom_hov{% endif%} mb10" {{ block.shopify_attributes }} style="--gtc:4;--gtcm:2;--gtrm:4;">
+                        <div class="img-bnr brad of_hidden pr b1{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b1tpd }}px;--cl:{{ block_set.b1_txt }};--bdr:{{ block_set.b1_bgr }}px;--bg:{{ block_set.b1_bg | color_modify:'alpha', block_set.b1_bgo }};">
+                            {% render 'image-grid', image: block_set.img1, fullimg:true, text1: block_set.b1_text1, text2: block_set.b1_text2, text3: block_set.b1_text3, text_a: block_set.b1_ta, pos: block_set.b1_tp, pos_m:block_set.b1_tpm, hidetxt1:block_set.b1t1_hide, hidetxt2:block_set.b1t2_hide, hidetxt3:block_set.b1t3_hide,  link:block_set.link1, imgSize:'460x460', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b2{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b2tpd }}px;--cl:{{ block_set.b2_txt }};--bdr:{{ block_set.b2_bgr }}px;--bg:{{ block_set.b2_bg | color_modify:'alpha', block_set.b2_bgo }};">
+                            {% render 'image-grid', image: block_set.img2, fullimg:true, text1: block_set.b2_text1, text2: block_set.b2_text2, text3: block_set.b2_text3, text_a: block_set.b2_ta, pos: block_set.b2_tp, pos_m:block_set.b2_tpm, hidetxt1:block_set.b2t1_hide, hidetxt2:block_set.b2t2_hide, hidetxt3:block_set.b2t3_hide,  link: block_set.link2, imgSize:'460x460', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b3{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:2;--gce:4;--grs:1;--gre:3;--gcsm:1;--gcem:3;--grsm:2;--grem:4;--tpd:{{ block_set.b3tpd }}px;--cl:{{ block_set.b3_txt }};--bdr:{{ block_set.b3_bgr }}px;--bg:{{ block_set.b3_bg | color_modify:'alpha', block_set.b3_bgo }};">
+                            {% render 'image-grid', image: block_set.img3, text1: block_set.b3_text1, text2: block_set.b3_text2, text3: block_set.b3_text3, text_a: block_set.b3_ta, pos: block_set.b3_tp, pos_m:block_set.b3_tpm, hidetxt1:block_set.b3t1_hide, hidetxt2:block_set.b3t2_hide, hidetxt3:block_set.b3t3_hide,  link: block_set.link3, imgSize:'930x930', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b4{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcsm:1;--gcem:2;--grsm:4;--grem:5;--tpd:{{ block_set.b4tpd }}px;--cl:{{ block_set.b4_txt }};--bdr:{{ block_set.b4_bgr }}px;--bg:{{ block_set.b4_bg | color_modify:'alpha', block_set.b4_bgo }};">
+                            {% render 'image-grid', image: block_set.img4, fullimg:true, text1: block_set.b4_text1, text2: block_set.b4_text2, text3: block_set.b4_text3, text_a: block_set.b4_ta, pos: block_set.b4_tp, pos_m:block_set.b4_tpm, hidetxt1:block_set.b4t1_hide, hidetxt2:block_set.b4t2_hide, hidetxt3:block_set.b4t3_hide,  link: block_set.link4, imgSize:'460x460', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b5{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcsm:2;--gcem:3;--grsm:4;--grem:5;--tpd:{{ block_set.b5tpd }}px;--cl:{{ block_set.b5_txt }};--bdr:{{ block_set.b5_bgr }}px;--bg:{{ block_set.b5_bg | color_modify:'alpha', block_set.b5_bgo }};">
+                            {% render 'image-grid', image: block_set.img5, fullimg:true, text1: block_set.b5_text1, text2: block_set.b5_text2, text3: block_set.b5_text3, text_a: block_set.b5_ta, pos: block_set.b5_tp, pos_m:block_set.b5_tpm, hidetxt1:block_set.b5t1_hide, hidetxt2:block_set.b5t2_hide, hidetxt3:block_set.b5t3_hide,  link: block_set.link5, imgSize:'460x460', blockId:block.id %}
+                        </div>
+                    </div>
+                {%- elsif block.type == '7' -%}
+                    <div class="grbnr st{{ block.type }}{% if section_st.zoom %} zoom_hov{% endif%} mb10" {{ block.shopify_attributes }} style="--gtc:4;--gtcm:2;--gtrm:4;">
+                        <div class="img-bnr brad of_hidden pr b1{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:1;--gce:3;--grs:1;--gre:3;--gcsm:1;--gcem:3;--grsm:1;--grem:3;--tpd:{{ block_set.b1tpd }}px;--cl:{{ block_set.b1_txt }};--bdr:{{ block_set.b1_bgr }}px;--bg:{{ block_set.b1_bg | color_modify:'alpha', block_set.b1_bgo }};">
+                            {% render 'image-grid', image: block_set.img1, text1: block_set.b1_text1, text2: block_set.b1_text2, text3: block_set.b1_text3, text_a: block_set.b1_ta, pos: block_set.b1_tp, pos_m:block_set.b1_tpm, hidetxt1:block_set.b1t1_hide, hidetxt2:block_set.b1t2_hide, hidetxt3:block_set.b1t3_hide,  link:block_set.link1, imgSize:'930x700', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b2{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--gcs:3;--gce:4;--grs:1;--gre:3;--grsm:3;--grem:5;--tpd:{{ block_set.b2tpd }}px;--cl:{{ block_set.b2_txt }};--bdr:{{ block_set.b2_bgr }}px;--bg:{{ block_set.b2_bg | color_modify:'alpha', block_set.b2_bgo }};">
+                            {% render 'image-grid', image: block_set.img2, fullimg:true, text1: block_set.b2_text1, text2: block_set.b2_text2, text3: block_set.b2_text3, text_a: block_set.b2_ta, pos: block_set.b2_tp, pos_m:block_set.b2_tpm, hidetxt1:block_set.b2t1_hide, hidetxt2:block_set.b2t2_hide, hidetxt3:block_set.b2t3_hide, link: block_set.link2, imgSize:'460x718', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b3{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b3tpd }}px;--cl:{{ block_set.b3_txt }};--bdr:{{ block_set.b3_bgr }}px;--bg:{{ block_set.b3_bg | color_modify:'alpha', block_set.b3_bgo }};">
+                            {% render 'image-grid', image: block_set.img3, fullimg:true, text1: block_set.b3_text1, text2: block_set.b3_text2, text3: block_set.b3_text3, text_a: block_set.b3_ta, pos: block_set.b3_tp, pos_m:block_set.b3_tpm, hidetxt1:block_set.b3t1_hide, hidetxt2:block_set.b3t2_hide, hidetxt3:block_set.b3t3_hide,  link: block_set.link3, imgSize:'460x342', blockId:block.id %}
+                        </div>
+                        <div class="img-bnr brad of_hidden pr b4{{ block.type }} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--tpd:{{ block_set.b4tpd }}px;--cl:{{ block_set.b4_txt }};--bdr:{{ block_set.b4_bgr }}px;--bg:{{ block_set.b4_bg | color_modify:'alpha', block_set.b4_bgo }};">
+                            {% render 'image-grid', image: block_set.img4, fullimg:true, text1: block_set.b4_text1, text2: block_set.b4_text2, text3: block_set.b4_text3, text_a: block_set.b4_ta, pos: block_set.b4_tp, pos_m:block_set.b4_tpm, hidetxt1:block_set.b4t1_hide, hidetxt2:block_set.b4t2_hide, hidetxt3:block_set.b4t3_hide,  link: block_set.link4, imgSize:'460x342', blockId:block.id %}
+                        </div>
+                    </div>
+                {%- endif -%} 		
+            {%- endfor -%}
+            {%- if section.blocks.size == 0 -%}{% render 'no-blocks' %}{%- endif -%}
+        </div>
+</div>
+{%- endcapture -%}
+{{ grid_banners | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+  {
+    "name": "Grid Banners",
+    "class": "index-section grid_banners",
+    "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [	
+	 {
+		"type": "text",
+		"id": "title",
+		"label": "Heading",
+		"default": "Heading"		
+	  }, 		
+	 {
+		"type": "text",
+		"id": "subtitle",
+		"label": "Sub Heading",
+		"default": "Describe your products, collection etc..."
+	  },
+      {
+          "type": "range",
+          "id": "gspace",
+          "label": "Grid gap",
+          "default": 30,
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit":"px"
+      },
+      {
+          "type": "range",
+          "id": "gspacem",
+          "label": "Grid gap (mobile)",
+          "default": 15,
+          "min": 0,
+          "max": 15,
+          "step": 1,
+          "unit":"px"
+      },
+	  {
+	  "type": "checkbox",
+	  "id": "zoom",
+	  "label": "Zoom Image on hover?",
+	  "default": true
+	  },
+       {
+			"type": "range",
+			"id": "brad",
+			"min": 0,
+			"max": 50,
+			"step": 1,
+			"label": "Image rounded",
+			"unit": "px",
+			"default":0
+        },
+      {
+          "type": "header",
+          "content": "Text 1"
+      },
+      {
+          "type": "select",
+          "id": "font_text1",
+          "label": "Font family",
+          "default": "ft1",
+          "options": [
+            {
+                "value": "ft1",
+                "label": "Font 1"
+            },
+            {
+                "value": "ft2",
+                "label": "Font 2"
+            },
+            {
+                "value": "ft3",
+                "label": "Font 3"
+            }
+          ]
+        },          
+      {
+            "type": "range",
+            "id": "tfs",
+            "label": "Font size",
+            "default": 13,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "tfsm",
+            "label": "Font size (mobile)",
+            "default": 13,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },       
+        {
+            "type": "select",
+            "id": "tfw",
+            "label": "Font weight",
+            "default": "400",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 	
+      {
+          "type": "header",
+          "content": "Text 2"
+      },
+       {
+          "type": "select",
+          "id": "font_text2",
+          "label": "Font family",
+          "default": "ft1",
+          "options": [
+            {
+                "value": "ft1",
+                "label": "Font 1"
+            },
+            {
+                "value": "ft2",
+                "label": "Font 2"
+            },
+            {
+                "value": "ft3",
+                "label": "Font 3"
+            }
+          ]
+        },    
+      {
+            "type": "range",
+            "id": "tfs2",
+            "label": "Font size",
+            "default": 23,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "tfsm2",
+            "label": "Font size (mobile)",
+            "default": 18,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },       
+        {
+            "type": "select",
+            "id": "tfw2",
+            "label": "Font weight",
+            "default": "600",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 
+      {
+          "type": "header",
+          "content": "Text 3"
+      },
+       {
+          "type": "select",
+          "id": "font_text3",
+          "label": "Font family",
+          "default": "ft1",
+          "options": [
+            {
+                "value": "ft1",
+                "label": "Font 1"
+            },
+            {
+                "value": "ft2",
+                "label": "Font 2"
+            },
+            {
+                "value": "ft3",
+                "label": "Font 3"
+            }
+          ]
+        },    
+      {
+            "type": "range",
+            "id": "tfs3",
+            "label": "Font size",
+            "default": 16,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "tfsm3",
+            "label": "Font size (mobile)",
+            "default": 14,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },       
+        {
+            "type": "select",
+            "id": "tfw3",
+            "label": "Font weight",
+            "default": "600",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": false,
+            "info":"Remove left/right padding for fullwidth",
+             "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+         {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+          },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }
+    ],
+    "blocks": [
+     {
+        "type": "1",
+        "name": "Design 1 - 2 Banners",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img1",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"text",
+			"id":"b1_text1",
+			"label":"Text 1",
+			"default":"LIMITED TIME"
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b1t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },          
+		 {
+ 			"type":"text",
+			"id":"b1_text2",
+			"label":"Text 2",
+			"default":"FINAL CLEARANCE"
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b1t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },          
+	     {
+ 			"type":"text",
+			"id":"b1_text3",
+			"label":"Text 3",
+			"default":"Flat 50% off",
+			
+		  },  
+       {
+            "type": "checkbox",
+            "id": "b1t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b1_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b1_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",				
+            "options": [
+ 			 { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+            ]
+          },	           
+          {
+            "type": "color",
+            "id": "b1_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b1_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b1_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.9
+          },
+         {
+            "type": "range",
+            "id": "b1_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+ 		 {
+            "type": "range",
+            "id": "b1tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Box Padding",
+            "unit": "px",
+            "default": 30
+          },         
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img2",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"text",
+			"id":"b2_text1",
+			"label":"Text 1",
+		    "default": "SUMMER 2025",
+			
+		  },
+ 		  {
+            "type": "checkbox",
+            "id": "b2t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b2_text2",
+			"label":"Text 2",
+			 "default": "NEW COLLECTION"
+			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b2t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },         
+	     {
+ 			"type":"text",
+			"id":"b2_text3",
+			"label":"Text 3",
+ 			"default": "Get Flat 10% Off",
+			
+		  },   
+ 		  {
+            "type": "checkbox",
+            "id": "b2t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b2_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b2_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",				
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                  
+          {
+            "type": "color",
+            "id": "b2_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b2_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b2_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b2_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b2tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Box Padding",
+            "unit": "px",
+            "default": 30
+          }           		 
+        ]
+      },
+      {
+        "type": "2",
+        "name": "Design 2 - 3 Banners",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img1",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"text",
+			"id":"b1_text1",
+			"label":"Text 1",
+			"default":"LIMITED TIME"
+			
+		  },
+ 		  {
+            "type": "checkbox",
+            "id": "b1t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b1_text2",
+			"label":"Text 2",
+			"default":"FINAL CLEARANCE"
+			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b1t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b1_text3",
+			"label":"Text 3",
+			"default":"Flat 50% off",
+			
+		  },  
+ 		  {
+            "type": "checkbox",
+            "id": "b1t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b1_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b1_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",				
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                             
+          {
+            "type": "color",
+            "id": "b1_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b1_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b1_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b1_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b1tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img2",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"text",
+			"id":"b2_text1",
+			"label":"Text 1",
+			"default": "SUMMER 2025",
+			
+		  },
+		 {
+ 			"type":"text",
+			"id":"b2_text2",
+			"label":"Text 2",
+			"default": "NEW COLLECTION"
+			
+		  },
+	     {
+ 			"type":"text",
+			"id":"b2_text3",
+			"label":"Text 3",
+			"default": "Get Flat 10% Off",
+			
+		  },         
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b2_ta",
+
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b2_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		 
+          {
+            "type": "checkbox",
+            "id": "b2t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "b2t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "b2t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+          {
+            "type": "color",
+            "id": "b2_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b2_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b2_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b2_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b2tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img3",
+			"label":"Banner Image"
+		  },
+		    {
+ 			"type":"text",
+			"id":"b3_text1",
+			"label":"Text 1",
+			"default": "ITALIAN COLLECTION",
+			
+		  },
+		 {
+ 			"type":"text",
+			"id":"b3_text2",
+			"label":"Text 2",
+			"default":"BEST SELLER",
+			
+		  },
+	     {
+ 			"type":"text",
+			"id":"b3_text3",
+			"label":"Text 3",
+			
+		  },          
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b3_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b3_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		
+          {
+            "type": "checkbox",
+            "id": "b3t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "b3t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "b3t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+          {
+            "type": "color",
+            "id": "b3_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b3_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b3_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b3_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b3tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          }      
+        ]
+      },
+ 	 {
+        "type": "3",
+        "name": "Design 3 - 3 Banners",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img1",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"text",
+			"id":"b1_text1",
+			"label":"Text 1",
+			"default":"LIMITED TIME"
+			
+		  },
+ 		{
+            "type": "checkbox",
+            "id": "b1t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b1_text2",
+			"label":"Text 2",
+			"default":"FINAL CLEARANCE"
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b1t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b1_text3",
+			"label":"Text 3",
+			"default":"Flat 50% off",
+			
+		  },  
+ 	      {
+            "type": "checkbox",
+            "id": "b1t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b1_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b1_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                              
+          {
+            "type": "color",
+            "id": "b1_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b1_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b1_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b1_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b1tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img2",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"text",
+			"id":"b2_text1",
+			"label":"Text 1",
+			"default": "SUMMER 2025",
+			
+		  },
+ 		  {
+            "type": "checkbox",
+            "id": "b2t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b2_text2",
+			"label":"Text 2",
+			"default": "NEW COLLECTION"
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b2t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b2_text3",
+			"label":"Text 3",
+			"default": "Get Flat 10% Off",
+			
+		  },  
+		 {
+            "type": "checkbox",
+            "id": "b2t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b2_ta",
+
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b2_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                               
+          {
+            "type": "color",
+            "id": "b2_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b2_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b2_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b2_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b2tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img3",
+			"label":"Banner Image"
+		  },
+		    {
+ 			"type":"text",
+			"id":"b3_text1",
+			"label":"Text 1",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b3t1_hide",			
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b3_text2",
+			"label":"Text 2",
+			"default": "ITALIAN COLLECTION",
+			
+		  },
+	     {
+            "type": "checkbox",
+            "id": "b3t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b3_text3",
+			"label":"Text 3",
+			
+		  },  
+		 {
+            "type": "checkbox",
+            "id": "b3t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b3_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b3_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",		
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                              
+          {
+            "type": "color",
+            "id": "b3_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b3_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b3_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b3_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b3tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          }      
+        ]
+       },
+ 	 {
+        "type": "4",
+        "name": "Design 4 - 3 Banners",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img1",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"text",
+			"id":"b1_text1",
+			"label":"Text 1",
+			"default":"LIMITED TIME"
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b1t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b1_text2",
+			"label":"Text 2",
+			"default":"FINAL CLEARANCE"
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b1t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b1_text3",
+			"label":"Text 3",
+			"default":"Flat <span style='color:#ec9090'>50% OFF</span>",
+			
+		  },   
+		  {
+            "type": "checkbox",
+            "id": "b1t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b1_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b1_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                              
+          {
+            "type": "color",
+            "id": "b1_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b1_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b1_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b1_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b1tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img2",
+			"label":"Banner Image"
+		  },
+		   {
+ 			"type":"text",
+			"id":"b2_text1",
+			"label":"Text 1",
+			"default": "SUMMER <span style='color:#ec9090'>2025</span>",
+			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b2t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b2_text2",
+			"label":"Text 2",
+			"default": "NEW COLLECTION"
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b2t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b2_text3",
+			"label":"Text 3",
+			"default": "Get Flat 10% Off",
+			
+		  },   
+  		 {
+            "type": "checkbox",
+            "id": "b2t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b2_ta",
+
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b2_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",				
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                            
+          {
+            "type": "color",
+            "id": "b2_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b2_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b2_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+
+        {
+            "type": "range",
+            "id": "b2_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b2tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img3",
+			"label":"Banner Image"
+		  },
+		    {
+ 			"type":"text",
+			"id":"b3_text1",
+			"label":"Text 1",
+			"default": "<span style='color:#ec9090'>ITALIAN</span> COLLECTION",
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b3t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b3_text2",
+			"label":"Text 2",
+			"default":"BEST SELLER",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b3t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b3_text3",
+			"label":"Text 3",
+			"default": "Get Flat 10% Off",
+			
+		  }, 
+ 		  {
+            "type": "checkbox",
+            "id": "b3t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b3_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b3_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",		
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                              
+          {
+            "type": "color",
+            "id": "b3_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b3_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b3_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b3_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b3tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          }      
+        ]
+       },		
+      {
+        "type": "5",
+        "name": "Design 5 - 4 Banners",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img1",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"text",
+			"id":"b1_text1",
+			"label":"Text 1",	
+			"default":"WOMEN",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b1t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+	 	  {
+ 			"type":"text",
+			"id":"b1_text2",
+			"label":"Text 2",	
+			
+		  },
+ 	     {
+            "type": "checkbox",
+            "id": "b1t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+			{
+ 			"type":"text",
+			"id":"b1_text3",
+			"label":"Text 3",
+			
+		  },
+ 	     {
+            "type": "checkbox",
+            "id": "b1t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+ 		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+         {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b1_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b1_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                             
+          {
+            "type": "color",
+            "id": "b1_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b1_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b1_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b1_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b1tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img2",
+			"label":"Banner Image"			
+		  },
+		 {
+ 			"type":"text",
+			"id":"b2_text1",
+			"label":"Text 1",
+			"default":"MEN",
+			
+		  },
+	    {
+            "type": "checkbox",
+            "id": "b2t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		{
+ 			"type":"text",
+			"id":"b2_text2",
+			"label":"Text 2",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b2t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b2_text3",
+			"label":"Text 3",
+			
+		  }, 
+		 {
+            "type": "checkbox",
+            "id": "b2t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b2_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b2_tp",
+            "label": "Text Position",
+             "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                            
+          {
+            "type": "color",
+            "id": "b2_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b2_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b2_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b2_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b2tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Box Padding",
+            "unit": "px",
+            "default": 30
+          },     
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img3",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"text",
+			"id":"b3_text1",
+			"label":"Text 1",
+			"default":"KIDS",
+			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b3t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b3_text2",
+			"label":"Text 2",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b3t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b3_text3",
+			"label":"Text 3",
+			
+		  }, 
+ 		 {
+            "type": "checkbox",
+            "id": "b3t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b3_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b3_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",				
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                              
+          {
+            "type": "color",
+            "id": "b3_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b3_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b3_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b3_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b3tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 4"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img4",
+			"label":"Banner Image"			
+		  },
+		  {
+ 			"type":"text",
+			"id":"b4_text1",
+			"label":"Text 1",
+			"default":"ACCSSORIES",
+			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b4t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b4_text2",
+			"label":"Text 2",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b4t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b4_text3",
+			"label":"Text 3",
+			
+		  },  
+ 	    {
+            "type": "checkbox",
+            "id": "b4t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link4",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b4_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b4_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                          
+          {
+            "type": "color",
+            "id": "b4_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b4_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b4_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b4_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b4tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          }
+        ]
+      },
+	  {
+        "type": "6",
+        "name": "Design 6 - 5 Banners",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img1",
+			"label":"Banner Image"			
+		  },
+		 {
+ 			"type":"text",
+			"id":"b1_text1",
+			"label":"Text 1",
+			"default":"WOMEN",
+			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b1t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b1_text2",
+			"label":"Text 2",
+			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b1t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b1_text3",
+			"label":"Text 3",
+			
+		  },  
+ 		 {
+            "type": "checkbox",
+            "id": "b1t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+ 		 {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b1_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b1_tp",
+            "label": "Text Position",
+             "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                             
+          {
+            "type": "color",
+            "id": "b1_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b1_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b1_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b1_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b1tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Box Padding",
+            "unit": "px",
+            "default": 30
+          },     
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img2",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"text",
+			"id":"b2_text1",
+			"label":"Text 1",
+			"default":"MEN",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b2t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b2_text2",
+			"label":"Text 2",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b2t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b2_text3",
+			"label":"Text 3",
+			
+		  },  
+		 {
+            "type": "checkbox",
+            "id": "b2t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+         {
+            "type": "checkbox",
+            "id": "b2_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b2_tp",
+            "label": "Text Position",
+             "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                          
+          {
+            "type": "color",
+            "id": "b2_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b2_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b2_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b2_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b2tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      	    		 
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img3",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"text",
+			"id":"b3_text1",
+			"label":"Text 1",
+			"default":"FINAL CLEARANCE"
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b3t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b3_text2",
+			"label":"Text 2",
+			"default":"LIMITED TIME"
+			
+		  },
+		{
+            "type": "checkbox",
+            "id": "b3t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b3_text3",
+			"label":"Text 3",
+			"default":"Flat <span style='color:#ec9090'>50% OFF</span>",
+			
+		  },  
+ 		 {
+            "type": "checkbox",
+            "id": "b3t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  	  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b3_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b3_tp",
+            "label": "Text Position",
+             "default": "text_bc f-jcc f-aie",		
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                          
+          {
+            "type": "color",
+            "id": "b3_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b3_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b3_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b3_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+          {
+            "type": "range",
+            "id": "b3tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 4"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img4",
+			"label":"Banner Image"			
+		  },
+		    {
+ 			"type":"text",
+			"id":"b4_text1",
+			"label":"Text 1",
+			"default":"BEST RATED",
+			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b4t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b4_text2",
+			"label":"Text 2",
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b4t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b4_text3",
+			"label":"Text 3",
+			
+		  },   
+		 {
+            "type": "checkbox",
+            "id": "b4t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link4",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b4_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b4_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",		
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                             
+          {
+            "type": "color",
+            "id": "b4_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b4_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b4_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b4_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b4tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 5"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img5",
+			"label":"Banner Image"			
+		  },
+		    {
+ 			"type":"text",
+			"id":"b5_text1",
+			"label":"Text 1",
+			"default": "NEW ARRIVAL",
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b5t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b5_text2",
+			"label":"Text 2",
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b5t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b5_text3",
+			"label":"Text 3",
+			
+		  },  
+ 	     {
+            "type": "checkbox",
+            "id": "b5t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link5",
+			"label": "Banner Link"
+          },
+		 		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b5_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b5_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",				
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		                              
+          {
+            "type": "color",
+            "id": "b5_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b5_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b5_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b5_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b5tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          }      
+        ]
+      },
+  {
+        "type": "7",
+        "name": "Design 7 - 4 Banners",
+        "settings": [
+		  {
+			"type":"header",
+			"content":"Image 1"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img1",
+			"label":"Banner Image"			
+		  },
+		 {
+ 			"type":"text",
+			"id":"b1_text1",
+			"label":"Text 1",
+			"default":"LIMITED TIME"
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b1t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },                   
+		 {
+ 			"type":"text",
+			"id":"b1_text2",
+			"label":"Text 2",
+			"default":"FINAL CLEARANCE"
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b1t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b1_text3",
+			"label":"Text 3",
+			"default":"FINAL CLEARANCE"
+			
+		  }, 
+ 		 {
+            "type": "checkbox",
+            "id": "b1t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link1",
+			"label": "Banner Link"
+          },
+ 		 {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b1_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b1_tp",
+            "label": "Text Position",
+             "default": "text_bc f-jcc f-aie",		
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		          
+          {
+            "type": "color",
+            "id": "b1_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b1_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b1_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b1_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b1tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Box Padding",
+            "unit": "px",
+            "default": 30
+          },     
+		  {
+			"type":"header",
+			"content":"Image 2"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img2",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"text",
+			"id":"b2_text1",
+			"label":"Text 1",
+			"default": "SUMMER <span style='color:#ec9090'>2025</span>",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b2t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },
+		 {
+ 			"type":"text",
+			"id":"b2_text2",
+			"label":"Text 2",
+			"default": "NEW COLLECTION"
+			
+		  },
+ 		{
+            "type": "checkbox",
+            "id": "b2t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b2_text3",
+			"label":"Text 3",
+			
+		  },          
+          {
+            "type": "checkbox",
+            "id": "b2t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link2",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "checkbox",
+            "id": "b2_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b2_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",		
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		             
+          {
+            "type": "color",
+            "id": "b2_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b2_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b2_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b2_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+         {
+            "type": "range",
+            "id": "b2tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },       	    		 
+	 	  {
+			"type":"header",
+			"content":"Image 3"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img3",
+			"label":"Banner Image"			
+		  },
+		   {
+ 			"type":"text",
+			"id":"b3_text1",
+			"label":"Text 1",
+			"default":"WOMEN",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b3t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },         
+		 {
+ 			"type":"text",
+			"id":"b3_text2",
+			"label":"Text 2",
+			
+		  },
+		 {
+            "type": "checkbox",
+            "id": "b3t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },
+	     {
+ 			"type":"text",
+			"id":"b3_text3",
+			"label":"Text 3",
+			
+		  },   
+          {
+            "type": "checkbox",
+            "id": "b3t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link3",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b3_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b3_tp",
+            "label": "Text Position",
+             "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		             
+          {
+            "type": "color",
+            "id": "b3_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b3_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b3_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b3_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b3tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 4"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img4",
+			"label":"Banner Image"			
+		  },
+		    {
+ 			"type":"text",
+			"id":"b4_text1",
+			"label":"Text 1",
+			"default":"MEN",
+			
+		  },
+	    {
+            "type": "checkbox",
+            "id": "b4t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },          
+		 {
+ 			"type":"text",
+			"id":"b4_text2",
+			"label":"Text 2",
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b4t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },          
+	     {
+ 			"type":"text",
+			"id":"b4_text3",
+			"label":"Text 3",
+			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b4t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link4",
+			"label": "Banner Link"
+          },
+		  {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b4_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+           {
+            "type": "select",
+            "id": "b4_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left",      "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center",    "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right",     "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left",   "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left",   "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right",  "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		           
+          {
+            "type": "color",
+            "id": "b4_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b4_bg", "label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b4_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b4_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+         {
+            "type": "range",
+            "id": "b4tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          },      
+		  {
+			"type":"header",
+			"content":"Image 5"
+		  },
+		  {
+			"type":"image_picker",
+			"id":"img5",
+			"label":"Banner Image"			
+		  },
+		    {
+ 			"type":"text",
+			"id":"b5_text1",
+			"label":"Text 1"			
+		  },
+		  {
+            "type": "checkbox",
+            "id": "b5t1_hide",
+            "label": "Hide on mobile?",
+            "default": false
+          },         
+		 {
+ 			"type":"text",
+			"id":"b5_text2",
+			"label":"Text 2"			
+		  },
+ 		 {
+            "type": "checkbox",
+            "id": "b5t2_hide",
+            "label": "Hide Text 2 in mobile?",
+            "default": false
+          },         
+	     {
+ 			"type":"text",
+			"id":"b5_text3",
+			"label":"Text 3"			
+		  },  
+ 		 {
+            "type": "checkbox",
+            "id": "b5t3_hide",
+            "label": "Hide Text 3 in mobile?",
+            "default": true
+          },
+		  {
+            "type": "url",
+			"id": "link5",
+			"label": "Banner Link"
+          },
+		 {
+            "type": "header",
+            "content": "Text Appearance ==="
+          },
+ 			{
+            "type": "checkbox",
+            "id": "b5_ta",
+            "label": "Text align left?",
+			"default":false
+          },
+          {
+            "type": "select",
+            "id": "b5_tp",
+            "label": "Text Position",
+            "default": "text_bc f-jcc f-aie",			
+            "options": [
+ 			  { "label": "Top Left", "value": "text_tl f-ais f-jcs" },
+  			  { "label": "Top Center", "value": "text_tc f-jcc f-ais" },
+  			  { "label": "Top Right", "value": "text_tr f-jce f-ais" },             
+			  { "label": "Left", "value": "f-aic f-jcs" },
+ 			  { "label": "Center", "value": "f-jcc f-aic" },
+			  { "label": "Right",  "value": "f-jce f-aic" },
+ 			  { "label": "Bottom Left", "value": "text_bl f-aie f-jcs" },						 
+              { "label": "Bottom Center", "value": "text_bc f-jcc f-aie" }, 						 
+			  { "label": "Bottom Right", "value": "text_br f-jce f-aie" }
+              
+            ]
+          }, 		           
+          {
+            "type": "color",
+            "id": "b5_txt",
+            "label": "Text",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "b5_bg", 
+			"label": "Box Background",
+            "default": "#fff"
+          },
+         {
+            "type": "range",
+            "id": "b5_bgo",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box Opacity",
+            "unit": "%",
+            "default": 0.7
+          },
+        {
+            "type": "range",
+            "id": "b5_bgr",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+          },
+           {
+            "type": "range",
+            "id": "b5tpd",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "label": "Text Padding",
+            "unit": "px",
+            "default": 30
+          }      
+        ]
+      }		
+    ],
+    "presets": [
+      {
+        "name": "Grid Banners",
+        "category": "Banners",
+            "blocks": [
+                {
+                    "type": "2"
+                }
+            ]
+      }
+    ]
+  }
+{% endschema %}

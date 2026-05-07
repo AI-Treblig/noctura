@@ -1,0 +1,544 @@
+{%- capture banners -%}
+{%- liquid 
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+-%}
+{%- capture sizes -%} (min-width:1024px) calc(({{ page_width }} - {{ section_st.gspace | times: section_st.grid | minus:section_st.gspace }}px) / {{ section_st.grid }}),(min-width:768px) calc((100vw - {{ section_st.gspace | times: section_st.gridtb | minus:section_st.gspace }}px) / {{ section_st.gridtb }}), calc((100vw - {{ section_st.gspacem | times: section_st.gridmb | minus:section_st.gspacem }}px) / {{ section_st.gridmb }}){%- endcapture -%}
+
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"  
+    {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>       
+    
+    <div class="round_banners {% if section_st.sw %}fw-sec{% else %}page-width{% endif %}">          	
+      {%- render 'sec-title' -%}
+      {%- capture banner_data -%}
+          {% for block in section.blocks limit: section.blocks.size %}                             
+              {% assign collection = collections[block.settings.collection] -%}
+              {% assign blk_st = block.settings -%}            
+              <div class="{% if section_st.carousel %}swiper-slide{% endif %} gitem tc {% render 'animate-data', css:true %}" {% render 'animate-data' %} id="{{ block.id }}" {{ block.shopify_attributes }}>                                
+                  {% assign collection_image = blk_st.image | default:collection.image | default: collection.products.first.featured_image %}                                                                          
+                  <a href="{{ blk_st.url | default:collection.url }}" class="{% if section_st.zoom %} zoom_hov{% endif%}" title="{{ blk_st.title }}">                                                                                                   
+                      {% comment %}Image{% endcomment %}
+                      <div class="img pr of_hidden">                        
+                        {%- if collection_image != blank -%}
+                          {{ collection_image | image_url: width: collection_image.width | image_tag: loading:'lazy', width:collection_image.width, height:collection_image.height, class:'imgFt', sizes:sizes, widths:"180,320,400,560,740,900,1200" }}
+                        {%- else -%}
+                          {% capture current %}{% cycle 1, 2, 3, 4 %}{% endcapture %}{{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'imgFt placeholder-svg' }}
+                        {%- endif -%}
+                      </div>  
+                      {% comment %}Text{% endcomment %}
+                      {% if blk_st.title != blank %}<div class="rgTxt {{ section_st.ft }} mt25" style="--cl:{{ section_st.cl }};--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;--fw:{{ section_st.fw }};">{{ blk_st.title }}</div>{% endif %}
+                      {% if section_st.count %}<span class="db counts" style="--cl:{{ section_st.cl }};">{{ 'collections.general.items_with_count' | t: count: collection.all_products_count }}</span>{% endif %}                                    
+                      {% if blk_st.btntxt != blank %}<button class="btn {{ section_st.btn-size }} {{ section_st.btnd }} mt20" type="button">{{ blk_st.btntxt }}</button>{% endif %}                                                                                                                                                              
+                  </a>                                           
+              </div>
+          {% endfor %}
+        {%- endcapture -%}
+      
+        {% capture styles %}
+          --grsp:{{ section_st.gspace | divided_by: 2.0 }}px;--grspm:{{ section_st.gspacem | divided_by: 2.0 }}px;
+        {% endcapture %}
+      
+        {%- if section_st.carousel -%}
+            <slide-section class="grid gspace rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} swiper" style="{{ styles }}"
+              data-swiper='{ "slidesPerView":"auto", "loop":{{ section_st.loop }}, {% if section_st.autoplay %}"autoplay":{ "delay":"{{ section_st.speed | times: 1000 }}" },{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" },"pagination":{ "el":".swpg{{ section.id }}","clickable":true }}'>
+                <div class="swiper-wrapper">{{ banner_data }}</div>
+                {% render 'swiper-navigation', id:section.id, section_st:section_st %}
+            </slide-section>
+        {%- else -%}
+            <div class="grid gspace rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }}" style="{{ styles }}">
+                {{ banner_data }}
+            </div>
+        {%- endif -%}
+      
+        {%- if section.blocks.size == 0 -%}{% render 'no-blocks' %}{%- endif -%}
+      
+    </div>
+</div>
+{%- endcapture -%}
+{{ banners | strip_newlines | remove: '  ' | remove: '	' }}
+{% schema %}
+{
+    "name": "Round Banners",
+    "class": "index-section",
+    "disabled_on": {
+        "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Featured Collections"
+        },
+        {
+            "type": "textarea",
+            "id": "subtitle",
+            "label": "Sub Heading",
+            "default": "Enhances shopping experience with curated collections"
+        },
+       {
+            "type": "header",
+            "content": "Grid Appearance ==="
+        }, 	         
+        {
+            "type": "range",
+            "id": "gspace",
+            "label": "Grid gap",
+            "default": 40,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit":"px"
+        },
+        {
+            "type": "range",
+            "id": "gspacem",
+            "label": "Grid gap (mobile)",
+            "default": 20,
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "unit":"px"		
+        },
+      {
+            "type": "paragraph",
+            "content": "Items per row ==="
+        }, 	
+        {
+            "type": "range",
+            "id": "grid",
+            "label": "Desktop",
+            "default": 4,
+            "min": 2,
+            "max": 8,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "gridtb",
+            "label": "Tablet",
+            "default": 3,
+            "min": 1,
+            "max": 5,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "gridmb",
+            "label": "Mobile",
+            "default": 2,
+            "min": 1,
+            "max": 3,
+            "step": 1
+        },
+      {
+            "type":"checkbox",
+            "id":"count",
+            "label":"Show products count?",
+            "default": false
+        },
+		{
+            "type": "checkbox",
+            "id": "zoom",
+            "label": "Zoom image on hover?",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Text Appearance ==="
+        },
+      {
+            "type": "select",
+            "id": "ft",
+            "label": "Font family",
+            "default": "ft1",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },      
+        {
+            "type": "range",
+            "id": "fs",
+            "label": "Font size",
+            "default": 16,
+            "min": 12,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font size (mobile)",
+            "default": 16,
+            "min": 12,
+            "max": 40,
+            "step": 1,
+            "unit": "px"
+        },       
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font weight",
+            "default": "500",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Color",
+            "default": "#000"
+        },
+		{
+            "type": "select",
+            "id": "btnd",
+            "label": "Button design",
+            "default": "btn1",
+            "options": [
+			  {
+				"label": "Button 1",
+				"value": "btn1"
+			  },
+			  {
+				"label": "Button 2",
+				"value": "btn2"
+			  },
+			  {
+				"label": "Button 3",
+				"value": "btn3"
+			  },
+			  {
+				"label": "Button 4",
+				"value": "btn4"
+			  },
+			  {
+				"label": "Button 5",
+				"value": "btn5"
+			  },
+			  {
+				"label": "Button 6",
+				"value": "btn6"
+			  },
+              {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              },
+			  {
+			    "label": "Link",
+			    "value": "btnLink"
+		      }
+			]
+          },
+        {
+            "type": "select",
+            "id": "btn-size",
+            "label": "Button size",
+            "default": "btn-sm",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Slider Settings ==="
+        },
+        {
+            "type":"checkbox",
+            "id":"carousel",
+            "label":"Enable carousel",
+            "default": false
+        },
+ 		{
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Infinite loop",
+            "default": true,
+            "visible_if": "{{section.settings.carousel }}"
+        },
+ 		{
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Auto-rotate slide",
+            "default": false,
+            "visible_if": "{{section.settings.carousel }}"			
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Change slide every",
+            "default": 5,
+            "min": 1,
+            "max": 30,
+            "step": 1,
+            "unit": "Sec",
+            "visible_if": "{{section.settings.carousel }}"			
+        },		
+		{
+            "type": "checkbox",
+            "id": "arrow",
+            "label": "Show arrows on desktop?",
+            "default": true,
+            "visible_if": "{{section.settings.carousel }}"			
+        },
+		{
+            "type": "checkbox",
+            "id": "arrowm",
+            "label": "Show arrows on mobile?",
+            "default": false,
+            "visible_if": "{{section.settings.carousel }}"			
+        },		
+		{
+            "type": "checkbox",
+            "id": "dot",
+            "label": "Show dots on desktop?",
+            "default": false,
+            "visible_if": "{{section.settings.carousel }}"			
+        },
+		{
+            "type": "checkbox",
+            "id": "dotm",
+            "label": "Show dots on mobile?",
+            "default": true,
+            "visible_if": "{{section.settings.carousel }}"			
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": false,
+            "info":"Remove left/right padding for fullwidth"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":30
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }	 		 		
+    ],
+    "blocks": [
+        {
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "label": "Collection",
+                    "id": "collection",
+                    "type": "collection"
+                },
+                {
+                    "type":"image_picker",
+                    "id":"image",
+                    "label":"Upload image",
+                    "info":"Image size is flexible but it must be same size for all collections"
+                },
+                {
+                    "type":"text",
+                    "id":"title",
+                    "label":"Title",
+                    "default":"SHOP WOMEN"
+                },
+                {
+                    "type": "text",
+                    "id": "btntxt",
+                    "label": "Button text",
+                    "info":"Keep empty to hide button"
+                },
+                {
+                    "type": "url",
+                    "id": "url",
+                    "label": "Link (optional)",
+                    "info": "Keep empty to use 'collection url'.",
+                    "visible_if": "{{block.settings.collection == blank }}"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Round Banners",
+            "category": "Collections",
+            "settings": {
+                "grid": 5
+            },
+            "blocks": [
+                {
+                    "type": "collection",
+                    "settings": {
+                       "title":"Women"
+                    }
+                    
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                       "title":"Men"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                       "title":"Sports"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                       "title":"Kids"
+                    }
+                },
+                {
+                    "type": "collection",
+                    "settings": {
+                       "title":"Accessories"
+                    }
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

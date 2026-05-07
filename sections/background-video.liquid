@@ -1,0 +1,351 @@
+{% capture video_banner %}
+{% assign section_st = section.settings %}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+  {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>  
+    <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %}">   
+        <div class="video_bnr pr brad of_hidden {% render 'animate-data', css:true, text:true %}" style="--rounded:{{ section_st.rounded }}px">
+        {% if section_st.video_url == blank and section_st.mp4url != nil %}
+            {%- liquid
+               if section_st.mp4urlm != nil 
+                  assign desktop = 'db w_100 hide-sm'
+                  assign mobile = 'db w_100 hide-md hide-lg'
+                else
+                  assign desktop = 'db w_100'
+                  assign mobile = 'db w_100 hide'
+                endif 
+            -%}                                 
+            {{ section_st.mp4url | video_tag :loop:true, autoplay:true, muted:'muted', class:desktop }}
+            {%- if section_st.mp4urlm != nil -%}
+              {{ section_st.mp4urlm | video_tag :loop:true, autoplay:true, muted:'muted', class:mobile }}
+            {%- endif -%}
+        {% else %}              
+          {% capture current %}{% cycle 1, 2 %}{% endcapture %}{{ 'hero-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}               
+        {%- if section_st.title != blank or section_st.btntxt != blank -%}
+          <div class="vdtWrap fl">
+              <div class="fl m_auto w_100 f-jcc f-aie {{ section_st.text_align }} {% render 'animate-data', css:true %}" style="max-width:{{ section_st.cntwd }}px;">
+                  <div class="video_txt{% if section_st.align %} tc{% else %} tl{% endif %}" style="--cl:{{ section_st.txtcl }};--fs:{{ section_st.hdfs }}px;--fsm:{{ section_st.hdfsm }}px;--fw:{{ section_st.fw }};--lh:{{section_st.hdlh }}">
+                      {%- if section_st.title != blank -%}<span class="rgTxt{% if section_st.hidet %} hide-sm{% endif %}">{{ section_st.title }}</span>{%- endif -%}
+                      {%- if section_st.btntxt != blank %}<br/><a href="{{ section_st.btnurl }}" class="mt15 btn {{ section_st.btn-style }}{% if section_st.hide_btn %} hide-sm{% endif %}">{{ section_st.btntxt }}</a>{%- endif -%}
+                  </div>
+              </div>
+          </div>
+        {%- endif -%}                       
+        </div>
+    </div>
+</div>
+{% endcapture %}
+{{ video_banner | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Backgroud Video",
+    "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [   
+       {	
+            "type": "paragraph",
+            "content": "Videos play in background. To play video with sound, use Popup video section."		  
+        },
+        {
+            "type": "video",
+            "id": "mp4url",
+            "label": "Upload Video",
+            "info":"Supported file type -mp4, .mov. video will play in loop"
+        },  
+       {
+            "type": "video",
+            "id": "mp4urlm",
+            "label": "Upload Video (mobile)",
+            "info":"Optional."
+        },   
+        {
+            "type": "textarea",
+            "id": "title",
+            "label": "Text",
+            "default": "VIDEO ENCOURAGE CUSTOMERS TO PURCHASE MORE"
+        },  
+        {	
+            "type": "checkbox",
+            "id": "hidet",
+            "label": "Hide on mobile?",
+            "default": false		  
+        },
+       {	
+            "type": "header",
+            "content": "Text Appearance ==="		  
+        },
+       {
+            "type": "range",
+            "id": "cntwd",
+            "min": 500,
+            "max": 1500,
+            "step": 10,
+            "label": "Text Maximum Width",
+            "unit": "px",
+            "default": 700
+        },     
+        {
+            "type": "range",
+            "id": "hdfs",
+            "label": "Font Size",
+            "default": 40,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        }, 	  
+        {
+            "type": "range",
+            "id": "hdfsm",
+            "label": "Font Size (mobile)",
+            "default": 20,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+              "type": "select",
+              "id": "fw",
+              "label": "Font Weight",
+              "default": "600",
+              "options": [
+                  {
+                      "value": "300",
+                      "label": "Light"
+                  },
+                  {
+                      "value": "400",
+                      "label": "Regular"
+                  },
+                  {
+                      "value": "500",
+                      "label": "Medium"
+                  },
+                  {
+                      "value": "600",
+                      "label": "Semi Bold"
+                  },
+                  {
+                      "value": "700",
+                      "label": "Bold"
+                  }
+              ]
+        }, 	
+       {
+            "type": "range",
+            "id": "hdlh",
+            "label": "Line Height",
+            "default": 1.3,
+            "min": 0.7,
+            "max": 2.0,
+            "step": 0.1
+        }, 		
+        {
+            "type": "color",
+            "id": "txtcl",
+            "label": "Text Color",
+            "default": "#fff"
+        },
+        {
+            "type": "checkbox",
+            "id": "align",
+            "label": "Align Center?",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "text_align",
+            "label": "Position (desktop)",
+            "default": "f-jcc-md f-aie-md",			
+            "options": [
+                { "label": "Top Left",      "value": "f-ais-md f-jcs-md" },
+                { "label": "Top Center",    "value": "f-jcc-md f-ais-md" },
+                { "label": "Top Right",     "value": "f-jce-md f-ais-md" },             
+                { "label": "Left",  		  "value": "f-aic-md f-jcs-md" },
+                { "label": "Center", 		  "value": "f-jcc-md f-aic-md" },
+                { "label": "Right",  		  "value": "f-jce-md f-aic-md" },
+                { "label": "Bottom Left",   "value": "f-aie-md f-jcs-md" },						 
+                { "label": "Bottom Center", "value": "f-jcc-md f-aie-md" }, 						 
+                { "label": "Bottom Right",  "value": "f-jce-md f-aie-md" }
+            ]
+        },
+        {
+            "type": "text",
+            "id": "btntxt",
+            "label": "Button Text",
+            "default":"Shop Now"
+        },
+        {
+            "type": "url",
+            "id": "btnurl",
+            "label": "Button Url",
+            "default":"/"
+        },
+        {
+            "type": "select",
+            "id": "btn-style",
+            "label": "Button Design",
+            "default": "btn1",
+            "options": [
+            {
+              "label": "Button 1",
+              "value": "btn1"
+            },
+            {
+              "label": "Button 2",
+              "value": "btn2"
+            },
+            {
+              "label": "Button 3",
+              "value": "btn3"
+            },
+            {
+              "label": "Button 4",
+              "value": "btn4"
+            },
+           {
+              "label": "Button 5",
+              "value": "btn5"
+            },
+            {
+              "label": "Button 6",
+              "value": "btn6"
+            },
+             {
+                      "label": "Button 7 Gradient",
+                      "value": "btn7"
+                  },
+                  {
+                      "label": "Button 8 Gradient",
+                      "value": "btn8"
+                  },
+            {
+              "label": "Link",
+              "value": "btnLink"
+            }  
+          ]
+       },
+        {
+            "type": "checkbox",
+            "id": "hide_btn",
+            "label": "Hide Button in Mobile?",
+            "default": true,	
+            "info":"Hide button or text due to the limited space on mobile. "
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+      {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": true           
+        },		
+         {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No Padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+       {
+            "type": "range",
+            "id": "rounded",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "label": "Rounded Corner",
+            "unit": "px",
+            "default": 0
+        },    
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background Image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image Overlay",
+            "default": "#3d4246"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay Opacity",
+            "unit": "%",
+            "default": 0
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom",
+			"unit": "px",
+			"default":30
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        }                   
+    ],
+    "presets": [
+        {
+            "name": "Backgroud Video",   
+            "category": "Video"
+        }
+    ]
+}
+{% endschema %}

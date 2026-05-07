@@ -1,0 +1,289 @@
+{%- capture toolbar -%}
+{%- assign section_st = section.settings -%}
+{%- style -%}
+    .mbtlwraper { position:fixed; bottom:0; z-index:10; width:100%; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+    .mbtoolbar { overflow-x:auto; }
+    .mbtoolbar a { color:{{ section_st.cl }}; font-size:{{ section_st.fs }}px; font-weight:{{ section_st.fw }}; line-height:1.4; padding:{% if section_st.hdtxt %}15px{% else %}12px 15px 10px{% endif %}; }
+    .mbtoolbar .at-icon { display:block; margin:{% unless section_st.hdtxt %}0 auto 3px{% else %}0 auto{% endunless %}; }
+   {% if section_st.showmt %}
+      @media only screen and (max-width:767px){
+        body { padding-bottom:50px; }
+      }
+    {% endif %}
+{%- endstyle -%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">  	
+    <div class="fl f-aic f-jcsa mbtoolbar w_100" style="--icns:{{ section_st.fsicon }}px">
+        {%- for block in section.blocks limit: section.blocks.size -%}
+            {%- assign blk_st = block.settings -%}
+            {% capture title_name %}
+              {% unless section_st.hdtxt %}{{ blk_st.title }}{% endunless %}
+            {% endcapture %}
+            {%- if block.type == 'home' -%}
+                <a href="{{ routes.root_url }}" class="db">
+                    <svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M509.8 227.5L448 177.8v-76c0-3.3-2.7-6-6-6h-20c-3.3 0-6 2.7-6 6v50.1L276.1 39.1c-11.7-9.5-28.5-9.5-40.2 0L2.2 227.5c-2.6 2.1-3 5.9-.9 8.4l12.6 15.6c2.1 2.6 5.9 3 8.5.9L64 218.9v229c0 17.7 14.3 32 32 32h116c6.6 0 12-5.4 12-12V335.8l64 .3v132.2c0 6.6 5.4 12 12 12l116-.3c17.7 0 32-14.3 32-32V219l41.6 33.5c2.6 2.1 6.4 1.7 8.5-.9l12.6-15.6c2.1-2.6 1.6-6.4-.9-8.5zM416 448l-96 .3V316c0-6.6-5.4-12-12-12l-104-.3c-6.6 0-12 5.4-12 12V448H96V193.1l156.2-126c2.2-1.8 5.3-1.8 7.5 0l156.2 126V448z"/></svg>
+                    {{- title_name -}}
+                </a>
+            {%- elsif block.type == 'menu' -%}
+                <a href="#menu" class="db navToggle" title="{{ blk_st.title }}">
+                    <svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 464.205 464.205"><path d="m435.192 406.18h-406.179c-16.024 0-29.013-12.99-29.013-29.013s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.99 29.013 29.013-.001 16.023-12.99 29.013-29.014 29.013z"></path><path d="m435.192 261.115h-406.179c-16.024 0-29.013-12.989-29.013-29.012s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.989 29.013 29.013s-12.99 29.012-29.014 29.012z"></path><path d="m435.192 116.051h-406.179c-16.024 0-29.013-12.989-29.013-29.013s12.989-29.013 29.013-29.013h406.18c16.023 0 29.013 12.989 29.013 29.013s-12.99 29.013-29.014 29.013z"></path></svg>
+                    {{- title_name -}}
+                </a>
+            {%- elsif block.type == 'shop' -%}
+                {%- assign collection = collections[blk_st.collection] -%}
+                <a href="{{ collection.url }}" class="db">
+                    <svg class="at-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384.97 384.97" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"><path d="M144.364,0H24.061C10.767,0,0,10.767,0,24.061v120.303c0,13.281,10.767,24.061,24.061,24.061h120.303 c13.293,0,24.061-10.779,24.061-24.061V24.061C168.424,10.767,157.657,0,144.364,0z M144.364,144.364H24.061V24.061h120.303 V144.364z"></path><path d="M360.909,0H240.606c-13.293,0-24.061,10.767-24.061,24.061v120.303c0,13.281,10.767,24.061,24.061,24.061h120.303 c13.281,0,24.061-10.779,24.061-24.061V24.061C384.97,10.767,374.191,0,360.909,0z M360.909,144.364H240.606V24.061h120.303 V144.364z"></path><path d="M360.909,216.545H240.606c-13.293,0-24.061,10.779-24.061,24.061v120.303c0,13.293,10.767,24.061,24.061,24.061h120.303 c13.281,0,24.061-10.767,24.061-24.061V240.606C384.97,227.313,374.191,216.545,360.909,216.545z M360.909,360.909H240.606 V240.606h120.303V360.909z"></path><path d="M144.364,216.545H24.061C10.767,216.545,0,227.325,0,240.606v120.303c0,13.293,10.767,24.061,24.061,24.061h120.303 c13.293,0,24.061-10.767,24.061-24.061V240.606C168.424,227.313,157.657,216.545,144.364,216.545z M144.364,360.909H24.061 V240.606h120.303V360.909z"></path></svg>
+                    {{- title_name -}}
+                </a>
+            {%- elsif block.type == 'act' -%}
+                <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="db">
+                    {% render 'icon-account' %}
+                    {{- title_name -}}
+                </a>
+            {%- elsif block.type == 'src' -%}
+                <a href="{{ routes.search_url }}" class="db searchIcn">
+                    <svg class="at-icon"><use xlink:href="#icon-search"></use></svg>
+                    {{- title_name -}}
+                </a>
+            {%- elsif block.type == 'filter' and request.page_type == 'collection' or request.page_type == 'search' -%}
+                <a href="#" class="db btn-filter" title="{{ blk_st.title }}">
+                    <svg class="at-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m3 6.25c-.41421 0-.75.33579-.75.75s.33579.75.75.75zm0 10c-.41421 0-.75.3358-.75.75s.33579.75.75.75zm6 1.5c.41421 0 .75-.3358.75-.75s-.33579-.75-.75-.75zm12 0c.4142 0 .75-.3358.75-.75s-.3358-.75-.75-.75zm-6-11.5c-.4142 0-.75.33579-.75.75s.3358.75.75.75zm6 1.5c.4142 0 .75-.33579.75-.75s-.3358-.75-.75-.75zm-18 0h3v-1.5h-3zm0 10h6v-1.5h-6zm15 0h3v-1.5h-3zm-3-10h6v-1.5h-6zm2.25 9.25c0 1.2426-1.0074 2.25-2.25 2.25v1.5c2.0711 0 3.75-1.6789 3.75-3.75zm-2.25 2.25c-1.2426 0-2.25-1.0074-2.25-2.25h-1.5c0 2.0711 1.6789 3.75 3.75 3.75zm-2.25-2.25c0-1.2426 1.0074-2.25 2.25-2.25v-1.5c-2.0711 0-3.75 1.6789-3.75 3.75zm2.25-2.25c1.2426 0 2.25 1.0074 2.25 2.25h1.5c0-2.0711-1.6789-3.75-3.75-3.75zm-3.75-7.75c0 1.24264-1.0074 2.25-2.25 2.25v1.5c2.0711 0 3.75-1.67893 3.75-3.75zm-2.25 2.25c-1.24264 0-2.25-1.00736-2.25-2.25h-1.5c0 2.07107 1.67893 3.75 3.75 3.75zm-2.25-2.25c0-1.24264 1.00736-2.25 2.25-2.25v-1.5c-2.07107 0-3.75 1.67893-3.75 3.75zm2.25-2.25c1.2426 0 2.25 1.00736 2.25 2.25h1.5c0-2.07107-1.6789-3.75-3.75-3.75z" fill="#28303f"/></svg>
+                    {{- title_name -}}
+                </a>
+            {%- elsif block.type == 'cart' -%}
+                <a href="{{ routes.cart_url }}" class="db cartOpen">
+                    <svg class="at-icon"><use xlink:href="#icon-cart"></use></svg>
+                    {{- title_name -}}
+                </a>
+            {%- elsif block.type == 'wish' -%}
+                <a href="{{ pages[settings.wishlist_page].url }}" class="db">
+                    <svg class="at-icon"><use xlink:href="#icon-wishlist"></use></svg>
+                    {{- title_name -}}
+                </a>
+            {%- elsif block.type == 'custom' -%}
+                <a href="{{ blk_st.url }}" class="db">
+                    {%- if blk_st.icn != blank -%}{{ blk_st.icn | replace: '<svg','<svg class="at-icon"' }}{%- endif -%}
+                    {{- title_name -}}
+                </a>
+            {%- endif -%}
+        {%- endfor -%}
+    </div>
+</div>
+{%- endcapture -%}
+{{- toolbar | strip_newlines | remove: '  ' | remove: '	' -}}
+{% schema %}
+{
+    "name": "Mobile Toolbar",
+    "class": "mbtlwraper hide-md hide-lg",
+    "settings":[
+		{
+            "type": "paragraph",
+            "content":"Recommended to display up to 5 links"
+        },
+        {
+            "type": "checkbox",
+            "id": "hdtxt",
+            "label": "Hide Text?",
+            "default": false
+        },
+      {
+            "type": "range",
+            "id": "fsicon",
+            "label": "Icon Size",
+            "default": 15,
+            "min": 15,
+            "max": 22,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 12,
+            "min": 8,
+            "max": 15,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "600",
+            "options": [
+              {
+                "value": "300",
+                "label": "Light"
+              },
+              {
+                "value": "400",
+                "label": "Regular"
+              },
+              {
+                "value": "500",
+                "label": "Medium"
+              },
+              {
+                "value": "600",
+                "label": "Semi Bold"
+              },
+              {
+                "value": "700",
+                "label": "Bold"
+              }
+            ]
+        },
+       {
+            "type": "color",
+            "id": "cl",
+            "label": "Link Color",
+            "default":"#333"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default": "#fff"
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "home",
+            "name": "Home",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Home"
+                }
+            ]
+        },
+        {
+            "type": "menu",
+            "name": "Menu",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Menu"
+                }
+            ]
+        },
+        {
+            "type": "shop",
+            "name": "Shop",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Shop"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Link"
+                }
+            ]
+        },
+        {
+            "type": "act",
+            "name": "Account",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Account"
+                }
+            ]
+        },
+        {
+            "type": "src",
+            "name": "Search",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Search"
+                }
+            ]
+        },
+        {
+            "type": "filter",
+            "name": "Filter",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Filter",
+                    "info":"Filter icons will display on collection page"
+                }
+            ]
+        },
+        {
+            "type": "cart",
+            "name": "Cart",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Cart"
+                }
+            ]
+        },
+        {
+            "type": "wish",
+            "name": "Wishlist",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Wishlist"
+                }
+            ]
+        },
+        {
+            "type": "custom",
+            "name": "Custom",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Custom"
+                },
+                {
+                    "type": "textarea",
+                    "id": "icn",
+                    "label": "SVG Icon code",
+					"info":"[How to get code?](https://www.adornthemes.com/knowledge-base/copy-svg-file-link/)"
+                },
+                {
+                    "type": "url",
+                    "id": "url",
+                    "label": "Url"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

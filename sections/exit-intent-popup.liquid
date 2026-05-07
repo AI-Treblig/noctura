@@ -1,0 +1,670 @@
+{% capture exit_intent_popup %}
+{%- assign section_st = section.settings -%}
+{%- capture sizes -%}
+  (min-width:1024px){% if section_st.sty == '1' %}500px{% else %}900px{% endif %}, calc(100vw -30px)
+{%- endcapture -%}
+{% capture showexitpp %}{% if section_st.index %}index,{% endif %}{% if section_st.product %}product,{% endif %}{% if section_st.collection %}collection,{% endif %}{% if section_st.article %}article,{% endif %}{% if section_st.blog %}blog,{% endif %}{% if section_st.cart %}cart,{% endif %}{% if section_st.page %}page{% endif %}{% endcapture %}
+{% if showexitpp contains request.page_type %}
+<div class="tinglebox">
+    <div class="exitprPopup of_hidden{% if section_st.sty == '1' %} fl f-col f-row-md{% else %} tc{% endif %}" style="--bdr:{{ section_st.prd }}px">
+        {%  if section_st.cbn %}
+        <div class="fl1 fl f-aic f-col f-jcc tc pr of_hidden" style="background-color:{{ section_st.bg }}">
+            {%- if section_st.bgimg != blank -%}
+                <div class="overlay" style="--overlay:{{ section_st.overlay }};">
+                  {{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: class:'imgFt', loading:'lazy', width:section_st.bgimg.width, height:section_st.bgimg.height, sizes:sizes, widths:"400,600,800,1000,1200" }}
+                </div>
+            {%- endif -%}
+            <div class="fl f-col f-aic txtCnt pr zi1">
+                {% for block in section.blocks %}
+                    {%- assign blk_st = block.settings -%}
+                    {% if block.type == 'heading' %}
+                        <h3 class="rgTxt mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md {{ blk_st.ff }}" style="--cl:{{ blk_st.cl }};--fs:{{ blk_st.fs }}px;--fsm:{{ blk_st.fsm }}px;--fw:{{ blk_st.fw }};--ls:{{ blk_st.ls }}px;--lh:{{ blk_st.lh }};" {{ block.shopify_attributes }}>{{ blk_st.title }}</h3>
+                    {% elsif block.type == 'text' %}
+                        <div class="rgTxt mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if section_st.hidemb %} hide-sm{% endif %}{% if blk_st.addbg %} bg{% endif %}" style="--cl:{{ blk_st.cl }};--bg:{{ blk_st.bg }};--fs:{{ blk_st.fs }}px;--fsm:{{ blk_st.fsm }}px;--ls:{{ blk_st.ls }}px;--lh:{{ blk_st.lh }};" {{ block.shopify_attributes }}>{{ blk_st.text }}</div>
+                    {% elsif block.type == 'button' %}
+                        {% if blk_st.ol_link != true %}
+                            <a href="{{ blk_st.link }}" class="btn {{ blk_st.btn-size }} mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md {{ blk_st.btn-style }}{% if blk_st.hidem %} hide-sm{% endif %}" {{ block.shopify_attributes }}>{{ blk_st.title | escape }}</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        <div class="fl1 prCol{% if section_st.hidem %} hide-sm{% endif %}">
+            {%- if section_st.rpttl != blank -%}<h3 class="h3">{{ section_st.rpttl }}</h3>{%- endif -%}
+          {%- if section_st.sty == '1' -%}
+              {% for product in section_st.products %}
+                  {% render 'product-card-columns', product: product %}
+              {% else %}
+                {% for i in (1..section_st.rows) %}
+                    <div class="pr_list fl f-aic mb15">
+                        <div class="pr_list_img">
+                            <a class="db" href="#">{% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}{% capture pl_class %}placeholder-svg svgcl{{ current }}{% endcapture %}{{ 'product-' | append: current | placeholder_svg_tag: pl_class }}</a>
+                        </div>
+                        <div class="fl1 pr_list_detail">
+                            <a href="#" class="pr_list_ttl">{{ 'homepage.onboarding.product_title' | t }}</a>
+                            <div class="pr_list_meta mt5">{% render 'product-price' %}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+              {% endfor %}
+            {%- else -%}
+                <slide-section class="grid rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} grid-products swiper"
+                  data-swiper='{ "slidesPerView":"auto", "loop":{{ section_st.loop }}, {% if section_st.autoplay %}"autoplay":{ "delay":"{{ section_st.speed | times: 1000 }}" },{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" }}'>
+                    <div class="swiper-wrapper">
+                      {% for product in section_st.products %}
+                        {%- capture primgsizes -%}
+                          (min-width:1024px){{ '900' | divided_by:section_st.grid }}px,(min-width:768px){{ '900px' | divided_by:section_st.gridtb }}px, calc(100vw / {{ section_st.gridmb }})
+                        {%- endcapture -%}
+                        <div class="swiper-slide gitem">{% render 'product-card-grid', product: product, section_st:section_st, sizes: primgsizes %}</div>
+                    {% else %}
+                    {% for i in (1..section_st.rows) %}
+                        <div class="swiper-slide gitem">
+                          <div class="grid_bx">
+                            <a href="#" class="grid_lnk">
+                              <div class="grid_img_wr">{% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}{% capture pl_class %}placeholder-svg svgcl{{ current }}{% endcapture %}{{ 'product-' | append: current | placeholder_svg_tag: pl_class }}</div><br/>
+                              <div class="h4 grid_title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                              <div class="grid_meta"> {% render 'product-price' %} </div>
+                            </a>
+                          </div>
+                        </div>
+                    {% endfor %}
+                  {% endfor %}
+                    </div>
+                    {% render 'swiper-navigation', id:section.id, section_st:section_st %}
+                </slide-section>
+            {%- endif -%}
+        </div>
+    </div>
+</div>
+{%- unless request.design_mode -%}
+<script>
+    document.addEventListener("mouseleave", (e) => {
+       if(e.clientY < 0 && getCookie("exitprpopup") != 'true'){
+          var isOpenex = document.querySelector(".tingle-modal.exitPopupWrap"),
+            exitPopup = document.querySelector(".exitPopupSec"),
+          exmodal = new tingle.modal({
+            footer: false,
+            cssClass: ['exitPopupWrap'],
+            onOpen: function() {
+                setTimeout(() => { window.dispatchEvent(new Event('resize')) }, 5);
+            },
+            onClose: function() {
+                setCookie("exitprpopup", 'true', 1);
+            }
+        });
+        if(!isOpenex){
+          exmodal.setContent(exitPopup.innerHTML);
+          exmodal.open();
+        }
+       }
+    });
+</script>
+{%- endunless -%}
+{% endif %}
+{% endcapture %}
+{{ exit_intent_popup | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+  {
+    "name": "Exit Intent Popup",
+    "class": "exitPopupSec hide",
+    "limit": 1,
+    "enabled_on": {
+        "groups": ["custom.overlay"]
+    },
+    "settings": [
+    {
+        "type": "select",
+        "id": "sty",
+        "label": "Select Style",
+        "default": "1",
+        "options": [
+          {
+            "label": "Style 1 - Listing",
+            "value": "1"
+          },
+          {
+            "label": "Style 2 - Carousel",
+            "value": "2"
+          } 
+        ]
+      },
+    {
+        "type": "color",
+        "id": "iconc",
+        "label": "Popup Close Icon",
+        "default":"#111"
+    },
+      {
+            "type": "checkbox",
+            "id": "cbn",
+            "label": "Show Banner?",
+            "default":true          
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Banner Background",
+            "default":"#eee",
+            "visible_if": "{{ section.settings.cbn }}"
+        },
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Banner Image",
+            "visible_if": "{{ section.settings.cbn }}"
+		}, 
+    {
+        "type": "color",
+        "id": "overlay",
+        "label": "Image Overlay",
+        "default":"#00000000",
+        "visible_if": "{{ section.settings.cbn }}",
+        "alpha": true
+    },
+       {
+        "type": "range",
+        "id": "prd",
+        "label": "Popup Rounded",
+        "default":0,
+        "min": 0,
+        "max": 20,
+        "step": 1
+      }, 	   
+	  {
+        "type": "header",
+        "content": "Recommended Products ==="
+      },
+      {
+        "type": "checkbox",
+        "id": "hidem",
+        "label": "Hide on Mobile?",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "rpttl",
+        "label": "Heading",
+        "default": "Recommended Products"
+      },
+      {
+         "id": "products",
+         "type": "product_list",
+         "label": "Select Products"
+      },
+      {
+        "type": "header",
+        "content": "Products Per Row ===",
+        "visible_if": "{{ section.settings.sty == '2' }}"
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Desktop",
+        "default": 4,
+        "min": 2,
+        "max": 7,
+        "step": 1,
+        "visible_if": "{{ section.settings.sty == '2' }}"
+      },
+      {
+        "type": "range",
+        "id": "gridtb",
+        "label": "Tablet",
+        "default": 3,
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "visible_if": "{{ section.settings.sty == '2' }}"
+      },
+      {
+        "type": "range",
+        "id": "gridmb",
+        "label": "Mobile",
+        "default": 2,
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "visible_if": "{{ section.settings.sty == '2' }}"
+      },	
+	 {
+            "type": "header",
+            "content": "Slider Settings",
+            "visible_if": "{{ section.settings.sty == '2' }}"
+        },
+ 		{
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Infinite Loop",
+            "default": false,
+            "visible_if": "{{ section.settings.sty == '2' }}"
+        },
+ 		{
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Auto-rotate List",
+            "default": false,
+            "visible_if": "{{ section.settings.sty == '2' }}"
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Change Grid Every",
+            "default": 5,
+            "min": 1,
+            "max": 30,
+            "step": 1,
+            "unit": "Sec",
+            "visible_if": "{{ section.settings.sty == '2' }}"
+        },		
+		{
+            "type": "checkbox",
+            "id": "arrow",
+            "label": "Show Arrows on Desktop?",
+            "default": true,
+            "visible_if": "{{ section.settings.sty == '2' }}"
+        },
+		{
+            "type": "checkbox",
+            "id": "arrowm",
+            "label": "Show Arrows on Mobile?",
+            "default": false,
+            "visible_if": "{{ section.settings.sty == '2' }}"
+        },
+      {
+        "type": "header",
+        "content": "Select page to display: ====="
+      },
+      {
+        "type": "checkbox",
+        "id": "index",
+        "label": "Home page",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product",
+        "label": "Product page"
+      },
+      {
+        "type": "checkbox",
+        "id": "collection",
+        "label": "Collection page"
+      },
+      {
+        "type": "checkbox",
+        "id": "article",
+        "label": "Article page"
+      },
+      {
+        "type": "checkbox",
+        "id": "blog",
+        "label": "Blog page"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart",
+        "label": "Cart page"
+      },
+      {
+        "type": "checkbox",
+        "id": "page",
+        "label": "Other page"
+      }
+	 ],
+    "blocks": [
+        {
+            "type": "heading",
+            "name": "Heading",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "title",
+                    "label": "Text",
+                    "default": "THE MOST ADVANCED<br/>SHOPIFY THEME IN THE MARKET"			
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#000"
+                },               
+               {
+                    "type": "select",
+                    "id": "ff",
+                    "label": "Font Family",
+                    "default": "ft2",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font Size",
+                    "default": 22,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font Size (mobile)",
+                    "default": 18,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+               {
+                    "type": "select",
+                    "id": "fw",
+                    "label": "Font weight",
+                    "default": "400",
+                    "options": [
+                        {
+                            "value": "300",
+                            "label": "Light"
+                        },
+                        {
+                            "value": "400",
+                            "label": "Regular"
+                        },
+                        {
+                            "value": "500",
+                            "label": "Medium"
+                        },
+                        {
+                            "value": "600",
+                            "label": "Semi Bold"
+                        },
+                        {
+                            "value": "700",
+                            "label": "Bold"
+                        }
+                    ]
+                }, 	
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line Height",
+                    "default": 1.2,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1,
+                    "info": "Space between text lines."
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 5,
+                    "min": 5,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 5,
+                    "min": 5,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "name": "Text",
+            "settings":[        
+                {
+                    "type": "inline_richtext",
+                    "id": "text",
+                    "label": "Text"
+                },          
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide text in mobile?",
+                    "default": true			
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#000"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "addbg",
+                    "label": "Add Background?"                  	
+                },
+               {
+                    "type": "color",
+                    "id": "bg",
+                    "label": "Background",
+                    "default": "#fff"
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font Size",
+                    "default": 14,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font Size (mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }, 		
+                {
+                    "type": "range",
+                    "id": "ls",
+                    "label": "Letter Spacing",
+                    "default":0,
+                    "min": 0,
+                    "max": 10,
+                    "step": 1,
+                    "unit": "px"                   
+                }, 		
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line Height",
+                    "default": 1.5,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1,
+                    "info": "Space between text lines."
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 20,
+                    "min": 5,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 5,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        },    
+        {
+            "type": "button",
+            "name": "Button",  
+            "limit":1,    
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Button Label",
+                    "default":"SHOP NOW"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Button Link"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide on mobile?",
+                    "default": false		
+                },
+                {
+					"type": "select",
+					"id": "btn-style",
+					"label": "Button Design",
+					"default": "btn1",
+					"options": [
+					  {
+						"label": "Button 1",
+						"value": "btn1"
+					  },
+					  {
+						"label": "Button 2",
+						"value": "btn2"
+					  },
+					  {
+						"label": "Button 3",
+						"value": "btn3"
+					  },
+					  {
+						"label": "Button 4",
+						"value": "btn4"
+					  },
+					 {
+						"label": "Button 5",
+						"value": "btn5"
+					  },
+					 {
+						"label": "Button 6",
+						"value": "btn6"
+					  },
+                        {
+                          "label": "Button 7 Gradient",
+                          "value": "btn7"
+                      },
+                      {
+                          "label": "Button 8 Gradient",
+                          "value": "btn8"
+                      },
+                     {
+						"label": "Link",
+						"value": "btnLink"
+					  }  
+					]
+				  },
+                {
+                    "type": "select",
+                    "id": "btn-size",
+                    "label": "Button Size",
+                    "default": "btn-md",
+                    "options": [
+                        {
+                            "label": "Small",
+                            "value": "btn-sm"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "btn-md"
+                        },
+                        {
+                            "label": "Large",
+                            "value": "btn-lg"
+                        } 		  
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },				            
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        }   
+    ],
+    "presets": [
+        {
+            "name": "Exit Intent Popup",
+            "blocks": {
+          "heading": {
+            "type": "heading",
+            "settings": {
+              "title": "<b>BLACK FRIDAY <br>SALE!<b></b></b>"
+            }
+          },
+          "text": {
+            "type": "text",
+            "settings": {
+              "text": "Enter the code above at checkout to get 20% off your first order."
+            }
+          },
+          "button": {
+            "type": "button",
+            "settings": {
+              "title": "SHOP NOW",
+              "link": "shopify://collections/new-arrivals"
+            }
+          }
+        },
+        "block_order": [
+          "heading",
+          "text",
+          "button"
+        ],
+        "settings": {
+          "sty": "1"
+        }
+        }
+    ]
+  }
+{% endschema %}

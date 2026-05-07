@@ -1,0 +1,791 @@
+{% capture productslider %}
+{%- liquid 
+   assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+-%}
+{%- capture sizes -%}
+  (min-width:1024px) calc({{ page_width }} / {{section_st.grid }}),(min-width:768px) calc(100vw / {{section_st.gridtb }}), calc(100vw / {{section_st.gridmb }})
+{%- endcapture -%}  
+  
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--irad:{{ section_st.img_rad }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+   {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>  
+    <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %}" id="{{ section.id }}">        
+         <div class="fl f-jcsb f-col f-aic f-row-md custom-banner">
+                <div class="mb20 mb0-lg{% if section_st.pos %} order2{% endif %}{% if section_st.bnrhm %} hide-sm{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--wd:{{ section_st.bnrwd }}%;" >
+                    <a href="{{ section_st.collection.url }}" class="pr db of_hidden brad" style="--rounded:{{ section_st.brad }}px;">
+                        <div style="--overlay:{{ section_st.img_overlay | color_modify: 'alpha', section_st.img_overlay_op }}; {% if section_st.image != blank %}padding-bottom:{{ 1 | divided_by: section_st.image.aspect_ratio | times: 100 }}%;{% endif %}" class="overlay" >
+                            {%- liquid
+                                assign column = 100.00 | divided_by: section_st.bnrwd | times: 1
+                                assign divide_colunm = 1.00 | divided_by: column | round: 2
+                            %}
+                            {% if section_st.image != blank %}
+                                {%- capture bnrsizes -%}
+                                  (min-width:1024px) calc(({{ page_width }} - 30px * {{ column | minus: 1 }}) * {{ divide_colunm }}), calc(100vw - 30px)
+                                {%- endcapture -%}
+                                {{ section_st.image | image_url: width: section_st.image.width | image_tag: loading:'lazy', width:section_st.image.width, height:section_st.image.height, class:'imgFt', sizes:bnrsizes, widths:"180,320,400,560,740,900,1200,1600" }}
+                            {% else %}
+                                {{ 'collection-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+                            {% endif %}
+                        </div>          
+                        <div class="fl f-col {{ section_st.align }} pa all0 tc pd30 zi1">
+                            {% for block in section.blocks %}            
+                                {% case block.type %}                               
+									{% when 'text' %} 
+										<div class="rgTxt {{ block.settings.ft }}{% if block.settings.hidem %} hide-sm{% endif %} mb{{ block.settings.mbm }} mb{{ block.settings.mb }}" style="--cl:{{ block.settings.cl }};--fs:{{ block.settings.fs }}px;--fsm:{{ block.settings.fsm }}px;--fw:{{ block.settings.fw }};--lh:{{ block.settings.lh }};">{{ block.settings.title }}</div>
+									{% when 'button' %}           
+										<span class="btn mb15 {{ block.settings.btn-size }} {{ block.settings.btn-style }}{% if block.settings.hidem %} hide-sm{% endif %}" type="button">{{ block.settings.title }}</span>  
+									{% when 'countdown' %}
+										<countdown-time class="atCounter box_timer fl f-jcc tc ht{{ section.id }} ttu mb{{ block.settings.mbm }} mb{{ block.settings.mb }}-md" data-date="{{ block.settings.date }}"
+											 style="--cl:{{ block.settings.cl }};--bg:{{ block.settings.bg }};--border:{{ block.settings.bdr }};--rounded:{{ block.settings.radius }}px;" {{ block.shopify_attributes }}>
+											<span class="pd10"><span class="tm days">00</span>{{ 'date_formats.days' | t }}</span>
+											<span class="pd10"><span class="tm hours">00</span>{{ 'date_formats.hours' | t }}</span>
+											<span class="pd10"><span class="tm minutes">00</span>{{ 'date_formats.minuts' | t }}</span>
+											<span class="pd10"><span class="tm seconds">00</span>{{ 'date_formats.seconds' | t }}</span>
+										</countdown-time>
+									{% endcase %}
+                            {% endfor %}
+                        </div>
+                    </a>
+                </div>
+              
+                <div class="pd20 {% if section_st.carousel %}pr f-asc{% endif %}" style="--wd:calc({{ 100 | minus: section_st.bnrwd }}% - 30px);--cwd:{{ section_st.maxwd }}px;--grid_bg_clr:{{ section_st.grid_bg_clr }};">
+
+                    {%- render 'sec-title' -%}
+                  
+                    {%- capture product_data -%}
+                      {% if section_st.products != blank %}
+                            {%- capture sizes -%}
+                              (min-width:1024px) calc(({{ page_width }} / 2) / {{ section_st.grid }}),(min-width:768px) calc(100vw / {{ section_st.gridtb }}), calc(100vw / {{ section_st.gridmb }})
+                            {%- endcapture -%}
+                            {% for product in section_st.products %}
+                                <div class="{% if section_st.carousel %}swiper-slide{% endif %} gitem {% render 'animate-data', css:true %}{% if section_st.grid_bg %} grid_bg{% endif %}" {% render 'animate-data' %}>{% render 'product-card-grid', product:product, section_st:section_st, sizes:sizes %}</div>
+                            {% endfor %}
+                        {% else %}
+                            {% for i in (1..3) %}
+                                <div class="{% if section_st.carousel %}swiper-slide{% endif %} gitem {% render 'animate-data', css:true %}" {% render 'animate-data' %}>
+                                    <div class="grid_bx">
+                                        <a href="#" class="grid_lnk">
+                                          <div class="grid_img_wr">{% capture current %}{% cycle 1, 2, 3, 4 %}{% endcapture %}{{ 'product-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}</div><br/>
+                                          <div class="h4 grid_title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                                          <div class="grid_meta"> {% render 'product-price' %} </div>
+                                        </a>
+                                      </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {%- endcapture -%}
+
+                    {%- if section_st.carousel -%}
+                        <slide-section class="grid rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} grid-products swiper" 
+                          data-swiper='{ "slidesPerView":"auto", "loop":{{ section_st.loop }}, {% if section_st.autoplay %}"autoplay":{ "delay":"{{ section_st.speed | times: 1000 }}" },{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" },"pagination":{ "el":".swpg{{ section.id }}","clickable":true }}'>
+                            <div class="swiper-wrapper">{{ product_data }}</div>
+                            {% render 'swiper-navigation', id:section.id, section_st:section_st %}
+                        </slide-section>
+                    {%- else -%}
+                        <div class="grid rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} grid-products">
+                            {{ product_data }}
+                        </div>
+                    {%- endif -%}
+
+                </div>         
+            </div>    
+        </div>  
+</div>
+{% endcapture %}
+{{ productslider | strip_newlines | remove: '  ' | remove: '	' }}
+
+{% schema %}
+{
+    "name": "Shop The Look",
+    "class": "index-section",
+   "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings":[
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Shop The Look"
+        },
+        {
+            "type": "textarea",
+            "id": "subtitle",
+            "label": "Sub Heading",
+            "default": "Our most popular looks of the season"
+        },
+         {
+            "id": "products",
+            "type": "product_list",
+            "label": "Select Products"
+        },
+        {   "type": "paragraph",
+            "content": "-----------------------------------------------"
+        },
+        {
+        "type": "select",
+        "id": "configure",
+        "label": "Configure ====",
+		"default": "1",      
+        "options": [
+          {
+            "value": "1",
+            "label": "Banner"
+          },
+          {
+            "value": "2",
+            "label": "Products"
+          }		 
+        ]
+        },       
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Upload image",
+            "info":"Image size is flexible. Upload vertical or landscape image with high resolution, which suits better with products.",
+            "visible_if": "{{section.settings.configure == '1' }}"
+        },
+       {
+            "type": "color",
+            "id": "img_overlay",
+            "label": "Image overlay",
+            "default": "#111",
+            "visible_if": "{{section.settings.configure == '1' }}"
+        },
+        {
+            "type": "range",
+            "id": "img_overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0.5,
+            "visible_if": "{{section.settings.configure == '1' }}"
+        },
+		 {
+            "type": "range",
+            "id": "brad",
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "label": "Image rounded",
+            "default": 0,
+            "unit": "px",
+            "visible_if": "{{section.settings.configure == '1' }}"
+        },
+        {
+            "type": "range",
+            "id": "bnrwd",
+            "min": 20,
+            "max": 70,
+            "step": 1,
+            "label": "Column width",
+            "default": 50,
+            "unit": "%",
+            "visible_if": "{{section.settings.configure == '1' }}"
+        },
+        {
+            "type": "checkbox",
+            "id": "pos",
+            "label": "Show banner on right?",
+            "default":false,
+            "visible_if": "{{section.settings.configure == '1' }}"
+        },
+        {
+            "type": "checkbox",
+            "id": "bnrhm",
+            "label": "Hide banner in mobile?",
+            "default": false,
+            "visible_if": "{{section.settings.configure == '1' }}"
+        },
+       {
+            "type": "select",
+            "id": "align",
+            "label": "Text Position",
+            "default": "f-jce f-aic",			
+            "options": [ 			
+                { "label": "Top Left",      "value": "f-jcs f-ais" },
+                { "label": "Top Center",    "value": "f-jcs f-aic" },
+                { "label": "Top Right",     "value": "f-jcs f-aie" },             
+                { "label": "Left",  		  "value": "f-jcc f-ais" },
+                { "label": "Center", 		  "value": "f-jcc f-aic" },
+                { "label": "Right",  		  "value": "f-jcc f-aie" },
+                { "label": "Bottom Left",   "value": "f-jce f-ais" },						 
+                { "label": "Bottom Center", "value": "f-jce f-aic" }, 						 
+                { "label": "Bottom Right",  "value": "f-jce f-aie" }			              
+            ],
+            "visible_if": "{{section.settings.configure == '1' }}"
+        }, 	           
+        {
+    		"type": "range",
+    		"id": "maxwd",
+    		"label": "Column max. width (desktop)",
+    		"default":800,
+    		"min": 300,
+    		"max": 1200,
+    		"step": 10,
+    		"unit": "px",
+            "visible_if": "{{section.settings.configure == '2' }}"
+    	},       
+		 {
+            "type": "select",
+            "id": "prbox_style",
+            "label": "Grid style",
+            "default": "grid_1",
+            "options": [
+                    {
+                      "value": "grid_1",
+                      "label": "Icons - Bottom Center"
+                    },
+                    {
+                      "value": "grid_2",
+                      "label": "Info. Hover Image"
+                    },
+                    {
+                      "value": "grid_3",
+                      "label": "Icons - Bottom Left"
+                    },         
+                    {
+                      "value": "grid_4",
+                      "label": "Icons - Top Right"
+                    }                   
+                ],
+                "visible_if": "{{section.settings.configure == '2' }}"            
+        },
+		{
+			"type": "checkbox",
+			"id": "show_color_swatch",
+			"label": "Show color swatch?",
+			"default": true,
+            "visible_if": "{{section.settings.configure == '2' }}"
+        },       
+        {
+            "type": "checkbox",
+            "id": "grid_bg",
+            "label": "Add light background?",
+            "default": false,
+            "visible_if": "{{section.settings.configure == '2' }}"
+        }, 
+       {
+            "type": "color",
+            "id": "grid_bg_clr",
+            "label": "Background Color",
+            "visible_if": "{{section.settings.configure == '2' }}"
+        },	
+        {
+            "type": "paragraph",
+            "content": "Products per row ===",
+            "visible_if": "{{section.settings.configure == '2' }}"
+        },
+        {
+            "type": "range",
+            "id": "grid",
+            "label": "Desktop",
+            "default": 2,
+            "min": 1,
+            "max": 6,
+            "step": 1,
+            "visible_if": "{{section.settings.configure == '2' }}"
+        },
+        {
+            "type": "range",
+            "id": "gridtb",
+            "label": "Tablet",
+            "default": 1,
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "visible_if": "{{section.settings.configure == '2' }}"
+        },
+        {
+            "type": "range",
+            "id": "gridmb",
+            "label": "Mobile",
+            "default": 1,
+            "min": 1,
+            "max": 3,
+            "step": 1,
+            "visible_if": "{{section.settings.configure == '2' }}"
+        },
+       {
+            "type":"paragraph",
+            "content":"Find more options at Theme settings -> Products grid",
+            "visible_if": "{{section.settings.configure == '2' }}"
+        },
+      {
+            "type": "header",
+            "content": "Slider Settings ==="
+        },
+        {
+            "type":"checkbox",
+            "id":"carousel",
+            "label":"Enable carousel",
+            "default": true
+        },
+ 		{
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Infinite loop",
+            "default": true,
+           "visible_if": "{{ section.settings.carousel }}"
+        },
+ 		{
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Auto-rotate slide",
+            "default": false,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Change slide every",
+            "default": 5,
+            "min": 1,
+            "max": 30,
+            "step": 1,
+            "unit": "Sec",
+            "visible_if": "{{ section.settings.carousel }}"
+        },		
+		{
+            "type": "checkbox",
+            "id": "arrow",
+            "label": "Show arrows on desktop?",
+            "default": true,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+		    {
+            "type": "checkbox",
+            "id": "arrowm",
+            "label": "Show arrows on mobile?",
+            "default": false,
+            "visible_if": "{{ section.settings.carousel }}"
+        },		
+		{
+            "type": "checkbox",
+            "id": "dot",
+            "label": "Show dots on desktop?",
+            "default": false,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+		{
+            "type": "checkbox",
+            "id": "dotm",
+            "label": "Show dots on mobile?",
+            "default": false,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": false,
+            "info":"Remove left/right padding for fullwidth"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+         {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }	
+      ],
+        "blocks": [
+        {
+            "type": "text",
+            "name": "Text",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Text",
+                    "default":"Get flat 50% on entire women collectin"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide on mobile?",
+                    "default": false
+                },
+              {
+                    "type": "select",
+                    "id": "ft",
+                    "label": "Font family",
+                    "default": "ft1",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+                },
+			  {
+				"type": "range",
+				"id": "fs",
+				"label": "Font size",
+				"default": 14,
+				"min": 10,
+				"max": 100,
+				"step": 1,
+				"unit": "px"
+			  },
+			  {
+				"type": "range",
+				"id": "fsm",
+				"label": "Font size(mobile)",
+				"default": 13,
+				"min": 10,
+				"max": 40,
+				"step": 1,
+				"unit": "px"
+			   },
+              {
+                    "type": "select",
+                    "id": "fw",
+                    "label": "Font weight",
+                    "default": "600",
+                    "options": [
+                        {
+                            "value": "300",
+                            "label": "Light"
+                        },
+                        {
+                            "value": "400",
+                            "label": "Regular"
+                        },
+                        {
+                            "value": "500",
+                            "label": "Medium"
+                        },
+                        {
+                            "value": "600",
+                            "label": "Semi Bold"
+                        },
+                        {
+                            "value": "700",
+                            "label": "Bold"
+                        }
+                    ]
+                },
+			   {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line height",
+                    "default": 1.3,
+                    "min": 0.7,
+                    "max": 2.0,
+                    "step": 0.1
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#fff"
+                },
+				 {
+				"type": "range",
+				"id": "mb",
+				"label": "Margin bottom",
+				"default": 15,
+				"min": 5,
+				"max": 50,
+				"step": 1,
+				"unit": "px"
+			  },
+               {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 10,
+                    "min": 0,
+                    "max": 40,
+                    "step": 1,
+                    "unit": "px"
+                }
+            ]
+        },
+		{
+            "type": "countdown",
+            "name": "Countdown Timer",
+            "limit":1,
+            "settings":[
+                {
+                    "type": "text",
+                    "id": "date",
+                    "label": "Enter date",
+					"info":"Date format should be mm/dd/year, i.e. 12/30/2025"
+                },
+                {
+                    "type": "color",
+                    "id": "bg",
+                    "label": "Background",
+                    "default": "#000"
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text",
+                    "default": "#eee"
+                },
+                {
+                    "type": "color",
+                    "id": "bdr",
+                    "label": "Border",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "radius",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "label": "Rounded corner",
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }
+            ]
+        },
+        {
+            "type": "button",
+            "name": "Button",
+            "limit":1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Button label",
+                    "default":"SHOP NOW",
+                    "info":"Redirection will go to the collection you select from the section."
+                },               
+                {
+					"type": "select",
+					"id": "btn-style",
+					"label": "Button design",
+					"default": "btn1",
+					"options": [
+						  {
+							"label": "Button 1",
+							"value": "btn1"
+						  },
+						  {
+							"label": "Button 2",
+							"value": "btn2"
+						  },
+						  {
+							"label": "Button 3",
+							"value": "btn3"
+						  },
+						  {
+							"label": "Button 4",
+							"value": "btn4"
+						  },
+						  {
+							"label": "Button 5",
+							"value": "btn5"
+						  },
+						  {
+							"label": "Button 6",
+							"value": "btn6"
+						  },
+                                 {
+                              "label": "Button 7 Gradient",
+                              "value": "btn7"
+                          },
+                          {
+                              "label": "Button 8 Gradient",
+                              "value": "btn8"
+                          },
+						  {
+							"label": "Link",
+							"value": "btnLink"
+						  }
+					]
+				  },
+                {
+                    "type": "select",
+                    "id": "btn-size",
+                    "label": "Button size",
+                    "default": "btn-md",
+                    "options": [
+                        {
+                            "label": "Small",
+                            "value": "btn-sm"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "btn-md"
+                        },
+                        {
+                            "label": "Large",
+                            "value": "btn-lg"
+                        }
+                    ]
+                },
+               {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide on mobile?",
+                    "default": false
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Shop The Look",
+            "category": "Products", 
+			   "blocks": [
+                {
+                    "type": "text",
+					 "settings": {
+								"title": "SPRING SUMMER",
+								"fs": 30,
+								"fsm":20,
+                                "fw":"600",
+								"mb":5
+								 }
+                },
+                {
+                    "type": "text",
+					"settings": {
+								"title": "Get flat 50% on entire women collectin",
+								"fs": 14,
+								"fsm":14,
+								"mb":25
+
+								}
+                },
+				{
+                    "type": "button"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

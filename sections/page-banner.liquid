@@ -1,0 +1,351 @@
+ {% assign section_set = section.settings %}
+{%- capture page_banner -%}
+            <div class="sec_cov npd"  style="--sbg:{% if section_set.bgg != blank %}{{ section_set.bgg }}{% else %}{{ section_set.bg }}{% endif %};">   
+            {%- liquid
+                assign banner_img = section_set.image
+                assign banner_imgm = section_set.mb_image
+                assign banner_imgm_srcset = banner_imgm | image_url: width: banner_imgm.width | image_tag: widths: '360,480,760' | split: 'srcset="' | last | split: '"' | first
+            -%}
+            {% if section_set.image != blank %}
+              <picture class="overlay" style="--overlay:{{ section_set.overlay | color_modify: 'alpha', section_set.overlay_op }};">
+                  {% if section_set.mb_image != blank %}
+                      <source media="(max-width: 767px)" srcset="{{ banner_imgm_srcset }}" width="{{ banner_imgm.width }}" height="{{ banner_imgm.height }}">
+                  {% endif %}
+                  {{ banner_img | image_url: width: banner_img.width | image_tag: class:'imgFt heroImg', width:banner_img.width, height:banner_img.height, widths:"400,600,800,1000,1200,1400,1600,2000,2400,3000" }}
+              </picture>
+            {% endif %}
+            {% if section.blocks.size > 0 %}
+                <div class="hero_wrap fl{% if section_set.text-align %} f-jcc tc{% endif %} f-aic m_auto" style="--mht:{{ section_set.hit }}px;--mhtt:{{ section_set.hitt }}px;--mhtm:{{ section_set.hitm }}px;--mwd:{{ section_set.cntwd }}px;">
+                    <div class="pr zi1 {% render 'animate-data', css:true %}">
+                        {% for block in section.blocks %}
+                            {% if block.type == 'title' %}
+                                <{{ block.settings.htag }} class="rgTxt {{ block.settings.tff }} mb{{ block.settings.mbm }} mb{{ block.settings.mb }}-md{% if block.settings.tuu %} ttu{% endif %}" style="--fs:{{ block.settings.fts }}px;--fsm:{{ block.settings.ftsm }}px;--fw:{{ block.settings.fw }};--cl:{{ block.settings.cl }};" {{ block.shopify_attributes }}>{{ page.title }}</{{ block.settings.htag }}>
+                            {% elsif block.type == 'text' %}
+                                <div class="rgTxt mb{{ block.settings.mbm }} mb{{ block.settings.mb }}-md{% if section_set.hidemb %} hide-sm{% endif %}" style="--fs:{{ block.settings.fs }}px;--fsm:{{ block.settings.fsm }}px;--lh:{{ block.settings.lh }};--cl:{{ block.settings.cl }};" {{ block.shopify_attributes }}>{{ block.settings.title }}</div>
+                            {% endif %}
+                        {% endfor %}          
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+{%- endcapture -%}
+{{ page_banner | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Page Banner",
+     "class": "pgbnr",
+    "settings": [       
+         {
+            "type": "paragraph",
+            "content": "[How do I set page banners?](https://www.adornthemes.com/knowledge-base/page-banner/)"
+        },
+        {
+            "type":"paragraph",
+            "content":"Height ==="
+        },
+        {
+            "type": "range",
+            "id": "hit",
+            "label": "Desktop",
+            "default": 180,
+            "min": 100,
+            "max": 900,
+            "step": 10
+        },
+        {
+            "type": "range",
+            "id": "hitt",
+            "label": "Tablet",
+            "default": 160,
+            "min": 100,
+            "max": 900,
+            "step": 10
+        },  
+        {
+            "type": "range",
+            "id": "hitm",
+            "label": "Mobile",
+            "default": 100,
+            "min": 100,
+            "max": 900,
+            "step": 10
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background color",
+            "default": "#f5f5f5"
+        },
+         {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Recommended width 2000px and height as per above desktop height"
+        },
+        {
+            "type": "image_picker",
+            "id": "mb_image",
+            "label": "Mobile image",
+            "info": "Recommended width 750 and height as per above mobile height. If mobile image is blank, dekstop image will be used."
+        },	 	        
+        {
+            "type": "color_background",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0
+        },    
+        {
+            "type": "range",
+            "id": "cntwd",
+            "min": 600,
+            "max": 1600,
+            "step": 10,
+            "label": "Container max. width",
+            "unit": "px",
+            "default": 1000
+        },
+        {
+            "type": "checkbox",
+            "id": "text-align",
+            "label": "Text align center?", 
+            "default": true
+        }		
+    ],
+    "blocks": [
+        {
+            "type": "title",
+            "name": "Title",
+            "limit":1,
+            "settings": [
+              {
+                    "type": "select",
+                    "id": "htag",
+                    "label": "Heading tag",
+                   "info":"Specify heading types for SEO and search engines for crawling purposes.",
+                    "default": "h2",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "H1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "H2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "H3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "H4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "H5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "H6"
+                        },
+                       {
+                            "value": "p",
+                            "label": "P"
+                        }
+                    ]
+                },               
+               {
+                    "type": "select",
+                    "id": "tff",
+                    "label": "Font family",
+                    "default": "ft2",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+                },                  
+                {
+                    "type": "range",
+                    "id": "fts",
+                    "label": "Font size",
+                    "default": 22,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "ftsm",
+                    "label": "Font size (mobile)",
+                    "default": 20,
+                    "min": 10,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+               {
+                  "type": "select",
+                  "id": "fw",
+                  "label": "Font weight",
+                  "default": "600",
+                  "options": [
+                    {
+                      "value": "300",
+                      "label": "Light"
+                    },
+                    {
+                      "value": "400",
+                      "label": "Regular"
+                    },
+                    {
+                      "value": "500",
+                      "label": "Medium"
+                    },
+                    {
+                      "value": "600",
+                      "label": "Semi Bold"
+                    },
+                    {
+                      "value": "700",
+                      "label": "Bold"
+                    }
+                  ]
+                }, 
+                {
+                    "type": "checkbox",
+                    "id": "tuu",
+                    "label": "Use uppercase?",
+                    "default": false			
+                },
+               {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text Color",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 5,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 5,
+                    "min":0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "name": "Text",
+            "limit":5,
+            "settings":[
+                {
+                    "type": "richtext",
+                    "id": "title",
+                    "label": "Text",                  
+					"info": "Use dynamic source to show different text for each page banner.[How to set?](https://www.adornthemes.com/knowledge-base/page-banner/)"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "hidemb",
+                    "label": "Hide on mobile?",
+                    "default": true			
+                },               
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 14,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line height",
+                    "default": 1.5,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1,
+                    "info": "Space between text lines."
+                },
+               {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text color",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        }   
+    ]
+}
+{% endschema %}

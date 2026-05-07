@@ -1,0 +1,588 @@
+{%- liquid
+   assign section_st = section.settings
+   assign is_specs = false
+   for block in section.blocks
+     if block.type == 'spec' and block.settings.content != blank
+       assign is_specs = true
+       assign specs_style = block.settings.style
+     endif
+   endfor
+-%}
+{%- if is_specs -%}
+  {% style %}
+      {%- if specs_style == '1' -%}
+        .specInfo1 ul.metafield-single_line_text_field-array { display:grid; grid-template-columns:repeat(var(--grm), 1fr); column-gap:20px; }
+        .specInfo1 ul.metafield-single_line_text_field-array li { border-bottom: 1px solid var(--bdr); padding:15px 0; }
+        .specInfo1 .metafield-single_line_text_field-array span { display:block; font-size:85%; opacity:0.7; }
+        @media only screen and (min-width:769px){
+            .specInfo1 ul.metafield-single_line_text_field-array { grid-template-columns:repeat(var(--grt), 1fr); column-gap:40px; }
+        }
+        @media only screen and (min-width:1024px){
+            .specInfo1 ul.metafield-single_line_text_field-array { grid-template-columns:repeat(var(--gr), 1fr); }
+            .specInfo1 ul.metafield-single_line_text_field-array li { padding:25px 0; }
+        }
+      {%- else -%}
+        .specInfo2 ul.metafield-single_line_text_field-array li { padding:10px 15px; border-bottom: 1px solid var(--bdr); }
+        .specInfo2 ul.metafield-single_line_text_field-array li:nth-child(odd) { background-color:var(--bdr); }
+        .specInfo2 ul.metafield-single_line_text_field-array li span { font-weight:600; width:200px; }
+        @media only screen and (min-width:1024px){
+            .specInfo2 ul.metafield-single_line_text_field-array li { display:flex; align-items:center; }
+        }
+      {%- endif -%}
+  {% endstyle %}
+{% endif %}
+<div class="sec_cov" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">
+	<div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}" id="PrSecTabs" data-section-id="{{ section.id }}" data-section-type="productTabs">
+        {%- capture tabs_style -%}
+          --tbfs:{{ section_st.tfs }}px;--tbfsm:{{ section_st.tfsm }}px;--tbfw:{{ section_st.tfw }};--tbcl:{{ section_st.cl }};--tbcla:{{ section_st.cla }};--tbbg:{{ section_st.tbg }};--tbbga:{{ section_st.tbga }};--tbbd:{{ section_st.bdr }};--tbbda:{{ section_st.bdra }};
+          {%- if section_st.tab_style == '1' -%}--tbbdr:{{ section_st.bdrr }}px;{%- else -%}--tbbdr:0;{%- endif -%}
+        {%- endcapture -%}
+        <tabs-section class="tabSection" style="{{ tabs_style }}">
+            <div class="fl f-wrap tbstl{{ section_st.tab_style }} {{ section_st.tff }} gap{% if section_st.tab_align == "center" %} f-jcc{% endif %}{% if section_st.acc %} hide-sm{% endif %} {% render 'animate-data', css:true %}" style="{% if section_st.tab_style == '1' %}--gap:10px;{% else %}--gap:40px;--gapm:20px{% endif %}">
+                {%- for block in section.blocks -%}
+                    {%- assign blk_st = block.settings -%}
+                    {% capture tab_class %}tabBtn anim{% if forloop.first %} active{% endif %}{% endcapture %}
+                    {%- if block.type == 'desc' -%}
+                        <button type="button" class="{{ tab_class }}" data-id="ptabDesc" {{ block.shopify_attributes }}>{{ blk_st.title }}</button>
+                    {%- elsif block.type == 'review' -%}
+                        <button type="button" class="{{ tab_class }} reviewTab" data-id="ptabReview" {{ block.shopify_attributes }}>{{ blk_st.title }}</button>
+                    {%- elsif block.type == 'schart' -%}
+                        <button type="button" class="{{ tab_class }}" data-id="ptabsize" {{ block.shopify_attributes }}>{{ blk_st.title }}</button>
+                    {%- elsif block.type == 'extra' -%}
+                        {%- if blk_st.content != blank or blk_st.liquid != blank or blk_st.image != blank -%}
+                        <button type="button" class="{{ tab_class }}" data-id="tab{{ block.id }}" {{ block.shopify_attributes }}>{{ blk_st.title }}</button>
+                        {%- endif -%}
+                    {%- elsif block.type == 'spec' -%}
+                        {%- if blk_st.content != blank -%}
+                        <button type="button" class="{{ tab_class }}" data-id="tab{{ block.id }}" {{ block.shopify_attributes }}>{{ blk_st.title }}</button>
+                        {%- endif -%}
+                    {%- elsif block.type == 'faq' -%}
+                        {% if product.metafields.custom.faqs != blank %}
+                        <button type="button" class="{{ tab_class }}" data-id="tab{{ block.id }}" {{ block.shopify_attributes }}>{{ blk_st.title }}</button>
+                        {% endif %}
+                    {%- else -%}
+                        <button type="button" class="{{ tab_class }}" data-id="tab{{ block.id }}" {{ block.shopify_attributes }}>{{ blk_st.title }}</button>
+                    {%- endif -%}
+                {%- endfor -%}
+            </div>
+            <div class="tbs_wrp{% unless section_st.tabs %} noTabs{% endunless %} stl{{ section_st.tab_style }}{% if settings.animef %} scroll-trigger scroll-offscreen faceIn{% endif %}">
+                {%- for block in section.blocks -%}
+                    {%- assign blk_st = block.settings -%}
+                    {%- capture tab_panel -%}tab_panel of_hidden{% if forloop.first %} active{% endif %}{%- endcapture -%}
+                    {% capture accordion_title %}
+                      {%- if section_st.acc -%}
+                        <h2 class="accordion_tab js-toggle fl f-aic hide-md hide-lg{% if section_st.tab_style == '1' %} mb10{% else %} mb0{% endif %}{% if forloop.first %} active{% endif %}">{{ blk_st.title }} <svg class="at-icon ml_auto updown"><use xlink:href="#icon-arrow"></use></svg></h2>
+                      {%- endif -%}
+                    {% endcapture %}
+                    {%- if block.type == 'desc' -%}
+                        {{- accordion_title -}}
+                        <div id="ptabDesc" class="{{ tab_panel }}"><div class="tb_pr_desc rte">{{ product.description }}</div></div>
+                    {%- elsif block.type == 'review' -%}
+                        {{- accordion_title -}}
+                        <div id="ptabReview" class="{{ tab_panel }} reviewtab">{% render 'reviews', blk_st:block.settings %}</div>
+                    {%- elsif block.type == 'schart' -%}
+                        {{- accordion_title -}}
+                        <div id="ptabsize" class="{{ tab_panel }}">
+                            {%- assign prtype = product.type | handleize | append: "-size-chart" -%}
+                            {%- assign prbrand = product.vendor | handleize | append: "-size-chart" -%}
+                            {%- if product.metafields.custom.sizechart != blank -%}
+                                {{ product.metafields.custom.sizechart }}
+                            {%- elsif settings.sizechart_type == "type" and pages[prtype].content != empty -%}
+                                {{ pages[prtype].content }}
+                            {%- elsif settings.sizechart_type == "brand" and pages[prbrand].content != empty -%}
+                                {{ pages[prbrand].content }}
+                            {%- else -%}
+                                {{ pages[settings.sizechart_page].content }}
+                            {%- endif -%}
+                        </div>
+                    {%- elsif block.type == 'extra' -%}
+                        {%- if blk_st.content != blank or blk_st.liquid != blank or blk_st.image != blank -%}
+                            {{- accordion_title -}}
+                            <div id="tab{{ block.id }}" class="{{ tab_panel }} rte">
+                              {% if blk_st.content != blank %}<div>{{ blk_st.content }}</div>{% endif %}
+                              {% if blk_st.liquid != blank %}<div>{{ blk_st.liquid }}</div>{% endif %}
+                              {% if blk_st.image != blank %}<div>{{ blk_st.image | image_url: width:blk_st.image.width | image_tag: loading:'lazy', class:'imgAt', widths:'200,400,600,800,1000,1500,2000' }}</div>{% endif %}
+                            </div>
+                        {%- endif -%}
+                    {%- elsif block.type == 'spec' and blk_st.content != blank -%}
+                        {{- accordion_title -}}
+                        <div id="tab{{block.id}}" class="{{ tab_panel }} specInfo{{ blk_st.style }}" style="--gr:{{ blk_st.grid }};--grt:{{ blk_st.tgrid }};--grm:{{ blk_st.mgrid }};--bdr:{{ blk_st.bdr }};">
+                            {{ blk_st.content | replace: '<li class="metafield-single_line_text_field">','<li class="metafield-single_line_text_field"><span>' | replace: ':','</span>' }}
+                        </div>
+                    {%- elsif block.type == 'faq' and product.metafields.custom.faqs != blank -%}
+                        {{- accordion_title -}}
+                        <div id="tab{{block.id}}" class="{{ tab_panel }}" style="--qcl:{{blk_st.qcl}};--qfs:{{blk_st.qfs}}px;--qfsm:{{blk_st.qfsm}}px;;--qfw:{{blk_st.qfw}};--bdr:{{ blk_st.bdr }};--icns:14px;">
+                            {% for faq in product.metafields.custom.faqs.value %}
+                                <details class="faq-body">
+                                  <summary class="quest m0 fl f-jcsb f-aic {{ blk_st.qfw }}">{{ faq.question }} <svg class="at-icon ml10"><use class="plus" xlink:href="#icon-plus"></use><use class="minus" xlink:href="#icon-minus"></use></svg></summary>
+                                  <div id="{{ block.id }}" class="ans fwr rte">{{ faq.answer | metafield_tag}}</div>
+                                </details>
+                            {% endfor %}
+                        </div>
+                    {%- endif -%}
+                {%- endfor -%}
+            </div>
+		</tabs-section>
+    </div>
+</div>
+{% schema %}
+{
+    "name": "Description Tabs",
+    "enabled_on": {
+      "templates": ["product"]
+    },
+    "settings": [
+       {
+        "type": "select",
+        "id": "tab_style",
+        "label": "Tab Design",
+		"default": "1",      
+        "options": [
+          {
+            "value": "1",
+            "label": "Background and Border"
+          },
+          {
+            "value": "2",
+            "label": "Bottom Border"
+          }		 
+        ]
+      },
+      {
+          "type":"checkbox",
+          "id":"acc",
+          "label":"Active Accordion for Mobile?",
+          "default": true
+      },
+      {
+        "type": "select",
+        "id": "tab_align",
+        "label": "Tab Alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "range",
+        "id": "tfs",
+        "label": "Font Size",
+        "default": 13,
+        "min": 10,
+        "max": 40,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "tfsm",
+        "label": "Font Size (Mobile)",
+        "default": 16,
+        "min": 10,
+        "max": 40,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "tff",
+        "label": "Font Family",
+        "default": "ft1",
+        "options": [
+          {
+            "value": "ft1",
+            "label": "Font 1"
+          },
+          {
+            "value": "ft2",
+            "label": "Font 2"
+          },
+          {
+            "value": "ft3",
+            "label": "Font 3"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "tfw",
+        "label": "Font Weight",
+        "default": "600",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Regular"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi Bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "cl",
+        "label": "Button Text",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "cla",
+        "label": "Button Text (active)",
+        "default": "#eee"
+      },     
+	  {
+        "type": "color",
+        "id": "tbg",
+        "label": "Button Background",
+        "default": "#eee"
+      },       
+      {
+        "type": "color",
+        "id": "tbga",
+        "label": "Button Background (active)",
+        "default": "#000"
+      },      
+      {
+        "type": "color",
+        "id": "bdr",
+        "label": "Button Border",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "bdra",
+        "label": "Button Border (active)",
+        "default": "#eee"
+      },
+      {
+        "type": "range",
+        "id": "bdrr",
+        "label": "Button Rounded",
+        "default": 0,
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px"
+      },	
+	  {
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	                             
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }	
+    ],
+    "blocks": [
+        {
+            "type": "desc",
+            "name": "Product Description",
+            "limit": 1,          
+            "settings": [
+                { 
+                    "type":"text",
+                    "id":"title",
+                    "label":"Title",
+                    "default":"Product Details"                    
+                }
+            ]
+        },
+        {
+            "type": "review",
+            "name": "Review",
+            "limit": 1,
+            "settings": [
+                { 
+                    "type":"text",
+                    "id":"title",
+                    "label":"Title",
+                    "default":"Reviews",
+                    "info": "Please install recommended product reviews app"
+                }				
+            ]
+        },
+        {
+            "type": "schart",
+            "name": "Size Chart",
+            "limit": 1,
+            "settings": [
+                { 
+                    "type":"text",
+                    "id":"title",
+                    "label":"Title",
+                    "default":"Size & Fit",
+                    "info":"Set content for size chart from Theme Settings -> Size Chart" 
+                }
+            ]
+        },
+        {
+            "type": "spec",
+            "name": "Specifications",
+            "limit": 1,
+            "settings": [
+                { 
+                    "type":"text",
+                    "id":"title",
+                    "label":"Title",
+                    "default":"Specifications"
+                },
+                {
+                    "type": "richtext",
+                    "id": "content",
+                    "label": "Content",
+					"info":"[How to add product specification tab?](https://www.adornthemes.com/knowledge-base/how-to-display-product-specification-tab-on-product-page/)"
+                },
+                {
+                    "type": "select",
+                    "id": "style",
+                    "label": "Select Style",
+                    "default": "1",
+                    "options": [
+                        {
+                            "value": "1",
+                            "label": "Grid"
+                        },
+                        {
+                            "value": "2",
+                            "label": "List"
+                        }
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "content": "Specification Per row"
+                },
+                {
+                    "type": "range",
+                    "id": "grid",
+                    "label": "Desktop",
+                    "default": 4,
+                    "min": 2,
+                    "max": 7,
+                    "step": 1
+                },
+                {
+                    "type": "range",
+                    "id": "tgrid",
+                    "label": "Tablet",
+                    "default": 3,
+                    "min": 1,
+                    "max": 5,
+                    "step": 1
+                },
+                {
+                    "type": "range",
+                    "id": "mgrid",
+                    "label": "Mobile",
+                    "default": 2,
+                    "min": 1,
+                    "max": 3,
+                    "step": 1
+                },
+                {
+                    "type": "color",
+                    "id": "bdr",
+                    "label": "Border Color",
+                    "default": "#ddd"
+                }
+            ]
+        },
+		{
+            "type": "faq",
+            "name": "FAQ's",
+            "limit": 1,
+            "settings": [
+                { 
+                    "type":"text",
+                    "id":"title",
+                    "label":"Title",
+                    "default":"FAQ's",
+                    "info":"[How to display?](https://www.adornthemes.com/knowledge-base/how-to-display-faqs-tab-on-product-detail-page/)"
+                }, 	               
+                {
+                    "type":"paragraph",
+                    "content":"Question ===="
+                },
+                {
+                    "type": "color",
+                    "id": "qcl",
+                    "label": "Text Color",
+                    "default": "#333"
+                },
+                {
+                    "type": "range",
+                    "id": "qfs",
+                    "label": "Font Size",
+                    "default": 16,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "qfsm",
+                    "label": "Font Size (Mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "select",
+                    "id": "qfw",
+                    "label": "Font Weight",
+                    "default": "400",
+                    "options": [
+                        {
+                            "value": "300",
+                            "label": "Light"
+                        },
+                        {
+                            "value": "400",
+                            "label": "Regular"
+                        },
+                        {
+                            "value": "500",
+                            "label": "Medium"
+                        },
+                        {
+                            "value": "600",
+                            "label": "Semi Bold"
+                        },
+                        {
+                            "value": "700",
+                            "label": "Bold"
+                        }
+                    ]
+                },
+                {
+                    "type": "color",
+                    "id": "bdr",
+                    "label": "Border Color",
+                    "default": "#ddd"
+                }
+            ]
+        },
+		{
+            "type": "extra",
+            "name": "Extra Tab",
+            "settings": [
+                { 
+                    "type":"text",
+                    "id":"title",
+                    "label":"Title",
+                    "default":"Extra Tab"
+                },
+                {
+                    "type": "richtext",
+                    "id": "content",
+                    "label": "Content",
+					"info":"[How to set different data for each products?](https://www.adornthemes.com/knowledge-base/vogal-display-different-tab-details-for-each-product/)"
+                },
+                {
+                    "type": "liquid",
+                    "id": "liquid",
+                    "label": "HTML/liquid Code"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                }
+            ]
+        }
+    ],
+      "presets": [
+        {
+          "name": "Description Tabs"
+        }
+      ]
+}
+{% endschema %}

@@ -1,0 +1,264 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'customer.js' | asset_url }}" defer></script>
+{% assign section_st = section.settings %}
+<div class="sec_cov" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">  
+    <div class="page-width" style="--cl:{{ section_st.cl }};--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;--fw:{{ section_st.fw }};--fbg:{{ section_st.fbg }};--bd:{{ section_st.bd }};">
+        <div class="fl f-aic f-jcsb f-col f-row-md gap" style="--gap:15px;">
+          <h1 class="page-title mb0">{{ 'customer.orders.title' | t }}</h1> 
+          <div class="account-links fl f-aic f-jcc f-wrap gap f-col f-row-md" style="--cl:{{ section_st.scl }};--clh:{{ section_st.sclh }};--fs:{{ section_st.sfs }}px;--fsm:{{ section_st.sfsm }}px;--bdr:{{ section_st.scl | color_modify:'alpha', 0.1 }};">
+              <div>{{ 'customer.account.welcome_text' | t }} <b>{{ customer.name }}</b></div>
+              <span class="hide-sm">|</span>
+              <div class="fl f-aic f-jcc f-wrap gap">
+                <a href="{{ routes.account_url }}" class="ttu"> {{ 'customer.orders.link_name' | t }} </a>
+                <a href="{{ routes.account_addresses_url }}"> {{ 'customer.addresses.link_name' | t }}</a>
+                <a href="{{ routes.account_logout_url }}"> {{ 'customer.account.logout' | t }} </a>
+              </div>
+          </div>
+        </div>
+        <hr />
+        <div class="grid">
+            <div class="gitem wd66-md">
+                <div class="fl f-aic f-jcsb f-col f-row-md mb20">
+                    <h2 class="rgTxt mb0">{{ 'customer.order.title' | t: name: order.name }}</h2>
+                    {%- assign order_date = order.created_at | date: "%B %d, %Y %I:%M%p" -%}
+                    <div>{{ 'customer.order.date' | t: date: order_date }}</div>
+                </div>
+        
+                    {% if order.cancelled %}
+                        <div class="order--cancelled">
+                            {%- assign cancelled_at = order.cancelled_at | date: "%B %d, %Y %I:%M%p" -%}
+                            <p>{{ 'customer.order.cancelled' | t: date: cancelled_at }}</p>
+                            <p>{{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason }}</p>
+                        </div>
+                    {% endif %}
+        
+                    <table class="responsive_tbl">
+                        <thead>
+                            <tr>
+                                <th>{{ 'customer.order.product' | t }}</th>
+                                <th>{{ 'customer.order.sku' | t }}</th>
+                                <th>{{ 'customer.order.price' | t }}</th>
+                                <th>{{ 'customer.order.quantity' | t }}</th>
+                                <th>{{ 'customer.order.total' | t }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for line_item in order.line_items %}
+                            <tr id="{{ line_item.key }}" class="responsive_tbl_r" >
+                                <td data-label="{{ 'customer.order.product' | t }}">
+                                    {{ line_item.title | link_to: line_item.product.url }}
+                                    {% if line_item.fulfillment %}
+                                        <div>
+                                            {%- assign created_at = line_item.fulfillment.created_at | date: format: 'month_day_year' -%}
+                                            <i>{{ 'customer.order.fulfilled_at' | t: date: created_at }}</i>
+                                            {% if line_item.fulfillment.tracking_number %}
+                                                <a href="{{ line_item.fulfillment.tracking_url }}">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number }}</a>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td data-label="{{ 'customer.order.sku' | t }}">{{ line_item.sku }}</td>
+                                <td data-label="{{ 'customer.order.price' | t }}">{{ line_item.price | money }}</td>
+                                <td data-label="{{ 'customer.order.quantity' | t }}">{{ line_item.quantity }}</td>
+                                <td data-label="{{ 'customer.order.total' | t }}">{{ line_item.quantity | times: line_item.price | money }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="responsive_tbl_r">
+                                <td colspan="4" class="hide-sm">{{ 'customer.order.subtotal' | t }}</td>
+                                <td data-label="{{ 'customer.order.subtotal' | t }}">{{ order.subtotal_price | money }}</td>
+                            </tr>
+                            {% for discount in order.discounts %}
+                                <tr class="order_summary discount">
+                                    <td colspan="4" class="hide-sm">{{ discount.code }} {{ 'customer.order.discount' | t }}</td>
+                                    <td data-label="{{ 'customer.order.discount' | t }}">{{ discount.savings | money }}</td>
+                                </tr>
+                            {% endfor %}
+                            {% for shipping_method in order.shipping_methods %}
+                                <tr>
+                                    <td colspan="4" class="hide-sm">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})</td>
+                                    <td data-label="{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})">{{ shipping_method.price | money }}</td>
+                                </tr>
+                            {% endfor %}
+                            {% for tax_line in order.tax_lines %}
+                                <tr>
+                                    <td colspan="4" class="hide-sm">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</td>
+                                    <td data-label="{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)">{{ tax_line.price | money }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="4" class="hide-sm"><strong>{{ 'customer.order.total' | t }}</strong></td>
+                                <td data-label="{{ 'customer.order.total' | t }}"><strong>{{ order.total_price | money }} {{ order.currency }}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>  
+                    <hr class="hide-md hide-lg">
+            </div>
+            <div class="gitem wd33-md">
+                <h3 class="rgTxt mb10">{{ 'customer.order.billing_address' | t }}</h3>
+                <strong>{{ 'customer.order.payment_status' | t }}:</strong> {{ order.financial_status_label }}<br />
+                {{ order.billing_address | format_address }}
+                <hr />
+                <h3 class="rgTxt mb10">{{ 'customer.order.shipping_address' | t }}</h3>
+                <strong>{{ 'customer.order.fulfillment_status' | t }}:</strong> {{ order.fulfillment_status_label }}<br />
+                {{ order.shipping_address | format_address }}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  window.addEventListener('load', () => {
+    typeof CustomerAddresses !== 'undefined' && new CustomerAddresses();
+  });
+</script>
+{% schema %}
+{
+  "name": "Addresses",
+  "settings": [
+		{
+            "type": "header",
+            "content": "Links ==="
+        },
+        {
+            "type": "range",
+            "id": "sfs",
+            "label": "Font Size",
+            "default": 14,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        }, 
+        {
+            "type": "range",
+            "id": "sfsm",
+            "label": "Font Size (mobile)",
+            "default": 13,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "color",
+            "id": "scl",
+            "label": "Text/Link",
+            "default": "#555"
+        },
+        {
+            "type": "color",
+            "id": "sclh",
+            "label": "Link Hover",
+            "default": "#000"
+        },
+		{
+            "type": "paragraph",
+            "content": "Title Text ===="
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Text Color",
+            "default": "#000"
+        },
+        {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 20,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        }, 
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font Size (mobile)",
+            "default": 18,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "600",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        },
+		{
+            "type": "header",
+            "content": "Section ==="
+        },		
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top spacing",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom spacing",
+			"unit": "px",
+			"default":80
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top spacing (mobile)",
+			"unit": "px",
+			"default":20
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom spacing (mobile)",
+			"unit": "px",
+			"default":40
+        },       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background"        
+        }       
+  ] 
+}
+{% endschema %}

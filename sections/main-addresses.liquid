@@ -1,0 +1,321 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'customer.js' | asset_url }}" defer></script>
+{% assign section_st = section.settings %}
+<div class="sec_cov" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">  
+    <div class="page-width" style="--cl:{{ section_st.cl }};--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;--fw:{{ section_st.fw }};--fbg:{{ section_st.fbg }};--bd:{{ section_st.bd }};">
+        {% paginate customer.addresses by 5 %}
+        <div class="fl f-aic f-jcsb f-col f-row-md gap" style="--gap:15px;">
+            <h1 class="page-title mb0">{{ 'customer.addresses.title' | t }}</h1>
+            <div class="account-links fl f-aic f-jcc f-wrap gap f-col f-row-md" style="--cl:{{ section_st.scl }};--clh:{{ section_st.sclh }};--fs:{{ section_st.sfs }}px;--fsm:{{ section_st.sfsm }}px;--bdr:{{ section_st.scl | color_modify:'alpha', 0.1 }};">
+                <div>{{ 'customer.account.welcome_text' | t }} <b>{{ customer.name }}</b></div>
+                <span class="hide-sm">|</span>
+                <div class="fl f-aic f-jcc f-wrap gap">
+                  <a href="{{ routes.account_url }}"> {{ 'customer.orders.link_name' | t }} </a>
+                  <a href="{{ routes.account_addresses_url }}" class="active"> {{ 'customer.addresses.link_name' | t }}</a>
+                  <a href="{{ routes.account_logout_url }}"> {{ 'customer.account.logout' | t }} </a>
+                </div>
+            </div>
+          </div>
+          <hr />
+        <div class="m_auto" style="max-width:800px;--grsp:7.5px;--grspm:0;" data-customer-addresses>
+            {% for address in customer.addresses %}
+                <div class="address mb20" data-address>
+                    {% if address == customer.default_address %}
+                        <h3 class="rgTxt mb0">{{ 'customer.addresses.default' | t }}</h3>
+                    {% endif %}
+                    <div class="mb20">{{ address | format_address }}</div>
+                    <button type="button" class="btn btn-sm address-edit-toggle mr15" id="EditFormButton_{{ address.id }}" aria-label="{{ 'customer.addresses.edit_address' | t }} {{ forloop.index }}" aria-controls="EditAddress_{{ address.id }}" aria-expanded="false" data-address-id="{{ address.id }}">{{ 'customer.addresses.edit' | t }}</button>
+                    <button type="button" class="btn btn-sm btn2" aria-label="{{ 'customer.addresses.delete' | t }} {{ forloop.index }}" data-target="{{ address.url }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">{{ 'customer.addresses.delete' | t }}</button>
+                    <div id="EditAddress_{{ address.id }}" class="customerform form-vertical hide">
+                        <h3>{{ 'customer.addresses.edit_address' | t }}</h3>
+                      {% form 'customer_address', address %}
+                        
+                        <div class="grid gspace">
+                            <div class="gitem wd50-md">
+                                <label for="AddressFirstName_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.first_name' | t }}</label>
+                                <input type="text" id="AddressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}" placeholder="{{ 'customer.addresses.first_name' | t }}">
+                            </div>
+                            <div class="gitem wd50-md">
+                                <label for="AddressLastName_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.last_name' | t }}</label>
+                                <input type="text" id="AddressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}" placeholder="{{ 'customer.addresses.last_name' | t }}">
+                            </div>
+                        </div>
+        
+                        <label for="AddressCompany_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.company' | t }}</label>
+                        <input type="text" id="AddressCompany_{{ form.id }}" name="address[company]" value="{{ form.company }}" placeholder="{{ 'customer.addresses.company' | t }}">
+        
+                        <label for="AddressAddress1_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.address1' | t }}</label>
+                        <input type="text" id="AddressAddress1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}" placeholder="{{ 'customer.addresses.address1' | t }}">
+        
+                        <label for="AddressAddress2_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.address2' | t }}</label>
+                        <input type="text" id="AddressAddress2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}" placeholder="{{ 'customer.addresses.address2' | t }}">
+        
+                        <div class="grid gspace">
+                            <div class="gitem wd33-md">
+                                <label for="AddressCity_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.city' | t }}</label>
+                                <input type="text" id="AddressCity_{{ form.id }}" name="address[city]" value="{{ form.city }}" placeholder="{{ 'customer.addresses.city' | t }}">
+                            </div>
+                            <div class="gitem wd33-md">
+                                <label for="AddressCountry_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.country' | t }}</label>
+                                <select id="AddressCountry_{{ form.id }}" name="address[country]" data-address-country-select data-default="{{ form.country }}" data-form-id="{{ form.id }}" autocomplete="country">{{ all_country_option_tags }}</select>
+                            </div>
+                            <div class="gitem wd33-md" id="AddressProvinceContainer_{{ form.id }}" style="display:none">
+                                <label for="AddressProvince_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.province' | t }}</label>
+                                <select id="AddressProvince_{{ form.id }}" name="address[province]" data-default="{{ form.province }}" autocomplete="address-level1"></select>
+                            </div>
+                        </div>
+                        <div class="grid gspace">
+                            <div class="gitem wd50-md">
+                                <label for="AddressZip_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.zip' | t }}</label>
+                                <input type="text" id="AddressZip_{{ form.id }}" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" placeholder="{{ 'customer.addresses.zip' | t }}">
+                            </div>
+                            <div class="gitem wd50-md">
+                                <label for="AddressPhone_{{ form.id }}" class="hidden_txt">{{ 'customer.addresses.phone' | t }}</label>
+                                <input type="tel" id="AddressPhone_{{ form.id }}" name="address[phone]" value="{{ form.phone }}" placeholder="{{ 'customer.addresses.phone' | t }}">
+                            </div>
+                        </div>
+                        <p>
+                            {{ form.set_as_default_checkbox }}
+                            <label for="address_default_address_{{ form.id }}">{{ 'customer.addresses.set_default' | t }}</label>
+                        </p>          
+                        <div class="fl f-wrap">
+                            <button type="submit" class="btn {{ section_st.btn }} {{ section_st.btnsz }} address-edit-toggle mr20" data-form-id="{{ form.id }}">{{ 'customer.addresses.update' | t }}</button>
+                            <button type="reset" class="btn btn2">{{ 'customer.addresses.cancel' | t }}</button>
+                        </div>
+                    {% endform %}         
+                </div>
+                </div>
+            {% endfor %}
+            {% if paginate.pages > 1 %}{% render 'pagination' %}{% endif %}
+  
+            <div class="tc" data-address>
+        <button type="button" aria-expanded="false" aria-controls="AddAddress" class="btn {{ section_st.btn }} {{ section_st.btnsz }} address-new-toggle mb25">{{ 'customer.addresses.add_new' | t }}</button>
+        <div id="AddressNewForm" class="customerform form-vertical hide tl">
+            {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
+                <h4 class="rgTxt">{{ 'customer.addresses.add_new' | t }}</h4>
+                <div class="grid gspace">
+                    <div class="gitem wd50-md">
+                        <label for="AddressFirstNameNew" class="hidden_txt">{{ 'customer.addresses.first_name' | t }}</label>
+                        <input type="text" id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}" placeholder="{{ 'customer.addresses.first_name' | t }}">
+                    </div>
+                    <div class="gitem wd50-md">
+                        <label for="AddressLastNameNew" class="hidden_txt">{{ 'customer.addresses.last_name' | t }}</label>
+                        <input type="text" id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}" placeholder="{{ 'customer.addresses.last_name' | t }}">
+                    </div>
+                </div>
+                <label for="AddressCompanyNew" class="hidden_txt">{{ 'customer.addresses.company' | t }}</label>
+                <input type="text" id="AddressCompanyNew" name="address[company]" value="{{ form.company }}" placeholder="{{ 'customer.addresses.company' | t }}">
+
+                <label for="AddressAddress1New" class="hidden_txt">{{ 'customer.addresses.address1' | t }}</label>
+                <input type="text" id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}" placeholder="{{ 'customer.addresses.address1' | t }}">
+
+                <label for="AddressAddress2New" class="hidden_txt">{{ 'customer.addresses.address2' | t }}</label>
+                <input type="text" id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}" placeholder="{{ 'customer.addresses.address2' | t }}">
+
+                <div class="grid gspace">
+                    <div class="gitem wd33-md">
+                        <label for="AddressCityNew" class="hidden_txt">{{ 'customer.addresses.city' | t }}</label>
+                        <input type="text" id="AddressCityNew" name="address[city]" value="{{ form.city }}" placeholder="{{ 'customer.addresses.city' | t }}">
+                    </div>
+                    <div class="gitem wd33-md">
+                        <label for="AddressCountryNew" class="hidden_txt">{{ 'customer.addresses.country' | t }}</label>
+                        <select id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}">{{ country_option_tags }}</select>
+                    </div>
+                    <div class="gitem wd33-md" id="AddressProvinceContainerNew" style="display:none">
+                        <label for="AddressProvinceNew" class="hidden_txt">{{ 'customer.addresses.province' | t }}</label>
+                        <select id="AddressProvinceNew" name="address[province]" data-default="{{ form.province }}"></select>
+                    </div>
+                </div>
+                <div class="grid gspace">
+                    <div class="gitem wd50-md">
+                        <label for="AddressZipNew" class="hidden_txt">{{ 'customer.addresses.zip' | t }}</label>
+                        <input type="text" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" placeholder="{{ 'customer.addresses.zip' | t }}">
+                    </div>
+                    <div class="gitem wd50-md">
+                        <label for="AddressPhoneNew" class="hidden_txt">{{ 'customer.addresses.phone' | t }}</label>
+                        <input type="tel" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}">
+                    </div>
+                </div>
+                <p><label for="address_default_address_new">{{ form.set_as_default_checkbox }} {{ 'customer.addresses.set_default' | t }}</label></p>
+                <div class="fl f-wrap">
+                    <button type="submit" class="btn address-new-toggle {{ section_st.btn }} {{ section_st.btnsz }} mr20">{{ 'customer.addresses.add' | t }}</button>
+                    <button type="reset" class="btn btn2">{{ 'customer.addresses.cancel' | t }}</button>
+                </div>
+            {% endform %}
+        </div>
+      </div>
+        </div>
+    {% endpaginate %}
+    </div>
+</div>
+<script>
+  window.addEventListener('load', () => {
+    typeof CustomerAddresses !== 'undefined' && new CustomerAddresses();
+  });
+</script>
+{% schema %}
+{
+  "name": "Addresses",
+  "settings": [
+		{
+            "type": "header",
+            "content": "Links ==="
+        },
+        {
+            "type": "range",
+            "id": "sfs",
+            "label": "Font Size",
+            "default": 14,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        }, 
+        {
+            "type": "range",
+            "id": "sfsm",
+            "label": "Font Size (mobile)",
+            "default": 13,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "color",
+            "id": "scl",
+            "label": "Text/Link",
+            "default": "#555"
+        },
+        {
+            "type": "color",
+            "id": "sclh",
+            "label": "Link Hover",
+            "default": "#000"
+        },
+		{
+            "type": "paragraph",
+            "content": "Title Text ===="
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Text Color",
+            "default": "#000"
+        },
+        {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 20,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        }, 
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font Size (mobile)",
+            "default": 18,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "600",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": "Form Box ===="
+        },
+        {
+            "type": "color",
+            "id": "bd",
+            "label": "Border Color",
+            "default": "#eee"
+        },
+        {
+            "type": "color",
+            "id": "fbg",
+            "label": "Background",
+            "default": "#f4f4f4"
+        },
+		{
+            "type": "header",
+            "content": "Section ==="
+        },		
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top spacing",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom spacing",
+			"unit": "px",
+			"default":80
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top spacing (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom spacing (mobile)",
+			"unit": "px",
+			"default":30
+        },       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background"        
+        }       
+  ] 
+}
+{% endschema %}

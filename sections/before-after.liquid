@@ -1,0 +1,877 @@
+{%- liquid 
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+    for block in section.blocks
+        assign blk_st = block.settings
+         
+        assign collection = collections[blk_st.collection]
+        assign collection_image = blk_st.image | default:collection.image | default: collection.products.first.featured_image
+
+        assign img_ratio = 100
+        if section_st.ratio == 'img' and collection_image
+            assign img_ratio = 1 | divided_by: collection_image.aspect_ratio | times: 100
+            break
+        elsif section_st.ratio != 'img'
+            assign img_ratio = section_st.ratio
+        endif
+    endfor
+-%}
+{%- capture before_after -%}
+<link rel="stylesheet" href="{{ 'image-comparison.css' | asset_url }}" type="text/css" media="all">
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}"
+  style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--ttp:{{ section_st.tbp }}px;--tbp:{{ section_st.tbp | plus : 4 }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};--ratio:{{ img_ratio | default:100 }}%"
+  {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>
+    <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %} cl_box cl_box{{ section_st.style }} pr zi1" data-section-id="{{ section.id }}">   	
+        {%- render 'sec-title' -%}
+        {% liquid
+          assign ba_class = 'f-jcc'
+          assign img_class = 'w_100'
+          if section_st.dt
+            assign ba_class = 'f-row-md'
+            assign img_class = 'w_100 fl1'
+            if section_st.img_align == 'right'
+              assign img_class = 'w_100 fl1 order2-md'
+            endif
+          endif
+
+          assign padding = 1 | divided_by: section_st.imagea.aspect_ratio | times: 100
+          assign paddingm = padding
+          if section_st.imageam != blank
+              assign paddingm = 1 | divided_by: section_st.imageam.aspect_ratio | times: 100
+          endif
+        %}
+
+        <div class="fl gap f-aic f-col {{ ba_class }}" style="--gap:35px;">
+            <before-after class="db image-comparison brad pr of_hidden {{ img_class }} {% render 'animate-data', css:true %}" id="ba-{{ section.id }}" data-component="image-comparison-slider" style="--cl:{{section_st.cl}};--lbg:{{ section_st.lbg}};--fs:{{section_st.fs}}px;--fsm:{{section_st.fsm}}px;--fw:{{section_st.fw}};--rounded:{{ section_st.brad }}px;--pd:{{ padding | default: 50 }}%;--pdm:{{ paddingm | default: 66.666666667 }}%;--ipos:0 50%;">
+                <label for="image-comparison-range" class="v-hidden">Move image comparison slider</label>
+                <input type="range" min="0" max="100" value="50" class="rangeSlider pa w_100 h_100 m0 pd0" id="rs-{{ section.id }}" data-image-comparison-range="">
+    
+                <figure class="baImg-figure pa before m0 h_100 of_hidden" data-image-comparison-overlay="">
+                    {%- liquid
+                        assign banner_img = section_st.image
+                        assign banner_imgm = section_st.imagem
+                        assign banner_imgm_srcset = banner_imgm | image_url: width: banner_imgm.width | image_tag: widths: '180,360,480,760' | split: 'srcset="' | last | split: '"' | first
+                    -%}
+                    <picture class="comparison-image">
+                        {% if section_st.imagem != blank %}
+                            <source media="(max-width: 767px)" srcset="{{ banner_imgm_srcset }}" width="{{ banner_imgm.width }}" height="{{ banner_imgm.height }}">
+                        {% endif %}
+                        {% if banner_img != blank %}
+                            {{ banner_img | image_url: width:banner_img.width | image_tag: class:'imgFt ba-img zi1', sizes:page_width, widths:"400,600,800,1000,1200,1400,1600,2000,2400,3000" }}
+                        {% else %}
+                            {% # theme-check-disable RemoteAsset %}
+                            <img class="imgFt ba-img zi1" src="https://dummyimage.com/2000x1000/ddd/ffffff.png&text=Before" width="2000" height="1000" alt="Before">
+                            {% # theme-check-enable RemoteAsset %}
+                        {% endif %}
+                    </picture>
+                    {% if section_st.blbl != blank %}<figcaption class="imgCaption rgTxt pa before {{section_st.ff }}">{{ section_st.blbl }}</figcaption>{% endif %}
+                </figure>
+                <div class="imgSlider pa h_100" data-image-comparison-slider="" style="--cl:{{ section_st.scl }};--bg:{{ section_st.sbg }};--sd:{{ section_st.sd }}5;">
+                    <span class="sliderThumb pa fl f-aic f-jcc" data-image-comparison-thumb="">
+                        <svg class="image-comparison__thumb-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="10" viewBox="0 0 18 10" fill="currentColor">
+                            <path class="image-comparison__thumb-icon--left" d="M12.121 4.703V.488c0-.302.384-.454.609-.24l4.42 4.214a.33.33 0 0 1 0 .481l-4.42 4.214c-.225.215-.609.063-.609-.24V4.703z"></path>
+                            <path class="image-comparison__thumb-icon--right" d="M5.879 4.703V.488c0-.302-.384-.454-.609-.24L.85 4.462a.33.33 0 0 0 0 .481l4.42 4.214c.225.215.609.063.609-.24V4.703z"></path>
+                        </svg>
+                    </span>
+                </div>
+                {%- liquid
+                    assign banner_imga = section_st.imagea
+                    assign banner_imgam = section_st.imageam
+                    assign banner_imgam_srcset = banner_imgam | image_url: width: banner_imgam.width | image_tag: widths: '180,360,480,760' | split: 'srcset="' | last | split: '"' | first
+                -%}
+                <figure class="baImg-figure after m0">
+                    <picture class="comparison-image">
+                        {% if banner_imgam != blank %}
+                            <source media="(max-width: 767px)" srcset="{{ banner_imgam_srcset }}" width="{{ banner_imgam.width }}" height="{{ banner_imgam.height }}">
+                        {% endif %}
+                        {% if banner_imga != blank %}
+                            {{ banner_imga | image_url: width:banner_imga.width | image_tag: class:'imgFt ba-img', sizes:page_width, widths:"400,600,800,1000,1200,1400,1600,2000,2400,3000" }}
+                        {% else %}
+                            {% # theme-check-disable RemoteAsset %}
+                            <img class="imgFt ba-img" src="https://dummyimage.com/2000x1000/f4f4f4/cccccc.png&text=After" width="2000" height="1000" alt="Before">
+                            {% # theme-check-enable RemoteAsset %}
+                        {% endif %}
+                    </picture>
+                    {% if section_st.albl != blank %}<figcaption class="imgCaption rgTxt pa after {{section_st.ff }}">{{ section_st.albl }}</figcaption>{% endif %}
+                </figure>
+            </before-after>
+
+            {% if section.blocks.size > 0 %}
+                <div class="hero_cap pr {{ section_st.dt_align }}{% if section_st.dt %} fl1{% endif %} {% render 'animate-data', css:true %}" style="--cwd:{{ section_st.cwd }}px;--bpd:0 30px;--bpdm:0;">
+                    {% for block in section.blocks %}
+                        {% assign blk_st = block.settings %}
+                        {% if  block.type == 'heading' %}
+                            <{{ blk_st.htag }} class="rgTxt {{ blk_st.tff }} mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md" style="--cl:{{ blk_st.cl }};--fs:{{ blk_st.fs }}px;--fsm:{{ blk_st.fsm }}px;--fw:{{ blk_st.fw }};--ls:{{ blk_st.ls }}px;--lh:{{ blk_st.lh }};" {{ block.shopify_attributes }}>{{ blk_st.title }}</{{ blk_st.htag }}>
+                        {% elsif block.type == 'text' %}
+                            <div class="rgTxt mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hidem %} hide-sm{% endif %}" style="--cl:{{ blk_st.cl }};--fs:{{ blk_st.fs }}px;--fsm:{{ blk_st.fsm }}px;--fw:{{ blk_st.fw }};--lh:{{ blk_st.lh }};" {{ block.shopify_attributes }}>{{ blk_st.title }}</div>                      
+                        {% elsif block.type == 'button' %}                               
+                            {% if blk_st.ol_link != true %}            
+                                <a href="{{ blk_st.link }}" class="btn {{ blk_st.btn-size }} {{ blk_st.btn-style }} mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hidem %} hide-sm{% endif %}" {{ block.shopify_attributes }}>{{ blk_st.title | escape }}</a>           
+                            {% endif %}                                
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{%- endcapture -%}
+{{ before_after | strip_newlines | remove: "  " | remove: "	" }}
+<script>
+if(!customElements.get('before-after')){
+    customElements.define('before-after', class BeforeAfter extends HTMLElement {
+        constructor(){
+            super();
+            const imageComparisonSlider = this
+            this.init(imageComparisonSlider);
+        }
+   
+        setSliderstate(e, element) {
+          const sliderRange = document.querySelector('[data-image-comparison-range]');
+          if (e.type === 'input') {
+            sliderRange.classList.add('comparison-active');
+            return;
+          }
+          sliderRange.classList.remove('comparison-active');
+          element.removeEventListener('mousemove', this.moveSliderThumb);
+        }
+
+        moveSliderThumb(e) {
+          const sliderRange = document.querySelector('[data-image-comparison-range]');
+          const thumb = document.querySelector('[data-image-comparison-thumb]');
+          let position = e.layerY - 20;
+
+          if (e.layerY <= sliderRange.offsetTop) {
+            position = -20;
+          }
+          if (e.layerY >= sliderRange.offsetHeight) {
+            position = sliderRange.offsetHeight - 20;
+          }
+          thumb.style.top = `${position}px`;
+        }
+
+        moveSliderRange(e, element) {
+          const value = e.target.value;
+          const slider = element.querySelector('[data-image-comparison-slider]');
+          const imageWrapperOverlay = element.querySelector('[data-image-comparison-overlay]');
+
+          slider.style.left = `${value}%`;
+          imageWrapperOverlay.style.width = `${value}%`;
+
+          element.addEventListener('mousemove', this.moveSliderThumb);
+          this.setSliderstate(e, element);
+        }
+
+        init(element){
+          const sliderRange = element.querySelector('[data-image-comparison-range]');
+          if ('ontouchstart' in window === false) {
+            sliderRange.addEventListener('mouseup', e => this.setSliderstate(e, element));
+            sliderRange.addEventListener('mousedown', this.moveSliderThumb);
+          }
+
+          sliderRange.addEventListener('input', e => this.moveSliderRange(e, element));
+          sliderRange.addEventListener('change', e => this.moveSliderRange(e, element));
+        }
+    });
+}
+</script>
+{% schema %}
+  {
+    "name": "Image Comparison",
+    "class": "before-after",
+    "disabled_on": {
+    "groups": ["header","footer","custom.overlay"]
+    },
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Image before and after"		
+        },
+        {
+            "type": "textarea",
+            "id": "subtitle",
+            "label": "Sub Heading",
+            "default": "A visual comparison that highlights the transformation"
+        },
+        {
+        "type": "select",
+        "id": "image_style",
+        "label": "Image",
+		"default": "1",      
+        "options": [
+          {
+            "value": "1",
+            "label": "Before"
+          },
+          {
+            "value": "2",
+            "label": "After"
+          }		 
+        ]
+      },      
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Desktop",
+        "info": "Use same size images for before & after",
+        "visible_if": "{{ section.settings.image_style == '1' }}"
+      },
+	  {
+        "type": "image_picker",
+        "id": "imagem",
+        "label": "Mobile",
+        "visible_if": "{{ section.settings.image_style == '1' }}"
+      },
+      {
+        "type": "text",
+        "id": "blbl",
+        "label": "Text",
+        "default": "Before",
+        "visible_if": "{{ section.settings.image_style == '1' }}"
+      },	  
+      {
+        "type": "image_picker",
+        "id": "imagea",
+        "label": "Desktop",
+        "info": "Use same size images for before & after",
+        "visible_if": "{{ section.settings.image_style == '2' }}"
+      },
+	  {
+        "type": "image_picker",
+        "id": "imageam",
+        "label": "Mobile",
+        "visible_if": "{{ section.settings.image_style == '2' }}"
+      },
+      {
+        "type": "text",
+        "id": "albl",
+        "label": "Text",
+        "default": "After",
+        "visible_if": "{{ section.settings.image_style == '2' }}"
+      },
+      {
+        "type": "paragraph",
+        "content": "-----------------------------------------------"
+      }, 
+	  {
+        "type": "color",
+        "id": "cl",
+        "label": "Text Color",
+        "default": "#fff"
+      }, 
+	  {
+        "type": "color",
+        "id": "lbg",
+        "label": "Background",
+        "default": "#000"
+      },
+      {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 14,
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font Size (Mobile)",
+            "default": 14,
+            "min": 10,
+            "max": 60,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "ff",
+            "label": "Font Family",
+            "default": "ft2",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font Weight",
+            "default": "500",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "brad",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Image Radius",
+            "unit": "px",
+            "default": 0
+        },
+        {
+            "type":"header",
+            "content": "Slider Option ===="
+        }, 
+          {
+            "type": "color",
+            "id": "scl",
+            "label": "Arrow Color",
+            "default": "#000"
+          }, 
+          {
+            "type": "color",
+            "id": "sbg",
+            "label": "Background Color",
+            "default": "#fff"
+          },
+        {
+            "type":"header",
+            "content": "Details ===="
+        },
+      {
+            "type":"paragraph",
+            "content": "Add blocks for details"
+        },
+       {
+            "type":"checkbox",
+            "id":"dt",
+            "label":"Show Details at sides?",
+            "default": false
+        },  
+        {
+            "type": "select",
+            "id": "img_align",
+            "label":"Image alignment",
+            "default": "left",
+            "options": [
+                { "value":"left","label":"Left"},
+                { "value":"right","label":"Right"}
+            ],
+           "visible_if": "{{ section.settings.dt }}"
+        },  
+        {
+            "type": "select",
+            "id": "dt_align",
+            "label":"Text alignment",
+            "default": "tc",
+            "visible_if": "{{ section.settings.dt }}",
+            "options": [
+                { "value":"tl","label":"Left"},
+                { "value":"tc","label":"Center"},
+                { "value":"tr","label":"Right"}
+            ]
+        },
+        {
+            "type": "range",
+            "id": "cwd",
+            "min": 300,
+            "max": 1400,
+            "step": 20,
+            "label": "Text Max. width (desktop)",
+             "visible_if": "{{ section.settings.dt }}",
+            "unit": "px",
+            "default": 500
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+             "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }
+    ],
+    "blocks": [
+        {
+            "type": "heading",
+            "name": "Heading",  
+            "settings":[        
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Text",
+                    "default": "Revone offers a user-friendly interface coupled with robust features"				
+                },                         
+              {
+                    "type": "select",
+                    "id": "htag",
+                    "label": "Heading tag",
+                   "info":"Specify heading types for SEO and search engines for crawling purposes.",
+                    "default": "h3",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "H1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "H2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "H3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "H4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "H5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "H6"
+                        },
+                       {
+                            "value": "p",
+                            "label": "P"
+                        }
+                    ]
+                },               
+               {
+                    "type": "select",
+                    "id": "tff",
+                    "label": "Font Family",
+                    "default": "ft2",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text Color",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 26,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 20,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+               {
+                    "type": "select",
+                    "id": "fw",
+                    "label": "Font weight",
+                    "default": "600",
+                    "options": [
+                        {
+                            "value": "300",
+                            "label": "Light"
+                        },
+                        {
+                            "value": "400",
+                            "label": "Regular"
+                        },
+                        {
+                            "value": "500",
+                            "label": "Medium"
+                        },
+                        {
+                            "value": "600",
+                            "label": "Semi Bold"
+                        },
+                        {
+                            "value": "700",
+                            "label": "Bold"
+                        }
+                    ]
+                }, 	
+                {
+                    "type": "range",
+                    "id": "ls",
+                    "label": "Letter spacing",
+                    "default":0,
+                    "min": 0,
+                    "max": 10,
+                    "step": 1,
+                    "unit": "px"                    
+                },
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line height",
+                    "default": 1.2,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }      
+            ]
+        }, 
+      {
+            "type": "text",
+            "name": "Text",  
+            "settings":[        
+                {
+                    "type": "richtext",
+                    "id": "title",
+                    "label": "Text",
+                    "default": "<p>A well-designed online store can help you attract and convert potential customers by providing them with valuable information and showcasing your products.</p>"				
+                },          
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide text in mobile?",
+                    "default": false			
+                },              
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text Color",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 14,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                },                             	
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line height",
+                    "default": 1.5,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1              
+                },              
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }      
+            ]
+        },
+        {
+            "type": "button",
+            "name": "Button",  
+            "limit":1,    
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Button Label",
+                    "default":"SHOP NOW"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Button Link"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide on mobile?",
+                    "default": false		
+                },
+                {
+					"type": "select",
+					"id": "btn-style",
+					"label": "Button Design",
+					"default": "btn1",
+					"options": [
+					  {
+						"label": "Button 1",
+						"value": "btn1"
+					  },
+					  {
+						"label": "Button 2",
+						"value": "btn2"
+					  },
+					  {
+						"label": "Button 3",
+						"value": "btn3"
+					  },
+					  {
+						"label": "Button 4",
+						"value": "btn4"
+					  },
+					 {
+						"label": "Button 5",
+						"value": "btn5"
+					  },
+					  {
+						"label": "Button 6",
+						"value": "btn6"
+					  },
+                      {
+                          "label": "Button 7 Gradient",
+                          "value": "btn7"
+                      },
+                      {
+                          "label": "Button 8 Gradient",
+                          "value": "btn8"
+                      },
+					  {
+						"label": "Link",
+						"value": "btnLink"
+					  }  
+					]
+				  },
+                {
+                    "type": "select",
+                    "id": "btn-size",
+                    "label": "Button Size",
+                    "default": "btn-md",
+                    "options": [
+                        {
+                            "label": "Small",
+                            "value": "btn-sm"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "btn-md"
+                        },
+                        {
+                            "label": "Large",
+                            "value": "btn-lg"
+                        } 		  
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },				            
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        }   
+    ],
+    "presets": [
+      {
+        "name": "Image Comparison",
+        "category": "Images",
+      }
+    ]
+  }
+{% endschema %}

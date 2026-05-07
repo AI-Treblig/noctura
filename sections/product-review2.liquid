@@ -1,0 +1,599 @@
+{%- capture quotes -%}
+{%- liquid 
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+-%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+     {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>     
+
+	{%- capture style -%}--grsp:{{ section_st.gspace | divided_by: 2.0 }}px;--twidth:{{ section_st.twidth }}%;--icon_cl:{{ section_st.icon_cl }};--bg:{{ section_st.bbg }};--rounded:{{ section_st.br }}px;--bpd:{{ section_st.bpd }}px;{% endcapture %}     	
+	
+    <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %}" data-section-id="{{ section.id }}" data-section-style="quote{{ section_st.style }}">
+		
+        <div class="product_review inline_product">
+			
+            {% if section.blocks.size > 0 %}
+                {% capture testimonialdata %}
+                  {% for block in section.blocks %}
+                       {% assign block_st = block.settings %}                      
+                        {% assign sindex = forloop.index0 %}
+                        <div class="swiper-slide gitem fckSl{% if block_st.author_pic != blank %} apic{% endif %} {{ section_st.style-m }} {{ section_st.style-t }} {{ section_st.style}}" id="{{ block.id }}" data-slide="{{ sindex }}" {{ block.shopify_attributes }}>
+                            <div class="fl f-col f-row-md f-jcs m_auto w_100 h_100 gap" style="--cl:{{ section_st.cl }};--gap:{{ section_st.gspace }}px;">                                                                
+                                
+                                {% if block_st.image != blank %}
+                                <div class="img_col pr {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--wd:{{ section_st.bnrwd }}%;">
+                                {%- capture sizes -%}(min-width:1024px) calc({{ page_width }} / 2), 100vw{%- endcapture -%}
+                                {{ block_st.image | image_url: width: block_st.image.width | image_tag: loading:'lazy', width:block_st.image.width, height:block_st.image.height, class:'imgAt m_auto', sizes:sizes, widths:"400,600,800,1000,1200,1500" }}                                                                                       
+                                </div>
+                                {% else %}
+                                  <div class="img_col pr" style="--wd:{{ section_st.bnrwd }}%;">
+                                   {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                                    </div>   
+                                {% endif %}
+                                <div class="authour_text fl fl1 f-col {% render 'animate-data', css:true %}" {% render 'animate-data' %} style="--rating:{{ section_st.icon_cl }};--icns:{{ section_st.icon_size }}px;">
+          							<div class="pr fl {{ section_st.alignment }} f-col inner m_auto h_100">
+                                    {%  if section_st.title !=blank %}<span class="db mb15 rgTxt" style="--fs:{{ section_st.hfs }}px;--fw:500;--lh:1.3;">{{ section_st.title }}</span>{% endif %}  
+                                    {% if block_st.rat and section_st.rating == '1' %}{% if block_st.rating == 1 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}</span>{% endif %}{% if block_st.rating == 2 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}</span>{% endif %}{% if block_st.rating == 3 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star' %}{% render 'icon-star' %}</span>{% endif %}{% if block_st.rating == 4 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star' %}</span>{% endif %}{% if block_st.rating == 5 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}</span>{% endif %}{% endif %}                               
+                                    {% if block_st.title != blank %}<div class="mb15 rgTxt {{ section_st.tff }}" style="--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;--fw:{{ section_st.fw }};--lh:{{ section_st.lh }};">{{ block_st.title }}</div>{% endif %}								
+                                    {% if block_st.text != blank %}<div class="rte-setting mb20 rgTxt" style="--fs:{{ section_st.tfs }}px;--fsm:{{ section_st.tfsm }}px;--lh:{{ section_st.tlh }};">{{ block_st.text }}</div>{% endif %}
+                                    {% if block_st.rat and section_st.rating == '2' %}{% if block_st.rating == 1 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}</span>{% endif %}{% if block_st.rating == 2 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star' %}{% render 'icon-star' %}{% render 'icon-star' %}</span>{% endif %}{% if block_st.rating == 3 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star' %}{% render 'icon-star' %}</span>{% endif %}{% if block_st.rating == 4 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star' %}</span>{% endif %}{% if block_st.rating == 5 %}<span class="ratings mb15 db">{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}{% render 'icon-star1' %}</span>{% endif %}{% endif %}
+                                    {% if block_st.author != blank %}<div class="author rgTxt"  style="--fs:{{ section_st.tfs | minus:1 }}px;--fsm:{{ section_st.tfsm }}px;--lh:{{ section_st.tlh }};">{{ block_st.author }}</div>{% endif %}                               
+
+                                    {%  if  block_st.product !=blank %}
+                                    <product-card class="fl f-aic border-top mt25" style="--gap:20px;--border:{{ section_st.cl | color_lighten:70 }};">
+                                        <div class="pr_list_img mr15">   
+                                        <a class="grid_img" href="{{ block_st.product.url }}">
+                                            {{ block_st.product.featured_image | image_url: width: block_st.product.featured_image.width | image_tag: loading:'lazy', class:'imgFt', sizes:'60px', widths:"80,140,200" }}
+                                        </a>
+                                        </div>
+                                        <div class="fl1 grid-meta" style="--fs:14px;">
+                                            <p class="mb5"><a href="{{ block_st.product.url }}" title="{{ block_st.product.title }}">{{ block_st.product.title }}</a></p>
+                                            {%- unless settings.hide-price -%}{% render 'product-price', product: block_st.product %}{%- endunless -%}        
+                                        </div>                                      
+                                    </product-card>
+                                    {% endif %}                           
+                                     {% if section_st.dot %} 
+                                        {%- if section_st.dot or section_st.dotm -%}
+                                        <div class="swiper-pagination swpg{{ section.id }} fl f-wrap{% unless section_st.dotm %} hide-sm{% endunless %}{% unless section_st.dot %} hide-md hide-lg{% endunless %}"></div>
+                                        {%- endif -%}
+                                     {% endif %}
+                                    </div>                                                                  
+                                </div>                              
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endcapture %}               
+                <slide-section class="grid gspace swiper" style="{{ style }}" data-swiper='{ "slidesPerView":"auto", "loop":{{ section_st.loop }}, {% if section_st.autoplay %}"autoplay":{ "delay":"{{ section_st.speed | times: 1000 }}" },{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" },"pagination":{ "el":".swpg{{ section.id }}","clickable":true }}'>
+                    <div class="swiper-wrapper">{{ testimonialdata }}</div>                   
+                </slide-section>               
+            {% endif %}
+            {% if section.blocks.size == 0 %}{% render 'no-blocks' %}{% endif %}
+        </div>
+    </div>
+</div>
+{%- endcapture -%}
+{{ quotes | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Product Reviews 2",
+     "disabled_on": {
+     "groups": ["header", "footer", "custom.overlay"]
+    }, 
+    "settings": [			    
+       {
+            "type": "range",
+            "id": "gspace",
+            "label": "Grid gap",
+            "default": 15,
+            "min": 0,
+            "max": 60,
+            "step": 1,
+            "unit":"px"
+        },       
+        {
+            "type": "select",
+            "id": "style",
+            "label": "Column (desktop)",
+            "default": "wd100-lg",           
+            "options": [
+                {
+                    "value": "wd100-lg",
+                    "label": "1"
+                },
+                {
+                    "value": "wd50-lg",
+                    "label": "2"
+                }               			
+            ]
+        },
+      {
+            "type": "select",
+            "id": "style-t",
+            "label": "Column (tablet)",
+            "default": "wd100-md",           
+            "options": [
+                {
+                    "value": "wd100-md",
+                    "label": "1"
+                },
+                {
+                    "value": "wd50-md",
+                    "label": "2"
+                }                			
+            ]
+        },
+       {
+            "type": "select",
+            "id": "style-m",
+            "label": "Column (mobile)",
+            "default": "wd100",           
+            "options": [
+               {
+                    "value": "wd100",
+                    "label": "1"
+                },
+                {
+                    "value": "wd50",
+                    "label": "2"
+                }              			
+            ]
+        },
+      {
+            "type": "range",
+            "id": "bnrwd",
+            "min": 25,
+            "max": 75,
+            "step": 1,
+            "label": "Image column width (desktop)",
+            "default": 50,
+            "unit": "%"
+            
+        },  
+      {
+            "type": "range",
+            "id": "twidth",
+            "min": 70,
+            "max": 100,
+            "step": 1,
+            "label": "Text column max width (desktop)",
+            "default": 80,          
+            "unit": "%"
+            
+        },    
+        {
+            "type": "header",
+            "content": "Text Appearance ==="
+        }, 
+         {
+              "type": "select",
+              "id": "alignment",
+              "label": "Vertical alignment",
+              "default": "f-jcc",
+              "options": [             
+                  {"value": "f-jcs", "label": "Top"},
+                  {"value": "f-jcc", "label": "Middle"},
+                  {"value": "f-jce", "label": "Bottom"}         
+              ]
+      },
+       {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Happy Customers"		
+        },  
+         {
+            "type": "range",
+            "id": "hfs",
+            "label": "Heading size",
+            "default": 15,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        }, 	  
+      {
+            "type":"paragraph",
+            "content":"----------------------------------------------"	
+        },
+       {
+            "type": "paragraph",
+            "content": "Title ==="
+        }, 
+      {
+          "type": "select",
+          "id": "tff",
+          "label": "Font family",
+          "default": "ft2",
+          "options": [
+              {
+                  "value": "ft1",
+                  "label": "Font 1"
+              },
+              {
+                  "value": "ft2",
+                  "label": "Font 2"
+              },
+              {
+                  "value": "ft3",
+                  "label": "Font 3"
+              }
+          ]
+        },
+       {
+            "type": "range",
+            "id": "fs",
+            "label": "Font size",
+            "default": 30,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        }, 	
+       {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font size (mobile)",
+            "default": 20,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        }, 	
+       {
+        "type": "select",
+        "id": "fw",
+        "label": "Font weight",
+        "default": "500",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Regular"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi Bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+            "type": "range",
+            "id": "lh",
+            "label": "Line height",
+            "default": 1.3,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1              
+        },
+       {
+            "type":"paragraph",
+            "content":"----------------------------------------------"	
+        },
+         {
+            "type": "paragraph",
+            "content": "Content ==="
+        }, 
+		{
+            "type": "range",
+            "id": "tfs",
+            "label": "Font size",
+            "default": 15,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        }, 	 
+      {
+            "type": "range",
+            "id": "tfsm",
+            "label": "Font size (mobile)",
+            "default": 15,
+            "min": 10,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        }, 
+       {
+            "type": "range",
+            "id": "tlh",
+            "label": "Line height",
+            "default": 1.6,
+            "min": 1.0,
+            "max": 2.0,
+            "step": 0.1              
+        },       
+       {
+            "type":"paragraph",
+            "content":"----------------------------------------------"	
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Text",
+            "default": "#333"
+        },
+        {
+            "type": "color",
+            "id": "bbg",
+            "label": "Text background"                  
+        }, 		
+      {
+            "type": "range",
+            "id": "bpd",
+            "label": "Text padding",
+            "default": 30,
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },        
+       {
+            "type": "range",
+            "id": "br",
+            "label": "Rounded corner",
+            "default": 5,
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "unit": "px"
+        }, 	   
+        {
+            "type": "range",
+            "id": "icon_size",
+            "label": "Rating stars size",
+            "default": 14,
+            "min": 12,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        }, 	
+        {
+            "type": "color",
+            "id": "icon_cl",
+            "label": "Rating stars color",
+            "default": "#EBB868"		
+        },
+       {
+                    "type": "select",
+                    "id": "rating",
+                    "label": "Rating position",
+                    "default": "1",
+                    "options": [             
+                        {"value": "1", "label": "Top"},
+                        {"value": "2", "label": "Bottom"}                          
+                    ]
+      },     
+       {
+            "type": "header",
+            "content": "Slider Settings ==="
+        },
+        {
+            "type":"checkbox",
+            "id":"carousel",
+            "label":"Enable carousel",
+            "default": false
+        },
+ 		{
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Infinite loop",
+            "default": true
+        },
+ 		{
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Auto-rotate slide",
+            "default": false			
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Change slide every",
+            "default": 5,
+            "min": 1,
+            "max": 30,
+            "step": 1,
+            "unit": "Sec"			
+        },				
+		{
+            "type": "checkbox",
+            "id": "dot",
+            "label": "Show dots on desktop?",
+            "default": false			
+        },
+		{
+            "type": "checkbox",
+            "id": "dotm",
+            "label": "Show dots on mobile?",
+            "default": false			
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+         {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+             "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#f4f2ea"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+       {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#000",
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0,
+            "visible_if": "{{ section.settings.bgimg != blank }}"
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":30
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }	 
+    ],
+    "blocks": [
+        {
+            "type": "quote",
+            "name": "Review",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image",
+                    "info":"Image size should be same for all"
+                },
+				  {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Revone Premium Shopify theme is worth considering for your next store or to upgrade existing one"
+                },
+                {
+                    "type": "richtext",
+                    "id": "text",
+                    "label": "Content",
+                    "default": "<p>Developed by Adornthemes, a reliable and best-selling provider of Shopify themes, it stands out for its quality and performance.</p>"
+                },                
+                {
+                    "type": "richtext",
+                    "id": "author",
+                    "label": "Name & Position",
+                    "default": "<p>- Nigel, Ontario</p>"
+                },
+                {
+                    "type":"checkbox",
+                    "id":"rat",
+                    "label":"Show ratings?",
+                    "default": true
+                },
+                {
+                    "type": "range",
+                    "id": "rating",
+                    "label": "Select rating stars",
+                    "default": 5,
+                    "min": 1,
+                    "max": 5,
+                    "step": 1 ,
+                    "visible_if": "{{ block.settings.rat }}"
+                },
+				{
+                    "type":"product",
+                    "id":"product",
+                    "label":"Select product"                    
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Product Reviews 2",
+            "category": "Text",
+            "blocks": [
+                {
+                    "type": "quote"
+                }                            
+            ]
+        }
+    ]
+}
+{% endschema %}

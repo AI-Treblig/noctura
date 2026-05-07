@@ -1,0 +1,379 @@
+{%- capture logobar -%}
+{%- liquid 
+    assign section_st = section.settings
+-%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--icon_bg:{{ section_st.icon_bg }};--rounded:{{ section_st.radius }}px;">     
+    <div class="insta_list{% if section_st.sw %} fw-sec{% if section_st.npd %} npd{% endif %}{% else %} page-width{% endif %}" id="carousel-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="carousel">
+
+        {% render 'sec-title' %}		
+        {% if section.blocks.size > 0 %}
+            {% capture logo_data %}
+              {% for block in section.blocks %}
+                    <div class="gitem{% if section_st.carousel %} swiper-slide{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                        <div class="h_100 img_{{ section_st.image }}">
+                            <a class="fl f-jcc f-aic" {% if block.settings.link != blank %}href="{{ block.settings.link }}" {% if block.settings.newtab %} target="_blank" {% endif %}{% else %}role="link" aria-disabled="true"{% endif %}>
+                                {% if block.settings.image != blank %}
+                                    {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading:'lazy', class:'imgAt', widths:'100,200,300,400,500' }}
+                                {% else %}
+                                   {% capture current %}{% cycle 1, 2, 3, 4 %}{% endcapture %}{{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}  
+                                {% endif %}
+                                {%- if section_st.icon != blank -%}<span class="pa db tc anim img_icon{% if section_st.image == '3' %} hide{% endif %}"> <img src="{{ section_st.icon | image_url: width: '36' }}" width="16" height="16" alt="{{ section_st.icon.alt }}" /></span> {%- endif -%} 
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endcapture %}
+
+             {%- capture styles -%}
+             --grsp:{{ section_st.gspace | divided_by: 2.0 }}px;--grspm:{{ section_st.gspacem | divided_by: 2.0 }}px;
+            {%- endcapture -%}
+                              
+            {%- if section_st.carousel -%}
+                <slide-section class="grid gspace rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} swiper" style="{{ styles }}"
+                  data-swiper='{ "slidesPerView":"auto", "loop":{{ section_st.loop }}, {% if section_st.autoplay %}"autoplay":{ "delay":"{{ section_st.speed | times: 1000 }}" },{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" },"pagination":{ "el":".swpg{{ section.id }}","clickable":true }}'>
+                    <div class="swiper-wrapper">{{ logo_data }}</div>
+                    {% render 'swiper-navigation', id:section.id, section_st:section_st %}
+                </slide-section>
+            {%- else -%}
+                <div class="grid gspace rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} f-jcc" style="{{ styles }}">{{ logo_data }}</div>
+            {%- endif -%}
+        {% endif %}
+        {% if section.blocks.size == 0 %}{% render 'no-blocks' %}{% endif %}
+    </div>
+</div>
+{%- endcapture -%}
+{{ logobar | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+  {
+    "name": "Images List (slider)",
+    "class": "index-section",
+    "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    }, 
+    "settings": [	  
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": " Follow us Instagram"		
+      },
+ 	  {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "Showcase your product pictures from instagram"
+      }, 		
+	    {
+        "type": "select",
+        "id": "grid_design",
+        "label": "Grid",
+		    "default": "1",      
+        "options": [
+          {
+            "value": "1",
+            "label": "Gap"
+          },
+          {
+            "value": "2",
+            "label": "Columns"
+          }		 
+        ]
+      },        
+        {
+            "type": "range",
+            "id": "gspace",
+            "label": "Gap",
+            "default": 15,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit":"px",
+            "visible_if": "{{section.settings.grid_design == '1' }}"
+        },
+        {
+            "type": "range",
+            "id": "gspacem",
+            "label": "Gap (mobile)",
+            "default": 10,
+            "min": 0,
+            "max": 20,
+            "step": 1,
+            "unit":"px",
+            "visible_if": "{{section.settings.grid_design == '1' }}"		
+        },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "desktop",
+        "default": 6,
+        "min": 1,
+        "max": 8,
+        "step": 1,
+        "visible_if": "{{section.settings.grid_design == '2' }}"
+      },
+      {
+        "type": "range",
+        "id": "gridtb",
+        "label": "tablet",
+        "default": 5,
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "visible_if": "{{section.settings.grid_design == '2' }}"
+      },
+      {
+        "type": "range",
+        "id": "gridmb",
+         "label": "mobile",
+        "default": 3,
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "visible_if": "{{section.settings.grid_design == '2' }}"
+      }, 
+      {
+            "type": "select",
+            "id": "image",
+            "label": "Show Icon",
+            "default": "1",
+            "options": [
+                    {
+                      "value": "1",
+                      "label": "On Hover"
+                    },
+                    {
+                      "value": "2",
+                      "label": "Always"
+                    },
+                    {
+                      "value": "3",
+                      "label": "None"
+                    }                                
+                ]            
+        },
+       {
+            "type": "image_picker",
+            "id": "icon",
+            "label": "Icon",
+            "info":"[Find some SVG icons.](https://adornthemes.com/documentation/vogal/svg-icons.html)",
+             "visible_if": "{{ section.settings.image != '3' }}"
+        },         
+        {
+            "type": "color",
+            "id": "icon_bg",
+            "label": "Icon Background",
+            "visible_if": "{{ section.settings.image != '3' }}"
+        },
+       {
+            "type": "range",
+            "id": "radius",
+            "label": "Image Rounded",
+            "default": 0,
+            "min": 0,
+            "max": 20,
+            "step": 1
+        },
+		{
+            "type": "header",
+            "content": "Slider Settings ==="
+        },
+        {
+            "type":"checkbox",
+            "id":"carousel",
+            "label":"Enable Carousel",
+            "default": false
+        },
+ 		{
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Infinite Loop",
+            "default": true,
+            "visible_if": "{{section.settings.carousel }}"
+        },
+ 		{
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Auto-rotate Slide",
+            "default": false,			
+            "visible_if": "{{section.settings.carousel }}"
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Change Slide Every",
+            "default": 5,
+            "min": 1,
+            "max": 30,
+            "step": 1,
+            "unit": "Sec",
+            "visible_if": "{{section.settings.carousel }}"			
+        },		
+		   {
+            "type": "checkbox",
+            "id": "arrow",
+            "label": "Show Arrows on Desktop?",
+            "default": true,
+            "visible_if": "{{section.settings.carousel }}"			
+        },
+		   {
+            "type": "checkbox",
+            "id": "arrowm",
+            "label": "Show Arrows on Mobile?",
+            "default": false,
+            "visible_if": "{{section.settings.carousel }}"			
+        },		
+		   {
+            "type": "checkbox",
+            "id": "dot",
+            "label": "Show Dots on Desktop?",
+            "default": false,
+            "visible_if": "{{section.settings.carousel }}"			
+        },
+		   {
+            "type": "checkbox",
+            "id": "dotm",
+            "label": "Show Dots on Mobile?",
+            "default": false,
+            "visible_if": "{{section.settings.carousel }}"			
+        },
+		  {
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+       {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        },	        
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top",
+			"unit": "px",
+			"default":30
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom",
+			"unit": "px",
+			"default":30
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 50,
+			"step": 5,
+			"label": "Spacing Top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 50,
+			"step": 5,
+			"label": "Spacing Bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on Desktop?",
+            "default": false
+        }
+    ],
+    "blocks": [
+      {
+        "type": "logo_image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+			"info":"Please upload all images at the same size to enhance visual consistency."
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link",
+            "info": "Optional"
+          },
+           {
+            "type": "checkbox",
+            "id": "newtab",
+            "label": "Open in New Tab?",
+             "default": false
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Images List (slider)",  
+        "category": "Images",
+        "blocks": [
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          },
+ 		 {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

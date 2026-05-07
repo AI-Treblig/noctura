@@ -1,0 +1,1173 @@
+{%- capture footer -%}
+{%- assign section_st = section.settings -%}  
+{%- capture ftstyle -%}
+    --cl:{{ section_st.cl }};--clh:{{ section_st.clh }};--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;
+    --tcl:{{ section_st.tcl }};--ff:var(--{{ section_st.ff }});--tfs:{{ section_st.tfs }}px;--tfsm:{{ section_st.tfsm }}px;
+    --icn:{{ section_st.icn }};--icns:{{ section_st.ifs }}px;--bg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--bdr:{{ section_st.bdr }};--bdrm:{{ section_st.bdrm }};--tfw:{{ section_st.tfw }}
+    {% if section_st.bgimg != blank %}background-repeat:{{ section_st.bgrep }}; background-size:{{ section_st.bgsz }}; background-position:{{ section_st.bgpos | replace:"_", " " }}; background-attachment:{{ section_st.bgat }}; {% endif %}
+{%- endcapture -%}
+
+<footer class="at_footer{% if section_st.bgimg != blank %} lazyload{% endif %}" role="contentinfo" style="{{ ftstyle }}"
+    {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>
+    {%- if section.blocks.size != 0 -%}
+        <div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}">
+            <div class="grid {% if section_st.space %}equal-space f-jcsb{% endif %}">
+                {%- for block in section.blocks -%}
+                    {% assign block_st = block.settings %}
+                    {%- capture block_title -%}
+                        {%- if block_st.title != blank -%}<p class="h4 fl f-aic f-jcsb mb10">{{ block_st.title }}</p>{%- endif -%}
+                    {%- endcapture -%}
+                    {%- case block.type -%}
+                    {% when 'custom' %}
+                        <div class="gitem ft_block wd50-md {{ block_st.width }}-lg{% if block_st.hidem %} hide-sm{% endif %}{% if block_st.hide_desk %} hide-md hide-lg{% endif %}{% if block_st.center %} tc{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                            {{ block_title }}
+                            {% if block_st.logo %}
+                                {% capture sizes %}{{ block_st.logo-wd }}px{% endcapture %}
+                                <p class="mb20" style="max-width:{{ block_st.logo-wd }}px">
+                                  {{ block_st.logo | image_url: width: block_st.logo.width | image_tag: loading:'lazy', class:'imgFl', sizes: sizes, widths:"100,250,400,550,700" }}
+                                </p>
+                            {% endif %}
+                            {% if block_st.inline_text != blank %}<div class="mb20 text_width" style="--twidth:{{ block_st.text_width }}px;--fs:{{ block_st.fs }}px;">{{ block_st.inline_text }}</div>{% endif %}
+                            {% if block_st.socials %}
+                                {% if block_st.socttl != blank %}<p class="h4 mb15">{{ block_st.socttl }}</p>{% endif %}
+                                {% render 'social-media' %}
+                            {% endif %}
+                            {% if block_st.payicon %}
+                                {% for type in shop.enabled_payment_types %}{{ type | payment_type_svg_tag: class: 'payment_item' }}{% endfor %}          
+                            {% endif %}
+                        </div>
+                    {% when 'image' %}
+                        <div class="gitem ft_block wd50-md {{ block_st.width }}-lg{% if block_st.hidem %} hide-sm{% endif %}{% if block_st.hide_desk %} hide-md hide-lg{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                            {{ block_title }}
+                            {% if block_st.txt != blank %}<div class="mb15">{{ block_st.txt }}</div>{% endif %}
+                            <div class="fl f-wrap" style="--rounded:{{ block_st.radius }}px;">
+                                {% if block_st.logo %}
+                                    {% capture sizes %}{{ block_st.logo-wd }}px{% endcapture %}
+                                    <p class="mb10{% if block_st.logomr %} mr15{% endif %}" style="max-width:{{ block_st.logo-wd }}px">
+                                      {% if block_st.url1 != blank %}<a target="_blank" href="{{ block_st.url1 }}">{% endif %}
+                                      {{ block_st.logo | image_url: width: block_st.logo.width | image_tag: loading:'lazy', class:'imgFl', sizes: sizes, widths:"100,250,400,550,700" }}
+                                      {% if block_st.url1 != blank %}</a>{% endif %}
+                                    </p>
+                                {% endif %}
+                                {% if block_st.logo2 %}
+                                    {% capture sizes_2 %}{{ block_st.logo-wd2 }}px{% endcapture %}
+                                    <p class="mb10{% if block_st.logomr %} mr15{% endif %}" style="max-width:{{ block_st.logo-wd }}px">
+                                      {% if block_st.url2 != blank %}<a target="_blank" href="{{ block_st.url2 }}">{% endif %}
+                                      {{ block_st.logo2 | image_url: width: block_st.logo2.width | image_tag: loading:'lazy', class:'imgFl', sizes: sizes_2, widths:"100,250,400,550,700" }}
+                                      {% if block_st.url2 != blank %}</a>{% endif %}
+                                    </p>
+                                {% endif %}
+                            </div>                  
+                        </div>
+                    {% when 'menu' %}
+                        <div class="gitem ft_block wd50-md {{ block_st.width }}-lg ft_links{% if block_st.hidem %} hide-sm{% endif %}{% if block_st.hide_desk %} hide-md hide-lg{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                            {%- if block_st.title != blank -%}<h3 class="h4 js-toggle fl f-aic f-jcsb">{{ block_st.title }} <svg class="hide-md hide-lg at-icon arw ml_auto"><use xlink:href="#icon-arrow"></use></svg></h3>{%- endif -%}
+                            <ul>
+                                {% for link in linklists[block_st.menu].links %}
+                                    <li><a href="{{ link.url }}" {% if link.title contains '[new]' %} target="_blank" {% endif %}>{{ link.title | split: '[' | first }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% when 'hmenu' %}
+                        <div class="gitem ft_block {{ block_st.width }}-lg {{ block_st.talign }}{% if block_st.hidem %} hide-sm{% endif %}{% if block_st.hide_desk %} hide-md hide-lg{% endif %}{% if block_st.btmmr %} mb0{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                            {% if block_st.bdr_top %}<hr class="hide-sm mt0" style="border-bottom-color:{{ block_st.bdr }}" />{% endif %}
+                            {%- if block_st.title != blank -%}<h3 class="h4 fl f-aic f-jcsb">{{ block_st.title }} <svg class="hide-md hide-lg at-icon arw ml_auto"><use xlink:href="#icon-arrow"></use></svg></h3>{%- endif -%}
+                            <ul class="horLinks">
+                                {% for link in linklists[block_st.menu].links %}
+                                    <li><a href="{{ link.url }}"{% if link.title contains '[new]' %} target="_blank" {% endif %}>{{ link.title | split: '[' | first }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            {% if block_st.bdr_btm %}<hr class="hide-sm mb0" style="border-bottom-color:{{ block_st.bdr }}" />{% endif %}
+                        </div>
+                    {% when 'contact' %}
+                        <div class="gitem ft_block wd50-md {{ block_st.width }}-lg{% if block_st.hidem %} hide-sm{% endif %}{% if block_st.hide_desk %} hide-md hide-lg{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                              {{ block_title }}
+                              {% if block_st.logo %}
+                                {% capture sizes %}{{ block_st.logo-wd }}px{% endcapture %}
+                                <p style="max-width:{{ block_st.logo-wd }}px">
+                                  {{ block_st.logo | image_url: width: block_st.logo.width | image_tag: loading:'lazy', class:'imgFl', sizes: sizes, widths:"100,250,400,550,700" }}
+                                </p>
+                            {% endif %}
+                            <ul class="ft_addr mb20" style="--icns:15px">
+                                {% if block_st.address  != blank  %}
+                                    <li>
+                                        {% if block_st.icons %}<svg class="at-icon mr10 mt5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M341.476,338.285c54.483-85.493,47.634-74.827,49.204-77.056C410.516,233.251,421,200.322,421,166 C421,74.98,347.139,0,256,0C165.158,0,91,74.832,91,166c0,34.3,10.704,68.091,31.19,96.446l48.332,75.84 C118.847,346.227,31,369.892,31,422c0,18.995,12.398,46.065,71.462,67.159C143.704,503.888,198.231,512,256,512 c108.025,0,225-30.472,225-90C481,369.883,393.256,346.243,341.476,338.285z M147.249,245.945 c-0.165-0.258-0.337-0.51-0.517-0.758C129.685,221.735,121,193.941,121,166c0-75.018,60.406-136,135-136 c74.439,0,135,61.009,135,136c0,27.986-8.521,54.837-24.646,77.671c-1.445,1.906,6.094-9.806-110.354,172.918L147.249,245.945z M256,482c-117.994,0-195-34.683-195-60c0-17.016,39.568-44.995,127.248-55.901l55.102,86.463 c2.754,4.322,7.524,6.938,12.649,6.938s9.896-2.617,12.649-6.938l55.101-86.463C411.431,377.005,451,404.984,451,422 C451,447.102,374.687,482,256,482z"/><path d="M256,91c-41.355,0-75,33.645-75,75s33.645,75,75,75c41.355,0,75-33.645,75-75S297.355,91,256,91z M256,211 c-24.813,0-45-20.187-45-45s20.187-45,45-45s45,20.187,45,45S280.813,211,256,211z"/></svg>{% endif %}
+                                        {{ block_st.address }}
+                                    </li>
+                                {% endif %}
+                                {% if block_st.phone  != blank  %}
+                                    <li class="phone">
+                                        {% if block_st.icons %}<svg class="at-icon mr10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="m30.035 22.594c-.053-.044-6.042-4.33-7.667-4.049-.781.138-1.228.67-2.123 1.737-.144.172-.491.583-.759.876a12.458 12.458 0 0 1 -1.651-.672 13.7 13.7 0 0 1 -6.321-6.321 12.458 12.458 0 0 1 -.672-1.651c.294-.269.706-.616.882-.764 1.061-.89 1.593-1.337 1.731-2.119.283-1.619-4.005-7.613-4.049-7.667a2.289 2.289 0 0 0 -1.706-.964c-1.738 0-6.7 6.436-6.7 7.521 0 .063.091 6.467 7.988 14.5 8.024 7.888 14.428 7.979 14.491 7.979 1.085 0 7.521-4.962 7.521-6.7a2.287 2.287 0 0 0 -.965-1.706zm-6.666 6.4c-.874-.072-6.248-.781-12.967-7.382-6.635-6.755-7.326-12.144-7.395-12.979a27.054 27.054 0 0 1 4.706-5.561c.04.04.093.1.161.178a35.391 35.391 0 0 1 3.574 6.063 11.886 11.886 0 0 1 -1.016.911 10.033 10.033 0 0 0 -1.512 1.422l-.243.34.072.411a11.418 11.418 0 0 0 .965 2.641 15.71 15.71 0 0 0 7.248 7.247 11.389 11.389 0 0 0 2.641.966l.411.072.34-.243a10.117 10.117 0 0 0 1.428-1.518c.313-.374.732-.873.89-1.014a35.163 35.163 0 0 1 6.078 3.578c.083.07.141.124.18.159a27.031 27.031 0 0 1 -5.561 4.707z"/></svg>{% endif %}
+                                        <a href="tel:{{ block_st.phone }}">{{ block_st.phone }}</a>
+                                    </li>
+                                {% endif %}
+                                {% if block_st.email  != blank  %}
+                                    <li class="email">
+                                        {% if block_st.icons %}<svg class="at-icon mr10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M467,61H45C20.218,61,0,81.196,0,106v300c0,24.72,20.128,45,45,45h422c24.72,0,45-20.128,45-45V106 C512,81.28,491.872,61,467,61z M460.786,91L256.954,294.833L51.359,91H460.786z M30,399.788V112.069l144.479,143.24L30,399.788z M51.213,421l144.57-144.57l50.657,50.222c5.864,5.814,15.327,5.795,21.167-0.046L317,277.213L460.787,421H51.213z M482,399.787 L338.213,256L482,112.212V399.787z"/></svg>{% endif %}
+                                        <a href="mailto:{{ block_st.email }}">{{ block_st.email }}</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                            {% if block_st.socials %}
+                                {% if block_st.socttl != blank %}<p class="h4 mb15">{{ block_st.socttl }}</p>{% endif %} 
+                                {% render 'social-media' %}
+                            {% endif %}
+                        </div>
+                    {% when 'newsletter' %}
+                        <div class="gitem ft_block wd50-md {{ block_st.width }}-lg ft_newsletter{% if block_st.hidem %} hide-sm{% endif %}{% if block_st.hide_desk %} hide-md hide-lg{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                            <div style="--tf_txt:{{ block_st.tf_txt }};--tf_bg:{{ block_st.tf_bg }};--tf_bdr:{{ block_st.tf_bdr }};--inbdr:{{ block_st.inbdr }};--btncl:{{ block_st.btncl }};--btnbg:{{ block_st.btnbg }};--btnclh:{{ block_st.btnclh }};--btnbgh:{{ block_st.btnbgh }};">
+                                {{ block_title }}
+                                {% if block_st.txt != blank %}<p>{{ block_st.txt }}</p>{% endif %}
+                                {% render 'newsletter-form', verticle:true %}
+                                {% if block_st.socials %}
+                                    <div class="socials mt20">
+                                        {%- if block_st.socttl != blank -%}<h3 class="h4 mb15">{{ block_st.socttl }}</h3>{%- endif -%}
+                                        {% render 'social-media' %}
+                                    </div>
+                                {% endif %}
+                            </div>                  
+                        </div>
+
+                     {% when 'liquid' %}
+                      <div id="text-{{ block.id }}" class="ft_block wd50-md {{ block_st.width }}-lg"> 
+                        {{block_title}}
+                        {% if block_st.liquid != blank %}{{ block_st.liquid }}{% endif %}
+                     </div>  
+                                          
+                    {% when 'socialicons' %}
+                        <div class="gitem ft_block wd50-md {{ block_st.width }}-lg{% if block_st.hidem %} hide-sm{% endif %}{% if block_st.hide_desk %} hide-md hide-lg{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %} {{ block.shopify_attributes }}>
+                            {{ block_title }}
+                            {% render 'social-media' %}
+                        </div>
+                    {% when 'hrline' %}						
+                        <div class="gitem ft_block w_100 {% if block_st.hidem %}hide-sm{% endif %}"><hr class="hide-sm {% render 'animate-data', css:true %}{% if block_st.hide_desk %} hide-md hide-lg{% endif %}" {% render 'animate-data' %} style="border-bottom:1px solid {{ block_st.lineclr }}; margin:{{ block_st.mar }}px 0;" {{ block.shopify_attributes }} /></div>
+                    {%- endcase -%}                
+                {%- endfor -%}
+            </div>        
+        </div>
+    {%- endif -%}
+    {%- if section_st.copyright_text != blank or section_st.show_payment -%}
+        <div class="ft_bottom">
+            <div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %} fl f-aic f-col f-row-md">            
+            {% if section_st.copyright_text != blank %}
+                <div class="fl1{% if section_st.show_payment %} wd50-md mb10 mb0-sm tl-md{% endif %} tc">
+                     {% assign year = "now" | date: "%Y" %}{% assign insert_year = year %}{{  section_st.copyright_text | replace:"[year]", insert_year }}   
+                    {% if section_st.show_designby %}<span class="designBy">{% if section_st.copyright_text != blank %} | {% endif %}Designed by <a href="https://www.adornthemes.com" target="_blank">AdornThemes</a></span>{% endif %}
+                </div>
+            {% endif %}
+            {% if section_st.show_payment %}
+                <div class="fl1{% if section_st.copyright_text != blank %} wd50-md tr-md{% endif %} tc">
+                    {%- if section_st.payimg != blank -%}
+                        <p class="footer-img"><img src="{{ section_st.payimg | image_url: '600x' }}" alt="{{ section_st.logo.alt }}" width="" height="" style="max-width:{{ section_st.payimgwd }}px" /></p>
+                    {%- else -%}
+                        {% for type in shop.enabled_payment_types %}{{ type | payment_type_svg_tag: class: 'payment_item' }}{% endfor %}
+                    {%- endif -%}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{%- endif -%}
+</footer>
+{%- endcapture -%}
+{{- footer | strip_newlines | remove: "  " | remove: "	" -}}
+{%- schema -%}
+  {
+    "name": "Footer",
+    "settings": [	
+	  {
+		"type":"checkbox",
+		"id":"sw",
+		"label":"Fullwidth?",
+		"default": false
+	  },
+	  {
+		"type":"checkbox",
+		"id":"space",
+		"label":"Equal space blocks?",
+		"default": false
+	  },
+ 	  {
+        	"type": "textarea",
+        	"id": "copyright_text",
+        	"label": "Copyright Text",
+        	"default": "© 2025,Revone. All Rights Reserved."
+      	},
+        {
+          "type": "checkbox",
+          "id": "show_designby",
+          "label": "Give credit to theme developer?",
+          "default": true,
+		  "info":"Show design by in footer"
+        },
+		{
+			"type":"header",
+        	"content":"Payment Options"
+		},
+      	{
+        	"type": "checkbox",
+        	"id": "show_payment",
+        	"label": "Show Payment Icons?",
+        	"default": true
+        },
+		{
+          "type": "image_picker",
+          "id": "payimg",
+          "label": "Payment Icon Image",
+          "info": "Optional"
+        },
+		{
+            "type": "range",
+            "id": "payimgwd",
+            "label": "Image Max Width",
+            "default": 300,
+            "min": 100,
+            "max": 600,
+            "step": 5,
+            "unit": "px",
+             "visible_if": "{{ section.settings.payimg != blank }}"
+        },
+        {
+          "type": "select",
+          "id": "configure",
+          "label": "Appearance :",
+          "default": "1",
+          "options": [
+              {
+                "value": "1",
+                "label": "Title"
+              },
+              {
+                "value": "2",
+                "label": "Text & Links"
+              }
+          ]
+      },        
+      {
+        "type": "color",
+        "id": "tcl",
+        "label": "Color",
+        "default": "#000",
+        "visible_if": "{{section.settings.configure == '1' }}"
+      },
+      {
+        "type": "select",
+        "id": "ff",
+        "label": "Font",
+        "default": "ft1",
+        "options": [
+          {
+            "value": "ft1",
+            "label": "Font 1"
+          },
+          {
+            "value": "ft2",
+            "label": "Font 2"
+          },
+          {
+            "value": "ft3",
+            "label": "Font 3"
+          }
+        ],
+        "visible_if": "{{section.settings.configure == '1' }}"
+      },
+      {
+        "type": "range",
+        "id": "tfs",
+        "label": "Font Size",
+        "min": 10,
+        "max": 50,
+        "step": 1,
+        "default": 14,
+        "unit": "px",
+        "visible_if": "{{section.settings.configure == '1' }}"
+      },
+      {
+        "type": "range",
+        "id": "tfsm",
+        "label": "Font Size (Mobile)",
+        "min": 10,
+        "max": 50,
+        "step": 1,
+        "default": 13,
+        "unit": "px",
+        "visible_if": "{{section.settings.configure == '1' }}"
+      },
+      {
+        "type": "select",
+        "id": "tfw",
+        "label": "Font Weight",
+        "default": "500",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Regular"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi Bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ],
+        "visible_if": "{{section.settings.configure == '1' }}"
+      },
+      {
+        "type": "color",
+        "id": "cl",
+        "label": "Color",
+        "default": "#000",
+        "visible_if": "{{section.settings.configure == '2' }}"
+      },
+      {
+        "type": "color",
+        "id": "clh",
+        "label": "Links Hover",
+        "default": "#666",
+        "visible_if": "{{section.settings.configure == '2' }}"
+      },
+      {
+        "type": "range",
+        "id": "fs",
+        "label": "Font Size",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "default": 13,
+        "unit": "px",
+        "visible_if": "{{section.settings.configure == '2' }}"
+      },
+      {
+        "type": "range",
+        "id": "fsm",
+        "label": "Font Size (Mobile)",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "default": 13,
+        "unit": "px",
+        "visible_if": "{{section.settings.configure == '2' }}"
+      },
+      {
+        "type": "color",
+        "id": "icn",
+        "label": "Icon",
+        "default": "#000"
+      },
+      {
+        "type": "range",
+        "id": "ifs",
+        "label": "Icon Size",
+        "min": 10,
+        "max": 50,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background",
+        "default": "#f5f5f5"
+      },
+      {
+        "type": "color_background",
+        "id": "bgg",
+        "label": "Gradient Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "bgimg",
+        "label": "Background image",
+        "info": "This is optional"
+      },
+      {
+        "type": "select",
+        "id": "bgrep",
+        "label": "Background Repeat",
+        "default": "inherit",
+        "info": "[how to repeat the background image](https:\/\/w3schools.com\/cssref\/pr_background-repeat.asp)",
+        "options": [
+          {
+            "value": "no-repeat",
+            "label": "No Repeat"
+          },
+          {
+            "value": "repeat",
+            "label": "All Sides"
+          },
+          {
+            "value": "repeat-x",
+            "label": "Horizontally"
+          },
+          {
+            "value": "repeat-y",
+            "label": "Vertically"
+          },
+          {
+            "value": "inherit",
+            "label": "Inherit"
+          }
+        ],
+        "visible_if": "{{section.settings.bgimg != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "bgpos",
+        "label": "Background Position",
+        "default": "center_center",
+        "info": "[position of the background images](https:\/\/w3schools.com\/cssref\/pr_background-position.asp)",
+        "options": [
+          {
+            "value": "left_top",
+            "label": "Left Top"
+          },
+          {
+            "value": "left_center",
+            "label": "Left Center"
+          },
+          {
+            "value": "left_bottom",
+            "label": "Left Bottom"
+          },
+          {
+            "value": "center_top",
+            "label": "Center Top"
+          },
+          {
+            "value": "center_center",
+            "label": "Center Center"
+          },
+          {
+            "value": "center_bottom",
+            "label": "Center Bottom"
+          }
+        ],
+        "visible_if": "{{section.settings.bgimg != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "bgsz",
+        "label": "Background Size",
+        "default": "auto",
+        "info": "[Specifies the size of the background image](https:\/\/w3schools.com\/cssref\/css3_pr_background-size.asp)",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Auto"
+          },
+          {
+            "value": "cover",
+            "label": "Cover"
+          },
+          {
+            "value": "contain",
+            "label": "Contain"
+          }
+        ],
+        "visible_if": "{{section.settings.bgimg != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "bgat",
+        "label": "Background Attachment",
+        "default": "inherit",
+        "info": "[Specifies background image is fixed or scrolls with page](https:\/\/w3schools.com\/cssref\/pr_background-attachment.asp)",
+        "options": [
+          {
+            "value": "fixed",
+            "label": "Fixed"
+          },
+          {
+            "value": "scroll",
+            "label": "Scroll"
+          },
+          {
+            "value": "inherit",
+            "label": "Inherit"
+          }
+        ],
+        "visible_if": "{{section.settings.bgimg != blank }}"
+      },
+      {
+        "type": "color",
+        "id": "bdr",
+        "label": "Top Border",
+        "default": "#eee"
+      },
+      {
+        "type": "color",
+        "id": "bdrm",
+        "label": "Border (mobile)",
+        "default": "#f9f9f9"
+      }
+    ],
+	"blocks": [
+	  {
+        "type": "menu",
+        "name": "Menu",
+        "settings": [
+		 {
+        "type": "checkbox",
+        "id": "hidem",
+        "label": "Hide on mobile?",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_desk",
+        "label": "Hide on desktop?",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Menu Title",
+        "default": "Informations"
+      },
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Select Menu",
+        "default": "main-menu"
+      },     
+		  {
+            "type": "select",
+            "id": "width",
+            "label": "Block width",
+            "default": "wd25",
+			"info":"Total width of all block must not exceed 100%",
+            "options": [  			 
+			  { "value": "wd20", "label": "20%" },
+              { "value": "wd25", "label": "25%" },
+			  { "value": "wd30", "label": "30%" },
+              { "value": "wd33", "label": "33%" },
+			  { "value": "wd40", "label": "40%" },
+              { "value": "wd50", "label": "50%" },
+			  { "value": "wd60", "label": "60%" },
+              { "value": "wd66", "label": "66%" },
+              { "value": "wd75", "label": "75%" },
+              { "value": "wd100", "label": "100%" }
+            ]
+          }
+        ]
+      },
+	  {
+        "type": "hmenu",
+        "name": "Horizontal Menu",
+        "settings": [
+		 {
+        "type": "checkbox",
+        "id": "hidem",
+        "label": "Hide on mobile?",
+        "default": false,
+     },
+    {
+      "type": "checkbox",
+      "id": "hide_desk",
+      "label": "Hide on desktop?",
+      "default": false
+    },                  
+    {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Select Navigation",
+        "default": "main-menu"
+      },
+    {
+        "type": "select",
+        "id": "talign",
+        "label": "Text Align",
+        "default": "tc",
+        "options": [		    
+            { "value": "tl", "label": "Left" },
+                  { "value": "tc", "label": "Center" },
+            { "value": "tr", "label": "right" }
+        ]
+      },
+ 		  {
+			"type":"checkbox",
+			"id":"bdr_top",
+			"label":"Show Top Border",
+			"default":false
+		  },
+ 		  {
+			"type":"checkbox",
+			"id":"bdr_btm",
+			"label":"Show bottom Border",
+			"default":false
+		  },
+          {
+            "type": "color",
+            "id": "bdr",
+            "label": "Border Color",
+            "default": "#000",
+             "visible_if": "{{ block.settings.bdr_top or block.settings.bdr_btm  }}"
+          },
+ 		  {
+			"type":"checkbox",
+			"id":"btmmr",
+			"label":"Remove bottom space",
+			"default":false
+		  },
+		  {
+            "type": "select",
+            "id": "width",
+            "label": "Block width",
+            "default": "wd100",
+			      "info":"Total width of all block must not exceed 100%",
+            "options": [  			 
+			  { "value": "wd20", "label": "20%" },
+              { "value": "wd25", "label": "25%" },
+			  { "value": "wd30", "label": "30%" },
+              { "value": "wd33", "label": "33%" },
+			  { "value": "wd40", "label": "40%" },
+              { "value": "wd50", "label": "50%" },
+			  { "value": "wd60", "label": "60%" },
+              { "value": "wd66", "label": "66%" },
+              { "value": "wd75", "label": "75%" },
+              { "value": "wd100", "label": "100%" }
+            ]
+          }
+        ]
+      },
+	  {
+        "type": "contact",
+        "name": "Contact Details",		    
+        "settings": [
+		      {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+			      "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_desk",
+            "label": "Hide on desktop?",
+            "default": false
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+			      "default": "Contact Us"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo Image"
+          },
+          {
+              "type": "range",
+              "id": "logo-wd",
+              "label": "Logo Max Width",
+              "default": 200,
+              "min": 100,
+              "max": 300,
+              "step": 5,
+              "unit": "px",
+              "visible_if": "{{ block.settings.logo != blank }}"
+          },
+		  {
+            "type": "textarea",
+            "id": "address",
+            "label": "Address",
+		    	"default": "55 Gallaxy Enque,<br />2568 steet, 23568 NY"
+          },
+		  {
+            "type": "text",
+            "id": "phone",
+            "label": "Phone",
+			"default": "(440) 000 000 0000"
+          },
+		  {
+            "type": "text",
+            "id": "email",
+            "label": "Email",
+			"default": "sales@yousite.com"
+          },
+ 		  {
+			"type":"checkbox",
+			"id":"icons",
+			"label":"Show Icons?",
+			"default":false
+		  },
+      	  {
+			"type":"checkbox",
+			"id":"socials",
+			"label":"Show Social Icons?",
+			"default":true
+		  },
+      	  {
+			"type":"text",
+			"id":"socttl",
+			"label":"Socials Title",
+			"default":"Stay Connected",
+             "visible_if": "{{ block.settings.socials }}"
+		  },         
+		  {
+            "type": "select",
+            "id": "width",
+            "label": "Block Width",
+            "default": "wd25",
+             "info":"Total width of all block must not exceed 100%",
+            "options": [ 			
+			  { "value": "wd20", "label": "20%" },
+              { "value": "wd25", "label": "25%" },
+			  { "value": "wd30", "label": "30%" },
+              { "value": "wd33", "label": "33%" },
+			  { "value": "wd40", "label": "40%" },
+              { "value": "wd50", "label": "50%" },
+			  { "value": "wd60", "label": "60%" },
+              { "value": "wd66", "label": "66%" },
+              { "value": "wd75", "label": "75%" },
+              { "value": "wd100", "label": "100%" }
+            ]
+          }
+        ]
+      },
+	  {
+        "type": "custom",
+        "name": "Custom Block",
+        "settings": [
+		      {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+			      "default": false
+          },
+           {
+            "type": "checkbox",
+            "id": "hide_desk",
+            "label": "Hide on desktop?",
+            "default": false
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+		    	"default": "About Us"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Upload Image"
+          },
+          {
+              "type": "range",
+              "id": "logo-wd",
+              "label": "Image Max Width",
+              "default": 200,
+              "min": 100,
+              "max": 300,
+              "step": 5,
+              "unit": "px",
+              "visible_if": "{{ block.settings.logo != blank }}"
+          },
+		   {
+            "type": "inline_richtext",
+            "id": "inline_text",
+            "label": "Text",
+			"default": "At AdornThemes, we design and provide elegant and highly functional Shopify themes, backed by exceptional support"
+          }, 
+          {
+            "type": "range",
+            "id": "text_width",
+            "label": "Text Max. Width",
+            "default": 200,
+            "min": 200,
+            "max": 600,
+            "step": 5,
+            "unit": "px"
+        },   
+           {
+            "type": "range",
+            "id": "fs",
+            "label": "Font Size",
+            "default": 13,
+              "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+        },    
+		 {
+			"type":"checkbox",
+			"id":"socials",
+			"label":"Show Socials?",
+			"default":true
+		  },
+      	  {
+			"type":"text",
+			"id":"socttl",
+			"label":"Socials Title",
+			"default":"Stay Connected",
+             "visible_if": "{{ block.settings.socials }}"
+		  },
+			{
+			"type":"checkbox",
+			"id":"payicon",
+			"label":"Show Payment Icons?",
+			"default":false
+		  },                  
+ 	     {
+            "type": "select",
+            "id": "width",
+            "label": "Block Width",
+            "default": "wd25",
+             "info":"Total width of all block must not exceed 100%",
+            "options": [		    
+			 { "value": "wd20", "label": "20%" },
+              { "value": "wd25", "label": "25%" },
+			  { "value": "wd30", "label": "30%" },
+              { "value": "wd33", "label": "33%" },
+			  { "value": "wd40", "label": "40%" },
+              { "value": "wd50", "label": "50%" },
+			  { "value": "wd60", "label": "60%" },
+              { "value": "wd66", "label": "66%" },
+              { "value": "wd75", "label": "75%" },
+              { "value": "wd100", "label": "100%" }
+            ]
+          }
+        ]
+      },
+	  {
+        "type": "image",
+        "name": "Image Block",
+        "settings": [ 	
+		 {
+        "type": "checkbox",
+        "id": "hidem",
+        "label": "Hide on mobile?",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_desk",
+        "label": "Hide on desktop?",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Download App"
+      },
+			{
+            "type": "textarea",
+            "id": "txt",
+            "label": "Text",
+			"default": "Revone App is now available on App Store & Google Play. Get it now. "
+          },	
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Upload Image"
+          },
+		 {
+            "type": "text",
+            "id": "url1",
+            "label": "Image Url"
+          },
+          {
+              "type": "range",
+              "id": "logo-wd",
+              "label": "Image Max Width",
+              "default": 200,
+              "min": 100,
+              "max": 300,
+              "step": 5,
+              "unit": "px"
+          },
+			{
+            "type": "checkbox",
+            "id": "logomr",
+            "label": "Enable image right padding",
+			"default":true
+          },
+				{
+            "type": "image_picker",
+            "id": "logo2",
+            "label": "Upload Image"
+          },
+		{
+            "type": "text",
+            "id": "url2",
+            "label": "Image Url"
+          },
+          {
+              "type": "range",
+              "id": "logo-wd2",
+              "label": "Image Max Width",
+              "default": 200,
+              "min": 100,
+              "max": 300,
+              "step": 5,
+              "unit": "px"
+          },
+          {
+                    "type": "range",
+                    "id": "radius",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "label": "Rounded Corners",
+                    "unit": "px",
+                    "default": 0
+          },         
+ 	     {
+            "type": "select",
+            "id": "width",
+            "label": "Block Width",
+            "default": "wd25",
+             "info":"Total width of all block must not exceed 100%",
+            "options": [		    
+			 { "value": "wd20", "label": "20%" },
+              { "value": "wd25", "label": "25%" },
+			  { "value": "wd30", "label": "30%" },
+              { "value": "wd33", "label": "33%" },
+			  { "value": "wd40", "label": "40%" },
+              { "value": "wd50", "label": "50%" },
+			  { "value": "wd60", "label": "60%" },
+              { "value": "wd66", "label": "66%" },
+              { "value": "wd75", "label": "75%" },
+              { "value": "wd100", "label": "100%" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "newsletter",
+        "name": "Newsletter Signup",
+        "limit": 1,
+        "settings": [
+		 {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+			      "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_desk",
+            "label": "Hide on desktop?",
+            "default": false
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Newsletter"
+          },
+		  {
+            "type": "text",
+            "id": "txt",
+            "label": "Text",
+			"default": "Enter your email to receive daily news and get 20% off coupon for all items. NO spam, we promise"
+          }, 		           
+		 {
+			"type":"checkbox",
+			"id":"socials",
+			"label":"Show Socials?",
+			"default":true
+		  },
+      	  {
+			"type":"text",
+			"id":"socttl",
+			"label":"Socials Title",
+			"default":"Stay Connected",
+            "visible_if": "{{ block.settings.socials }}"
+		  },         
+		  {
+            "type": "select",
+            "id": "width",
+            "label": "Block Width",
+            "default": "wd25",
+            "info":"Total width of all block must not exceed 100%",
+            "options": [ 			
+			 { "value": "wd20", "label": "20%" },
+              { "value": "wd25", "label": "25%" },
+			  { "value": "wd30", "label": "30%" },
+              { "value": "wd33", "label": "33%" },
+			  { "value": "wd40", "label": "40%" },
+              { "value": "wd50", "label": "50%" },
+			  { "value": "wd60", "label": "60%" },
+              { "value": "wd66", "label": "66%" },
+              { "value": "wd75", "label": "75%" },
+              { "value": "wd100", "label": "100%" }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Form Appearance ==="
+          },
+          {
+            "type": "color",
+            "id": "tf_bg",
+            "label": "Textfield Background",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "id": "tf_bdr",
+            "label": "Textfield Border",
+            "default": "#fafafa"
+          },
+          {
+            "type": "color",
+            "id": "tf_txt",
+            "label": "Textfield Text",
+            "default": "#000"
+          },         
+          {
+            "type": "color",
+            "id": "btncl",
+            "label": "Button Text",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "id": "btnbg",
+            "label": "Button Background",
+            "default": "#333"
+          },
+          {
+            "type": "color",
+            "id": "btnclh",
+            "label": "Button Hover Text",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "id": "btnbgh",
+            "label": "Button Hover Background",
+            "default": "#333"
+          }
+        ]
+      },
+      {
+            "type": "liquid",
+            "name": "Liquid code",
+            "settings": [
+                 {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Liquid code"
+                },
+                {
+                    "type": "liquid",
+                    "id": "liquid",
+                    "label": "Add liquid code"                   
+                },
+                {
+            "type": "select",
+            "id": "width",
+            "label": "Block width",
+            "default": "wd25",
+            "info":"Total width of all block must not exceed 100%",
+            "options": [ 			 
+			  { "value": "wd20", "label": "20%" },
+              { "value": "wd25", "label": "25%" },
+			  { "value": "wd30", "label": "30%" },
+              { "value": "wd33", "label": "33%" },
+			  { "value": "wd40", "label": "40%" },
+              { "value": "wd50", "label": "50%" },
+			  { "value": "wd60", "label": "60%" },
+              { "value": "wd66", "label": "66%" },
+              { "value": "wd75", "label": "75%" },
+              { "value": "wd100", "label": "100%" }
+            ]
+          }
+         ]
+        },
+	  {
+        "type": "socialicons",
+        "name": "Social Icons",
+        "limit": 1,
+        "settings": [
+		 {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+			      "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_desk",
+            "label": "Hide on desktop?",
+            "default": false
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Stay Connected"
+          },           
+		  {
+            "type": "select",
+            "id": "width",
+            "label": "Block width",
+            "default": "wd25",
+            "info":"Total width of all block must not exceed 100%",
+            "options": [ 			 
+			  { "value": "wd20", "label": "20%" },
+              { "value": "wd25", "label": "25%" },
+			  { "value": "wd30", "label": "30%" },
+              { "value": "wd33", "label": "33%" },
+			  { "value": "wd40", "label": "40%" },
+              { "value": "wd50", "label": "50%" },
+			  { "value": "wd60", "label": "60%" },
+              { "value": "wd66", "label": "66%" },
+              { "value": "wd75", "label": "75%" },
+              { "value": "wd100", "label": "100%" }
+            ]
+          }
+        ]
+      },
+      {
+      	"type": "hrline",
+      	"name": "Horizontal Line",
+		 "settings": [         	  
+		    {
+            "type": "color",
+            "id": "lineclr",
+            "label": "Line Color",
+            "default": "#eee"
+          },
+          {
+            "type":"checkbox",
+            "id":"hidem",
+            "label":"Hide on Mobile?",
+            "default": true
+    	    },
+           {
+            "type": "checkbox",
+            "id": "hide_desk",
+            "label": "Hide on desktop?",
+            "default": false
+          },
+          {
+            "type": "range",
+            "id": "mar",
+            "label": "Top/Bottom Margin",
+            "default": 15,
+            "min": 0,
+            "max": 50,
+            "step": 5,
+            "unit": "px"
+        }
+		]
+      }
+	]
+  }
+{%- endschema -%}

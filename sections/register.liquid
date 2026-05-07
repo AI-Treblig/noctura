@@ -1,0 +1,190 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+{% assign section_st = section.settings %}
+<div class="sec_cov" style="--sbg:{{ section.settings.bg }};--sst:{{ section.settings.sst }}px;--ssb:{{ section.settings.ssb }}px;--sstm:{{ section.settings.sstm }}px;--ssbm:{{ section.settings.ssbm }}px">  
+    <div class="page-width" style="--cl:{{ section_st.cl }};--fbg:{{ section_st.fbg }};--bd:{{ section_st.bd }};max-width:600px;">
+        <h1 class="page-title {{ settings.title_align }}">{{ 'customer.register.page_title' | t }}</h1>
+            <div class="customerform form-vertical">
+              {% form 'create_customer' %}
+              {{ form.errors | default_errors }}
+              <div class="grid">
+                <div class="gitem wd50-md">
+                  <label for="FirstName" class="hide">{{ 'customer.register.first_name' | t }}</label>
+                  <input type="text" name="customer[first_name]" placeholder="{{ 'customer.register.first_name' | t }}" id="FirstName" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autofocus>
+                </div> 
+                <div class="gitem wd50-md">
+                  <label for="LastName" class="hide">{{ 'customer.register.last_name' | t }}</label>
+                  <input type="text" name="customer[last_name]" placeholder="{{ 'customer.register.last_name' | t }}" id="LastName" {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+                </div>
+              </div>
+              <label for="Email" class="hide">{{ 'customer.register.email' | t }}</label>
+              <input type="email" name="customer[email]" id="Email" placeholder="{{ 'customer.register.email' | t }}" class="{% if form.errors contains 'email' %} input--error{% endif %}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+
+              <label for="CreatePassword" class="hide">{{ 'customer.register.password' | t }}</label>
+              <input type="password" name="customer[password]" placeholder="{{ 'customer.register.password' | t }}" id="CreatePassword" class="{% if form.errors contains 'password' %} input--error{% endif %}">
+
+              <p>
+                <input type="hidden" name="customer[accepts_marketing]" value="">           
+                <label for="accepts_marketing" class="fl">
+                   <input type="checkbox" id="accepts_marketing" name="customer[accepts_marketing]" class="custCheck" checked="checked">
+                  <span class="checkbox"></span>  {{ 'customer.register.accepts_marketing' | t }}</label>
+              </p>                   
+                <button type="submit" class="btn {{ section_st.btnd }} {{ section_st.btnsz }} w_100">{{ 'customer.register.submit' | t }}</button>
+              {% endform %}          
+            </div>
+    </div>
+</div>
+<script src="{{ 'customer.js' | asset_url }}" defer="defer"></script>
+{% schema %}
+{
+  "name": "Register",
+  "settings": [
+        {
+            "type": "paragraph",
+            "content": "Box ===="
+        },
+        {
+            "type": "color",
+            "id": "cl",
+            "label": "Text Color",
+            "default": "#000"
+        },
+        {
+            "type": "color",
+            "id": "bd",
+            "label": "Border Color",
+            "default": "#eee"
+        },
+        {
+            "type": "color",
+            "id": "fbg",
+            "label": "background Color",
+            "default": "#f4f4f4"
+        },
+		{
+            "type": "paragraph",
+            "content": "Button ===="
+        },
+        {
+            "type": "select",
+            "id": "btnd",
+            "label": "Button Design",
+            "default": "btn1",
+            "options": [
+			  {
+				"label": "Button 1",
+				"value": "btn1"
+			  },
+			  {
+				"label": "Button 2",
+				"value": "btn2"
+			  },
+			  {
+				"label": "Button 3",
+				"value": "btn3"
+			  },
+			  {
+				"label": "Button 4",
+				"value": "btn4"
+			  },
+			  {
+				"label": "Button 5",
+				"value": "btn5"
+			  },
+			  {
+				"label": "Button 6",
+				"value": "btn6"
+			  },
+               {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              },
+			  {
+			    "label": "Link",
+			    "value": "btnLink"
+		      }  
+			]
+          },
+        {
+            "type": "select",
+            "id": "btnsz",
+            "label": "Button Size",
+            "default": "btn-md",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                } 		  
+            ]
+        },
+		{
+            "type": "header",
+            "content": "SECTION"
+        },
+		{
+            "type": "paragraph",
+            "content": "Section Spacing ===="
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":80
+        },
+		{
+            "type": "paragraph",
+            "content": "Spacing (mobile) ===="
+        },
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":15
+        },       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background"        
+        }       
+  ] 
+}
+{% endschema %}

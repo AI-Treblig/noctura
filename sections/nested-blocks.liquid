@@ -1,0 +1,216 @@
+{%- capture custom_content -%}
+{%- liquid 
+    assign section_st = section.settings
+-%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload zi1{% endif %}" style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"  
+  {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>
+    <div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %} custom-block {{section_st.style }}">  
+        {% render 'sec-title' %}
+
+        <div class="ds-grid custom-cnt gap" style="--gap:{{ section_st.gspace }}px;--gapm:{{ section_st.gspacem }}px;">
+          {% content_for 'blocks' %}
+        </div>
+    </div>
+</div>
+{%- endcapture -%}
+{{ custom_content | strip_newlines | remove: "	" }}
+{% schema %}
+{
+  "name": "Theme Blocks",  
+  "class": "custom-cnt",
+  "disabled_on": {
+  "groups": ["header","footer","custom.overlay"]
+    },
+  "blocks": [
+    {
+      "type": "column",
+    },
+  ],
+  "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Nested Blocks Section"         
+        },
+        {
+            "type": "textarea",
+            "id": "subtitle",
+            "label": "Sub Heading",
+            "default": "Create advanced layout using nested blocks"
+        }, 
+      {
+		 "type": "header",
+		 "content":"Grid ==="
+     },			 
+	{
+        "type": "range",
+        "id": "gspace",
+        "label": "Grid gap",
+        "default": 30,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+		"unit":"px"
+		
+      },
+     {
+        "type": "range",
+        "id": "gspacem",
+        "label": "Grid gap (mobile)",
+        "default": 15,
+        "min": 0,
+        "max": 50,
+        "step": 1,
+		"unit":"px"		
+      },
+	  {
+            "type": "header",
+            "content": "Section Design ==="
+       },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#3d4246"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }
+    ],
+  "presets": [
+    {
+      "name": "Theme Blocks - New",
+      "category": "Layout: Mix & Match",      
+      "blocks": [
+            {
+              "type": "column",
+              "settings": {
+                "column_dk": "6",
+                "column_tb": "6",
+                "column_mb": "12",
+                "pad_lr": 30,
+                "pad_tb": 30,
+                "pad_lrt": 30,
+                "pad_tbt": 30,
+                "pad_tbm": 15,
+                "pad_lrm": 15,
+                "position": "cl-psc",
+                "positionm": "cl-psc",
+                "align": "center",
+                "alignm": "center",
+                "bg": "#f5f5f5",
+                "rounded": "none"
+              }
+            },
+            {
+              "type": "column",
+              "settings": {
+                "column_dk": "6",
+                "column_tb": "6",
+                "column_mb": "12",
+                "pad_lr": 30,
+                "pad_tb": 30,
+                "pad_lrt": 30,
+                "pad_tbt": 30,
+                "pad_tbm": 15,
+                "pad_lrm": 15,
+                "position": "cl-psc",
+                "positionm": "cl-psc",
+                "align": "center",
+                "alignm": "center",
+                "bg": "#f5f5f5",
+                "rounded": "none"
+              },
+            }
+          ]
+    }
+  ]
+}
+{% endschema %}

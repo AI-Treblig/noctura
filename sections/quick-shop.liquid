@@ -1,0 +1,192 @@
+{%- liquid
+    assign current_variant = product.selected_or_first_available_variant   
+    assign section_id = section.id
+    assign product_form_id = 'product-form-' | append: section.id
+-%}
+<product-info id="MainProduct-{{ section.id }}" class="tinglebox quick_shop pr {{ settings.quickview_align }}" data-section="{{ section.id }}" data-product-id="{{ product.id }}" data-update-url="false" data-url="{{ product.url }}">
+    <h2 class="pr_title mb15 {{ settings.qptfw }}">{{ product.title }}</h2>
+    {%- unless settings.hide-price or linklists[product.handle].links.size > 0 -%}
+        <div id="price-{{ section_id }}" role="status" class="priceSingle mb15" style="--pr_size:14px; --pr_sizem:12px;">
+            {%- liquid
+                assign compareprice = current_variant.compare_at_price
+                assign price = current_variant.price
+                assign money_price = price | money
+                if settings.curCode
+                    assign money_price = price | money_with_currency
+                endif
+            -%}
+            <p class="mb5 fl f-aic {{ settings.quickview_align }} price__container">
+                {%- if compareprice > price -%}
+                    <span class="hidden_txt">{{ 'products.product.regular_price' | t }}</span>
+                    <span class="pr_price price-item orpr sale">{{ money_price }}</span>
+                    <s class="pr_price cmpr">{{ compareprice | money }}</s>
+                {%- else -%}
+                    <span class="hidden_txt">{{ 'products.product.regular_price' | t }}</span>
+                    <span class="pr_price price-item orpr">{{ money_price }}</span>
+                    <s class="pr_price cmpr hide">{{ compareprice | money }}</s>
+                {%- endif -%}
+            </p>
+            <span class="price__unit{% unless current_variant.unit_price_measurement %} hide{% endunless %}">
+                <br />
+                <span data-unit-price>{{ current_variant.unit_price | money }}</span> /
+                <span data-unit-base>
+                    {%- if current_variant.unit_price_measurement -%}
+                        {%- if current_variant.unit_price_measurement.reference_value != 1 -%}{{ current_variant.unit_price_measurement.reference_value }}{%- endif -%}
+                        {{ current_variant.unit_price_measurement.reference_unit }}
+                    {%- endif -%}
+                </span>
+            </span>
+        </div>
+    {%- endunless -%}
+    
+    {% render 'variant-picker' with 'quickshop', product:product, section_id: section_id, product_form_id:product_form_id, isQuick: true, update_url: false %}
+
+    <div class="ctabtn mt25">
+        <div id="Quantity-Form-{{ section_id }}" class="product-form__input product-form__quantity {{ settings.quickview_align }}">
+            {%- assign cart_qty = cart | item_count_for_variant: current_variant.id -%}
+            <label class="quantity__label form__label hide" for="Quantity-{{ section_id }}">
+                {{ 'products.product.quantity.label' | t }}
+                <span class="quantity__rules-cart no-js-hidden{% if cart_qty == 0 %} hidden{% endif %}"><span class="loading__spinner hidden"><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></span><span> ({{- 'products.product.quantity.in_cart_html' | t: quantity: cart_qty -}})</span></span>
+            </label>
+            <div class="price-per-item__container fl f-col">
+                <quantity-input class="qtyField quantity" data-url="{{ product.url }}" data-section="{{ section_id }}">
+                    <button type="button" class="quantity__button qtyBtn minus" name="minus" aria-label="Decrease quantity"><svg class="at-icon"><use xlink:href="#icon-minus"></use></svg></button>
+                    <input class="quantity__input pr_input qty mianQty fl1" type="number" name="quantity" id="Quantity-{{ section_id }}" data-cart-quantity="{{ cart_qty }}"
+                        data-min="{{ current_variant.quantity_rule.min }}" min="{{ current_variant.quantity_rule.min }}"
+                        {% if current_variant.quantity_rule.max != null %}
+                            data-max="{{ current_variant.quantity_rule.max }}" max="{{ current_variant.quantity_rule.max }}"
+                        {% endif %}
+                        step="{{ current_variant.quantity_rule.increment }}" value="{{ current_variant.quantity_rule.min }}" form="{{ product_form_id }}">
+                    <button type="button" class="quantity__button qtyBtn plus" name="plus" aria-label="Increase quantity"><svg class="at-icon"><use xlink:href="#icon-plus"></use></svg></button>
+                </quantity-input>
+                {%- liquid
+                    assign volume_pricing_array = current_variant.quantity_price_breaks | sort: 'quantity' | reverse
+                    assign current_qty_for_volume_pricing = cart_qty | plus: current_variant.quantity_rule.min
+                    if cart_qty > 0
+                        assign current_qty_for_volume_pricing = cart_qty | plus: current_variant.quantity_rule.increment
+                    endif
+                -%}
+                {%- if product.quantity_price_breaks_configured? -%}
+                    <price-per-item class="no-js-hidden" id="Price-Per-Item-{{ section_id }}" data-section-id="{{ section_id }}" data-variant-id="{{ current_variant.id }}">
+                        {%- if current_variant.quantity_price_breaks.size > 0 -%}
+                            {%- assign variant_price_compare = current_variant.compare_at_price -%}
+                            <div class="price-per-item">
+                                {%- if variant_price_compare -%}
+                                    <dl class="price-per-item--current">
+                                        <dt class="visually-hidden">{{ 'products.product.regular_price' | t }}</dt>
+                                        <dd><s class="variant-item__old-price">{{ variant_price_compare | money_with_currency }}</s></dd>
+                                    </dl>
+                                {%- endif -%}
+                                {%- if current_qty_for_volume_pricing < volume_pricing_array.last.minimum_quantity -%}
+                                    {%- assign variant_price = current_variant.price | money_with_currency -%}
+                                    <span class="price-per-item--current">{{- 'products.product.volume_pricing.price_at_each' | t: price: variant_price -}}</span>
+                                {%- else -%}
+                                    {%- for price_break in volume_pricing_array -%}
+                                        {%- if current_qty_for_volume_pricing >= price_break.minimum_quantity -%}
+                                            {%- assign price_break_price = price_break.price | money_with_currency -%}
+                                            <span class="price-per-item--current">{{- 'products.product.volume_pricing.price_at_each' | t: price: price_break_price -}}</span>
+                                            {%- break -%}
+                                        {%- endif -%}
+                                    {%- endfor -%}
+                                {%- endif -%}
+                            </div>
+                        {%- else -%}
+                            {%- assign variant_price = current_variant.price | money_with_currency -%}
+                            {%- assign variant_price_compare = current_variant.compare_at_price -%}
+                            <div class="price-per-item">
+                                {%- if variant_price_compare -%}
+                                    <dl class="price-per-item--current">
+                                        <dt class="visually-hidden">{{ 'products.product.regular_price' | t }}</dt>
+                                        <dd><s class="variant-item__old-price">{{ variant_price_compare | money_with_currency }}</s></dd>
+                                        <dt class="visually-hidden">{{ 'products.product.sale_price' | t }}</dt>
+                                        <dd><span class="price-per-item--current">{{- 'products.product.volume_pricing.price_at_each' | t: price: variant_price -}}</span></dd>
+                                    </dl>
+                                {%- else -%}
+                                    <span class="price-per-item--current">{{- 'products.product.volume_pricing.price_at_each' | t: price: variant_price -}}</span>
+                                {%- endif -%}
+                            </div>
+                        {%- endif -%}
+                    </price-per-item>
+                {%- endif -%}
+            </div>
+            <div class="quantity__rules caption no-js-hidden" id="Quantity-Rules-{{ section_id }}">
+                {%- if current_variant.quantity_rule.increment > 1 -%}
+                    <span class="divider">{{- 'products.product.quantity.multiples_of' | t: quantity: current_variant.quantity_rule.increment -}}</span>
+                {%- endif -%}
+                {%- if current_variant.quantity_rule.min > 1 -%}
+                    <span class="divider">{{- 'products.product.quantity.minimum_of' | t: quantity: current_variant.quantity_rule.min -}}</span>
+                {%- endif -%}
+                {%- if current_variant.quantity_rule.max != null -%}
+                    <span class="divider">{{- 'products.product.quantity.maximum_of' | t: quantity: current_variant.quantity_rule.max -}}</span>
+                {%- endif -%}
+            </div>
+            {%- if product.quantity_price_breaks_configured? -%}
+                <volume-pricing class="parent-display no-js-hidden" id="Volume-{{ section_id }}">
+                    {%- if current_variant.quantity_price_breaks.size > 0 -%}
+                        <span class="caption-large">{{ 'products.product.volume_pricing.title' | t }}</span>
+                        <ul class="list-unstyled no-js-hidden">
+                            <li>
+                                <span>{{ current_variant.quantity_rule.min }}+</span>
+                                {%- assign price = current_variant.price | money_with_currency -%}
+                                <span data-text="{{ 'products.product.volume_pricing.price_at_each' | t: price: variant_price }}">{{- 'sections.quick_order_list.each_html' | t: money: price -}}</span>
+                            </li>
+                            {%- for price_break in current_variant.quantity_price_breaks -%}
+                                {%- assign price_break_price = price_break.price | money_with_currency -%}
+                                <li class="{%- if forloop.index >= 3 -%}show-more-item hidden{%- endif -%}">
+                                    <span>{{- price_break.minimum_quantity -}}<span aria-hidden="true">+</span></span>
+                                    <span data-text="{{ 'products.product.volume_pricing.price_at_each' | t: price: price_break_price }}">{{- 'sections.quick_order_list.each_html' | t: money: price_break_price -}}</span>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                        {%- if current_variant.quantity_price_breaks.size >= 3 -%}
+                            <show-more-button>
+                                <button class="button-show-more link underlined-link" id="Show-More-{{ section_id }}" type="button"><span class="label-show-more label-text"><span aria-hidden="true">+ </span>{{ 'products.product.volume_pricing.show_more' | t }}</span></button>
+                            </show-more-button>
+                        {%- endif -%}
+                    {%- endif -%}
+                </volume-pricing>
+            {%- endif -%}
+        </div>        
+        <product-form class="db product-form" data-hide-errors="" data-section-id="{{ section_id }}">
+            <div class="product-form__error-message-wrapper ermsg mb15" role="alert" hidden>
+                {{ 'icon-error.svg' | inline_asset_content }} <span class="product-form__error-message"></span>
+            </div>
+            {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                {%- liquid
+                    assign check_against_inventory = true
+                    assign quantity_rule_soldout = false
+                    if current_variant.inventory_management != 'shopify' or current_variant.inventory_policy == 'continue'
+                        assign check_against_inventory = false
+                    endif
+                    if current_variant.quantity_rule.min > current_variant.inventory_quantity and check_against_inventory
+                        assign quantity_rule_soldout = true
+                    endif
+                -%}
+                <input type="hidden" name="id" value="{{ current_variant.id }}" {% if current_variant.available == false or quantity_rule_soldout %}disabled{% endif %} class="product-variant-id">
+
+                <div class="product-form__buttons">
+                    <button id="ProductSubmitButton-{{ section_id }}" type="submit" name="add" class="btn w_100 product-form__submit"
+                        {% if current_variant.available == false or quantity_rule_soldout %}disabled{% endif %}>
+                        <span class="txt">
+                            {%- if current_variant.available == false or quantity_rule_soldout -%}
+                                {{ 'products.product.sold_out' | t }}
+                            {%- elsif current_variant.available and current_variant.inventory_quantity < 1 and current_variant.inventory_management == "shopify" -%}
+                                {{ 'products.product.pre_order' | t }}
+                            {%- else -%}
+                                {{ 'products.product.add_to_cart' | t }}
+                            {%- endif -%}
+                        </span>
+                        <div class="loading__spinner hidden"><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></div>
+                    </button>                
+                </div>
+            {%- endform -%}
+        </product-form>
+    </div>
+    </product-info>
+{% schema %}
+  {
+    "name": "quick-shop",
+    "class": "qvPopup w_100",
+    "settings": []
+  }
+{% endschema %}

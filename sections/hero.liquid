@@ -1,0 +1,807 @@
+{%- capture hero_banner -%}
+{%- assign section_st = section.settings -%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};">   
+    <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %}">
+        <div class="hero fl pr {% render 'animate-data', css:true, text:true %}">
+            {% if section_st.image != blank or section_st.imagem != blank %}
+                {%- liquid
+                    assign banner_img = section_st.image
+                    assign banner_imgm = section_st.imagem
+                    assign banner_imgm_srcset = banner_imgm | image_url: width: banner_imgm.width | image_tag: widths: '360,480,760' | split: 'srcset="' | last | split: '"' | first
+                -%}
+                <picture class="overlay pa all0 of_hidden brad{% if section_st.parallax %} prlxImg{% endif %}" style="--rounded:{{ section_st.ibrad }}px;--ipos:{{ section_st.image.presentation.focal_point | default: 'center center' }};" data-u-scale="1.3">
+                    {% if section_st.imagem != blank %}
+                        <source media="(max-width: 767px)" srcset="{{ banner_imgm_srcset }}" width="{{ banner_imgm.width }}" height="{{ banner_imgm.height }}">
+                    {% endif %}
+                    {{ banner_img | image_url: width: banner_img.width | image_tag: class:'imgFt heroImg', width:banner_img.width, height:banner_img.height, widths:"400,600,800,1000,1200,1400,1600,2000,2400,3000" }}
+                </picture>
+            {% endif %}
+            {% if section_st.image == blank %}<div class="ph_bg">{{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}</div>{% endif %}                       	
+            <div class="hero_wrap wd100 fl m_auto {{ section_st.text_align }} {{ section_st.text_align_m }}" style="--mht:{{ section_st.hit }}px;--mhtt:{{ section_st.hitt }}px;--mhtm:{{ section_st.hitm }}px;--mwd:{{ section_st.cntwd }}px;--cwd:{{ section_st.cwd }}px;--rounded:{{ section_st.brad }}px;--bpd:{{ section_st.bpd | times:0.84 | floor }}px {{ section_st.bpd }}px;--bpdm:{{ section_st.bpdm | times:0.86 | floor }}px {{ section_st.bpdm }}px;">
+                {% if section_st.ol_link %}<a class="pa z3 all0" href="{{ section_st.link }}" ></a> {% endif %}
+                {%  if  section.blocks.size > 0 %}
+                    <div class="hero_cap pr {{ section_st.text-align }} brad {% render 'animate-data', css:true %}" style="background-color:rgba({{ section_st.tbg | color_to_rgb | remove:'rgb(' | remove: ')' }},{{ section_st.opt }});">
+                        {% for block in section.blocks %}
+                            {% assign blk_st = block.settings %}
+                            {% if  block.type == 'heading' %}
+                                <{{ blk_st.htag }} class="rgTxt {{ blk_st.tff }} mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md" style="--cl:{{ blk_st.cl }};--fs:{{ blk_st.fs }}px;--fsm:{{ blk_st.fsm }}px;--fw:{{ blk_st.fw }};--ls:{{ blk_st.ls }}px;--lh:{{ blk_st.lh }};--to:{{blk_st.to}};" {{ block.shopify_attributes }}>{{ blk_st.title }}</{{ blk_st.htag }}>
+                            {% elsif block.type == 'text' %}
+                                <div class="rgTxt mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hidem %} hide-sm{% endif %}" style="--cl:{{ blk_st.cl }};--fs:{{ blk_st.fs }}px;--fsm:{{ blk_st.fsm }}px;--fw:{{ blk_st.fw }};--lh:{{ blk_st.lh }};" {{ block.shopify_attributes }}>{{ blk_st.title }}</div>                      
+                            {% elsif block.type == 'countdown' %}
+                                <countdown-time class="atCounter box_timer fl tc ht{{ section.id }} ttu mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md {{ section_st.text-align }}" data-date="{{ blk_st.date }}" style="--cl:{{ blk_st.cl }};--bg:{{ blk_st.bg }};--border:{{ blk_st.bdr }};--rounded:{{ blk_st.radius }}px;--fs:{{ blk_st.fs }}px;--fsl:{{ blk_st.fsl }}px;--fw:500" {{ block.shopify_attributes }}>
+                                    <span class="pd10"><span class="tm days">00</span>{{ 'date_formats.days' | t }}</span>
+                                    <span class="pd10"><span class="tm hours">00</span>{{ 'date_formats.hours' | t }}</span>
+                                    <span class="pd10"><span class="tm minutes">00</span>{{ 'date_formats.minuts' | t }}</span>
+                                    <span class="pd10"><span class="tm seconds">00</span>{{ 'date_formats.seconds' | t }}</span>
+                                </countdown-time>
+                            {% elsif block.type == 'button' %}                               
+                                {% if blk_st.ol_link != true %}            
+                                    <a href="{{ blk_st.link }}" class="btn {{ blk_st.btn-size }} {{ blk_st.btn-style }} mb{{ blk_st.mbm }} mb{{ blk_st.mb }}-md{% if blk_st.hidem %} hide-sm{% endif %}" {{ block.shopify_attributes }}>{{ blk_st.title | escape }}</a>           
+                                {% endif %}                                
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{%- endcapture -%}
+{{- hero_banner | strip_newlines | remove: "  " | remove: "	" -}}
+{% schema %}
+{
+    "name": "Hero Banner",
+    "class": "index-section",
+    "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [                       
+        {
+            "type":"paragraph",
+            "content":"Banner Height ==="
+        },
+        {
+            "type": "range",
+            "id": "hit",
+            "label": "Desktop",
+            "default":600,
+            "min": 100,
+            "max": 1000,
+            "step": 10
+        },
+        {
+            "type": "range",
+            "id": "hitt",
+            "label": "Tablet",
+            "default":500,
+            "min": 100,
+            "max": 900,
+            "step": 10
+        },  
+        {
+            "type": "range",
+            "id": "hitm",
+            "label": "Mobile",
+            "default":400,
+            "min": 100,
+            "max": 900,
+            "step": 10
+        },  	  
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Recommended width 2000px and height as per above desktop height"
+        },
+        {
+            "type": "image_picker",
+            "id": "imagem",
+            "label": "Mobile Image",
+            "info": "Recommended width 750px and height as per above mobile height. If mobile image is blank, dekstop image will be used."
+        },
+       {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image Overlay",
+            "default": "#000"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay Opacity",
+            "unit": "%",
+            "default": 0
+        },       
+        {
+                "type": "range",
+                "id": "ibrad",
+                "label": "Image Rounded",
+                "default": 0,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "unit":"px"		
+       },	        
+        {
+            "type": "checkbox",
+            "id": "parallax",
+            "label": "Enable Parallax scrolling",
+            "default":true,
+            "info":"For Parallax Effect Recommanded Image width : 1900 and height  = Banner height + 300. Effect will not work on mobile device."
+        },		          	 		  
+        {
+            "type": "checkbox",
+            "id": "ol_link",
+            "label": "Enable click on image?",
+            "default":false
+        },		
+        {
+            "type": "url",
+            "id": "link",
+            "label": "Url",
+            "visible_if": "{{ section.settings.ol_link }}"
+        },
+        {
+            "type": "header",        
+            "content": "Text Appearance ===" 			
+        },
+        {
+            "type": "range",
+            "id": "cntwd",
+            "min": 300,
+            "max": 2000,
+            "step": 100,
+            "label": "Container width (desktop)",
+            "unit": "px",
+            "default": 1400
+        },
+        {
+            "type": "range",
+            "id": "cwd",
+            "min": 300,
+            "max": 1000,
+            "step": 50,
+            "label": "Text width (desktop)",
+            "unit": "px",
+            "default": 500
+        },
+       {
+            "type": "select",
+            "id": "text-align",
+            "label": "Text align",
+            "default": "tc f-jcc",			
+            "options": [
+                { "label": "Left",      "value": "tl f-jcs" },
+                { "label": "Center",    "value": "tc f-jcc" },
+                { "label": "Right",     "value": "tr f-jce" }                
+            ]
+        },   
+        {
+            "type": "select",
+            "id": "text_align",
+            "label": "Position",
+            "default": "f-jcc-md f-aic-md",			
+            "options": [
+                { "label": "Top Left",      "value": "f-ais-md f-jcs-md" },
+                { "label": "Top Center",    "value": "f-jcc-md f-ais-md" },
+                { "label": "Top Right",     "value": "f-jce-md f-ais-md" },             
+                { "label": "Left",  		  "value": "f-aic-md f-jcs-md" },
+                { "label": "Center", 		  "value": "f-jcc-md f-aic-md" },
+                { "label": "Right",  		  "value": "f-jce-md f-aic-md" },
+                { "label": "Bottom Left",   "value": "f-aie-md f-jcs-md" },						 
+                { "label": "Bottom Center", "value": "f-jcc-md f-aie-md" }, 						 
+                { "label": "Bottom Right",  "value": "f-jce-md f-aie-md" }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "text_align_m",
+            "label": "Position (mobile)",
+            "default": "f-jcc f-aic",			
+            "options": [ 			
+                { "label": "Top Left",      "value": "f-ais f-jcs" },
+                { "label": "Top Center",    "value": "f-jcc f-ais" },
+                { "label": "Top Right",     "value": "f-jce f-ais" },             
+                { "label": "Left",  		  "value": "f-aic f-jcs" },
+                { "label": "Center", 		  "value": "f-jcc f-aic" },
+                { "label": "Right",  		  "value": "f-jce f-aic" },
+                { "label": "Bottom Left",   "value": "f-aie f-jcs" },						 
+                { "label": "Bottom Center", "value": "f-jcc f-aie" }, 						 
+                { "label": "Bottom Right",  "value": "f-jce f-aie" }			              
+            ]
+        }, 	           
+        {
+            "type": "color",
+            "id": "tbg",
+            "label": "Box background",
+            "default": "#fff"
+        },
+        {
+            "type": "range",
+            "id": "opt",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Box background opacity",
+            "unit": "%",
+            "default": 1
+        },
+		{
+            "type": "range",
+            "id": "bpd",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Box padding",
+            "unit": "px",
+            "default":60
+        },
+		{
+            "type": "range",
+            "id": "bpdm",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+			"label": "Box padding (mobile)",
+            "unit": "px",
+            "default":30
+        },
+		{
+            "type": "range",
+            "id": "brad",
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "label": "Box rounded",
+            "unit": "px",
+            "default":5
+        },		
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": true           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on Desktop?",
+            "default": false
+        }	
+    ],
+    "blocks": [
+        {
+            "type": "heading",
+            "name": "Heading",  
+            "settings":[        
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Text",
+                    "default": "Revone offers a user-friendly interface coupled with robust features"				
+                },                         
+              {
+                    "type": "select",
+                    "id": "htag",
+                    "label": "Heading tag",
+                   "info":"Specify heading types for SEO and search engines for crawling purposes.",
+                    "default": "p",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "H1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "H2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "H3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "H4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "H5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "H6"
+                        },
+                       {
+                            "value": "p",
+                            "label": "P"
+                        }
+                    ]
+                },               
+               {
+                    "type": "select",
+                    "id": "tff",
+                    "label": "Font Family",
+                    "default": "ft2",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text Color",
+                    "default": "#000"
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 14,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+               {
+                    "type": "select",
+                    "id": "fw",
+                    "label": "Font weight",
+                    "default": "400",
+                    "options": [
+                        {
+                            "value": "300",
+                            "label": "Light"
+                        },
+                        {
+                            "value": "400",
+                            "label": "Regular"
+                        },
+                        {
+                            "value": "500",
+                            "label": "Medium"
+                        },
+                        {
+                            "value": "600",
+                            "label": "Semi Bold"
+                        },
+                        {
+                            "value": "700",
+                            "label": "Bold"
+                        }
+                    ]
+                }, 	
+                {
+                    "type": "range",
+                    "id": "ls",
+                    "label": "Letter spacing",
+                    "default":0,
+                    "min": 0,
+                    "max": 10,
+                    "step": 1,
+                    "unit": "px"                    
+                }, 		
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line height",
+                    "default": 1.5,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1              
+                },
+               {
+                    "type": "range",
+                    "id": "to",
+                    "label": "Text opacity",
+                    "default": 1,
+                    "min": 0,
+                    "max": 1,
+                    "step": 0.1
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }      
+            ]
+        }, 
+      {
+            "type": "text",
+            "name": "Text",  
+            "settings":[        
+                {
+                    "type": "richtext",
+                    "id": "title",
+                    "label": "Text",
+                    "default": "<p>Designed with the entrepreneur in mind, Revone offers a user-friendly interface coupled with robust features that allow for easy setup and customization. </p>"				
+                },          
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide text in mobile?",
+                    "default": false			
+                },              
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text Color",
+                    "default": "#333"
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 14,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                },                             	
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line height",
+                    "default": 1.5,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1              
+                },              
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px"
+                },			          
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }      
+            ]
+        },    
+        {      
+            "type": "countdown",
+            "name": "Countdown Timer",  
+            "limit":1,    
+            "settings":[
+                {
+                    "type": "text",
+                    "id": "date",
+                    "label": "Enter Date",
+					"info":"Format: mm/dd/yyyy hh:mm:ss"
+                },
+                {
+                    "type": "color",
+                    "id": "bg",
+                    "label": "Background",
+                    "default": "#000"
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text",
+                    "default": "#eee"
+                },
+                {
+                    "type": "color",
+                    "id": "bdr",
+                    "label": "Border",
+                    "default": "#000"
+                },
+              {
+                    "type": "range",
+                    "id": "fs",
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "label": "Font Size Digit",
+                    "unit": "px",
+                    "default": 22
+                },
+               {
+                    "type": "range",
+                    "id": "fsl",
+                    "min": 10,
+                    "max": 20,
+                    "step": 1,
+                    "label": "Font Size Label",
+                    "unit": "px",
+                    "default": 12
+                },
+                {
+                    "type": "range",
+                    "id": "radius",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "label": "Rounded Corners",
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },				            
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                }      
+            ]
+        },    
+        {
+            "type": "button",
+            "name": "Button",  
+            "limit":1,    
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Button Label",
+                    "default":"SHOP NOW"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Button Link"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "hidem",
+                    "label": "Hide on mobile?",
+                    "default": false		
+                },
+                {
+					"type": "select",
+					"id": "btn-style",
+					"label": "Button Design",
+					"default": "btn1",
+					"options": [
+					  {
+						"label": "Button 1",
+						"value": "btn1"
+					  },
+					  {
+						"label": "Button 2",
+						"value": "btn2"
+					  },
+					  {
+						"label": "Button 3",
+						"value": "btn3"
+					  },
+					  {
+						"label": "Button 4",
+						"value": "btn4"
+					  },
+					 {
+						"label": "Button 5",
+						"value": "btn5"
+					  },
+					  {
+						"label": "Button 6",
+						"value": "btn6"
+					  },
+                      {
+                          "label": "Button 7 Gradient",
+                          "value": "btn7"
+                      },
+                      {
+                          "label": "Button 8 Gradient",
+                          "value": "btn8"
+                      },
+					  {
+						"label": "Link",
+						"value": "btnLink"
+					  }  
+					]
+				  },
+                {
+                    "type": "select",
+                    "id": "btn-size",
+                    "label": "Button Size",
+                    "default": "btn-md",
+                    "options": [
+                        {
+                            "label": "Small",
+                            "value": "btn-sm"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "btn-md"
+                        },
+                        {
+                            "label": "Large",
+                            "value": "btn-lg"
+                        } 		  
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin Bottom",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },				            
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin Bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                }      
+            ]
+        }   
+    ],
+    "presets": [
+        {
+            "name": "Hero Banner",      
+            "category": "Banners",
+            "blocks": [                    
+                {
+                    "type": "heading",
+                    "settings": { 
+                      "title":"Revone offers a user-friendly interface coupled with robust features",
+                      "htag":"h2",
+                      "tff" : "ft1",
+                      "fs":22,
+                      "fsm":18,                      
+                      "lh":1.3,
+                      "fw":"600",
+                      "mb":15,
+                      "mbm":10
+                      
+                    }
+                },         
+               {
+                    "type": "text",
+                    "settings": { 
+                      "title":"<p>A well-designed online store can help you attract and convert potential customers by providing them with valuable information and showcasing your products.</p>",                    
+                      "fs":14,
+                      "fsm":13,                      
+                      "lh":1.6,                     
+                      "mb":30,
+                      "mbm":20                      
+                    }
+                },       
+                {
+                    "type": "button"
+                    
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,103 @@
+{% assign section_st = section.settings %}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">
+	<div class="{% if section.settings.sw %}fw-sec npd{% else %}page-width{% endif %} {% render 'animate-data', css:true, text:true %}" id="{{ section.id }}" style="font-size:0;">  
+      {{ section.settings.gmap }}
+     </div>
+</div>
+{% schema %}
+  {
+    "name": "Map",
+    "class": "gMap",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.overlay"]
+    },
+    "settings": [	
+	 {
+		"type": "textarea",
+		"id": "gmap",
+		"label": "Google Iframe Code",
+		"info": "[Guide to Embed map](https://support.google.com/maps/answer/144361?co=GENIE.Platform%3DDesktop&hl=en#). In the iframe code, set width = '100%' and height as needed."
+     },
+	{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": true           
+        },	       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient Background"
+        },	              
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Top (mobile)",
+			"unit": "px",
+			"default":25
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing Bottom (mobile)",
+			"unit": "px",
+			"default":0
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on Mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on Desktop?",
+            "default": false
+        } 	
+    ],
+    "presets": [
+      {
+        "name": "Map",
+        "category": "Contact"
+        
+      }
+    ]
+  }
+{% endschema %} 

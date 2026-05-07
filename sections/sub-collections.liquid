@@ -1,0 +1,638 @@
+{%- capture collection_list -%}
+{%- if section.settings.cl != blank -%}
+{%- liquid 
+    assign section_st = section.settings
+    assign page_width = settings.cntwd | append: 'px'
+    if section_st.sw
+        assign page_width = '100vw'
+    endif
+  
+    for collection in section_st.collection
+        assign collection_image = collection.metafields.custom.custom_image.value | default:collection.image | default: collection.products.first.featured_image
+
+        if section_st.ratio == 'img' and collection_image != blank
+            assign img_ratio = 1 | divided_by: collection_image.aspect_ratio | times: 100
+            break
+        else
+            assign img_ratio = section_st.ratio | default: 100
+        endif
+    endfor
+-%}
+{%- capture sizes -%}
+  (min-width:1024px) calc({{ page_width }} / {{ section_st.grid }}),(min-width:768px) calc(100vw / {{ section_st.gridtb }}), calc(100vw / {{ section_st.gridmb }})
+{%- endcapture -%}
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}{% if section_st.hided %} hide-md hide-lg{% endif %}{% if section_st.bgimg != blank %} bgImg lazyload{% endif %}"
+  style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px;--ttp:{{ section_st.tbp }}px;--tbp:{{ section_st.tbp | plus : 4 }}px;--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};"
+  {% if section_st.bgimg != blank %}data-bgset="{{ section_st.bgimg | image_url: width: section_st.bgimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="contain"{% endif %}>
+    <div class="{% if section_st.sw %}fw-sec{% if section_st.npd %} npd{% endif %}{% else %}page-width{% endif %} cl_box cl_box{{ section_st.style }} pr zi1" data-section-id="{{ section.id }}">   	
+        {%- render 'sec-title' -%}
+      
+        {% capture collection_data %}
+          {%- liquid
+              if section_st.style == '1'
+                 assign detail_class = 'pa tc anim'
+              elsif section_st.style == '2'
+                 assign detail_class = 'wd100 tc anim'
+              elsif section_st.style == '3'
+                 assign detail_class = 'pa fl f-col f-jcc f-aic wd100 h_100 tc anim'
+              elsif section_st.style == '4'
+                 assign detail_class = 'pa fl f-col f-jce f-aic wd100 h_100 tc anim'
+              endif                   
+            %}
+          {% for collection in section_st.collection %}
+              {%- assign cl_img = collection.metafields.custom.custom_image | default: collection.featured_image -%}
+              {%- assign alt = cl_img.alt | default: collection.title | escape -%}
+              {%- assign count = collection.all_products_count -%}
+               <div class="gitem{% if section_st.carousel %} swiper-slide{% endif %} {% render 'animate-data', css:true %}" {% render 'animate-data' %}>
+                    <a href="{{ collection.url }}" class="db pr of_hidden brad{% if section_st.zoom %} zoom_hov{% endif %}" style="--rounded:{% if section_st.style == '2'  %}{{ section_st.drad}}px;{% else %}{{ section_st.irad}}px;{% endif %}">
+                        {% if cl_img != blank %}                          
+                            <div class="img pr of_hidden{% if section_st.style == '2'  %} brad{% endif %}" style="--rounded:{{ section_st.irad}}px;">{{ cl_img | image_url: width:cl_img.width | image_tag: loading:'lazy', class:'imgFt', alt:alt, sizes:sizes, widths:"180,320,400,560,740,900,1200"}} </div>
+                        {% endif %}
+                        <div class="details {{ detail_class }} {% if section_st.style == '1'  %}brad{% endif %}" style="--rounded:{{ section_st.drad}}px;">
+                        <div class="rgTxt {{section_st.ft}}">{{ collection.title }}</div>
+                        {% if section_st.count %}<span class="db counts mt5 mb5" style="--cl:{{ section_st.cl }};">{{ 'collections.general.items_with_count' | t: count: count }}</span>{% endif %}
+                        </div>
+                    </a>
+                </div>
+          {% endfor %}
+        {% endcapture %}
+      
+        {%- capture styles -%}
+          --grsp:{{ section_st.gspace | divided_by: 2.0 }}px;--grspm:{{ section_st.gspacem | divided_by: 2.0 }}px;
+          --rounded:{{section_st.irad }}px;--cl:{{ section_st.cl }};--fs:{{ section_st.fs }}px;--fsm:{{ section_st.fsm }}px;--fw:{{ section_st.fw }};--lh:1.2;
+          --bg:{{ section_st.tbg | color_modify:'alpha', section_st.tbg_op }};--tbp:{{ section_st.tbp }}px;{% if section_st.style == '4' %}--bgt:{{ section_st.tbg | color_to_hex }}00;{% endif %}--ratio:{{ img_ratio }}%;
+          {% if section_st.style == '1' %}
+            --psbtm:20px;--psbtmm:15px;
+          {% else %}
+            --psbtm:0;--psbtmm:0;
+          {% endif %}
+        {%- endcapture -%}
+        {%- if collection_data != blank -%}
+            {%- if section_st.carousel -%}
+                <slide-section class="grid gspace rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} collection-grid swiper" style="{{ styles }}"
+                data-swiper='{ "slidesPerView":"auto", "loop":{{ section_st.loop }}, {% if section_st.autoplay %}"autoplay":{ "delay":"{{ section_st.speed | times: 1000 }}" },{% endif %} "navigation":{ "nextEl":".swn{{ section.id }}","prevEl":".swp{{ section.id }}" },"pagination":{ "el":".swpg{{ section.id }}","clickable":true }}'>
+                    <div class="swiper-wrapper">{{ collection_data }}</div>
+                    {% render 'swiper-navigation', id:section.id, section_st:section_st %}
+                </slide-section>
+            {%- else -%}
+                <div class="grid gspace rwcols-{{ section_st.gridmb }} rwcols-md-{{ section_st.gridtb }} rwcols-lg-{{ section_st.grid }} collection-grid listing" style="{{ styles }}">
+                    {{ collection_data }}
+                </div>
+            {%- endif -%}
+        {%- endif -%}
+    </div>
+</div>
+{%- endif -%}
+{%- endcapture -%}
+{{- collection_list | strip_newlines | remove: "  " | remove: "	" -}}
+{% schema %}
+{
+    "name": "Sub Collections",
+    "class": "subClwrap",
+    "enabled_on": {
+      "templates": ["collection"]
+    },
+    "settings": [  		
+        {
+			"type":"paragraph",
+			"content":"[how to add custom image](https://www.adornthemes.com/knowledge-base/custom-image-for-collections/) for collections"
+		},
+        {
+            "type": "collection_list",
+            "id": "collection",
+            "label": "Select",
+            "info": "To show different sub collection for each collection,[create metafield](https://www.adornthemes.com/knowledge-base/sub-collection-list/) and select."
+        },            
+        {
+            "type": "header",
+            "content": "Grid Appearance ==="
+        },
+        {
+            "type": "select",
+            "id": "style",
+            "label": "Grid style",
+            "default": "1",
+            "options": [
+              	{ "value": "1", "label": "Style 1" },                     
+				{ "value": "2", "label": "Style 2" },
+                { "value": "3", "label": "Style 3" },
+                { "value": "4", "label": "Style 4" }
+            ]
+        },
+      {
+        "type": "select",
+        "id": "ratio",
+        "label": "Image ratio",
+        "default": "img",
+        "options": [
+          {
+            "group": "Custom",
+            "value": "img",
+            "label": "First Image"
+          },
+          {
+            "group": "Landscape",
+            "value": "50",
+            "label": "0:5"
+          },
+          {
+            "group": "Landscape",
+            "value": "60",
+            "label": "0:6"
+          },
+          {
+            "group": "Landscape",
+            "value": "70",
+            "label": "0:7"
+          },
+          {
+            "group": "Landscape",
+            "value": "80",
+            "label": "0:8"
+          },
+          {
+            "group": "Landscape",
+            "value": "90",
+            "label": "0:9"
+          },
+          {
+            "group": "Squared",
+            "value": "100",
+            "label": "1:1"
+          },
+          {
+            "group": "Portrait",
+            "value": "110",
+            "label": "1:1"
+          },
+          {
+            "group": "Portrait",
+            "value": "120",
+            "label": "1:2"
+          },
+          {
+            "group": "Portrait",
+            "value": "130",
+            "label": "1:3"
+          },
+          {
+            "group": "Portrait",
+            "value": "140",
+            "label": "1:4"
+          },
+          {
+            "group": "Portrait",
+            "value": "150",
+            "label": "1:5"
+          },
+          {
+            "group": "Portrait",
+            "value": "160",
+            "label": "1:6"
+          },
+          {
+            "group": "Portrait",
+            "value": "170",
+            "label": "1:7"
+          },
+          {
+            "group": "Portrait",
+            "value": "180",
+            "label": "1:8"
+          },
+          {
+            "group": "Portrait",
+            "value": "190",
+            "label": "1:9"
+          }
+        ]
+      }, 	         
+        {
+            "type": "range",
+            "id": "gspace",
+            "label": "Grid gap",
+            "default": 15,
+            "min": 0,
+            "max": 60,
+            "step": 1,
+            "unit":"px"
+        },
+        {
+            "type": "range",
+            "id": "gspacem",
+            "label": "Grid gap (mobile)",
+            "default": 10,
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "unit":"px"		
+        }, 
+        {
+            "type": "paragraph",
+            "content": "Items per row ==="
+        }, 	 
+       {
+            "type": "range",
+            "id": "grid",
+            "label": "Desktop",
+            "default": 4,
+            "min": 2,
+            "max": 8,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "gridtb",
+            "label": "Tablet",
+            "default": 3,
+            "min": 1,
+            "max": 5,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "gridmb",
+            "label": "Mobile",
+            "default": 2,
+            "min": 1,
+            "max": 3,
+            "step": 1
+        },
+        {
+            "type":"checkbox",
+            "id":"count",
+            "label":"Show products count?",
+            "default": false
+        }, 	
+         {
+            "type": "checkbox",
+            "id": "zoom",
+            "label": "Image zoom on hover?",
+            "default": true
+        },
+       {
+            "type": "range",
+            "id": "irad",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Image rounded",
+            "unit": "px",
+            "default": 0
+        },    
+        {
+            "type": "select",
+            "id": "btn-style",
+            "label": "Button design",
+            "default": "btn1",
+            "options": [
+                {
+                    "label": "Button 1",
+                    "value": "btn1"
+                },
+                {
+                    "label": "Button 2",
+                    "value": "btn2"
+                },
+                {
+                    "label": "Button 3",
+                    "value": "btn3"
+                },
+                {
+                    "label": "Button 4",
+                    "value": "btn4"
+                },
+                {
+                    "label": "Button 5",
+                    "value": "btn5"
+                },
+			  {
+				"label": "Button 6",
+				"value": "btn6"
+			  },
+               {
+                  "label": "Button 7 Gradient",
+                  "value": "btn7"
+              },
+              {
+                  "label": "Button 8 Gradient",
+                  "value": "btn8"
+              },
+			  {
+				"label": "Link",
+				"value": "btnLink"
+			  }  
+            ]
+        },
+        {
+            "type": "select",
+            "id": "btn-size",
+            "label": "Button size",
+            "default": "btn-sm",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "btn-sm"
+                },
+                {
+                    "label": "Medium",
+                    "value": "btn-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "btn-lg"
+                } 		  
+            ]
+        },            
+        {
+            "type": "header",
+            "content": "Text Appearance ==="
+        },               
+      {
+            "type": "select",
+            "id": "ft",
+            "label": "Font family",
+            "default": "ft1",
+            "options": [
+                {
+                    "value": "ft1",
+                    "label": "Font 1"
+                },
+                {
+                    "value": "ft2",
+                    "label": "Font 2"
+                },
+                {
+                    "value": "ft3",
+                    "label": "Font 3"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "fs",
+            "label": "Font size",
+            "default": 14,
+            "min": 12,
+              "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "fsm",
+            "label": "Font size (mobile)",
+            "default": 14,
+            "min": 12,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },        
+        {
+            "type": "select",
+            "id": "fw",
+            "label": "Font weight",
+            "default": "500",
+            "options": [
+                {
+                    "value": "300",
+                    "label": "Light"
+                },
+                {
+                    "value": "400",
+                    "label": "Regular"
+                },
+                {
+                    "value": "500",
+                    "label": "Medium"
+                },
+                {
+                    "value": "600",
+                    "label": "Semi Bold"
+                },
+                {
+                    "value": "700",
+                    "label": "Bold"
+                }
+            ]
+        }, 
+       {
+            "type": "color",
+            "id": "cl",
+            "label": "Text",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "tbg",
+            "label": "Background",
+            "default": "#000"
+        },  
+       {
+            "type": "range",
+            "id": "tbg_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Background opacity",           
+            "default": 0.6
+        },
+       {
+            "type": "range",
+            "id": "drad",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Box rounded",
+            "unit": "px",
+            "default": 20
+        }, 
+       {
+            "type": "range",
+            "id": "tbp",
+            "label": "Text padding (top/bottom)",
+            "default": 12,
+            "min": 10,
+            "max": 25,
+            "step": 1,
+            "unit": "px",
+            "info":"for style 2,4"
+        },                  
+		{
+            "type": "header",
+            "content": "Slider Settings ==="
+        },
+        {
+            "type":"checkbox",
+            "id":"carousel",
+            "label":"Enable carousel",
+            "default": false
+        },
+ 		{
+            "type": "checkbox",
+            "id": "loop",
+            "label": "Infinite loop",
+            "default": true,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+ 		{
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Auto-rotate slide",
+            "default": false,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+        {
+            "type": "range",
+            "id": "speed",
+            "label": "Change slide every",
+            "default": 5,
+            "min": 1,
+            "max": 30,
+            "step": 1,
+            "unit": "Sec",
+            "visible_if": "{{ section.settings.carousel }}"
+        },		
+		{
+            "type": "checkbox",
+            "id": "arrow",
+            "label": "Show arrows on desktop?",
+            "default": true,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+		{
+            "type": "checkbox",
+            "id": "arrowm",
+            "label": "Show arrows on mobile?",
+            "default": false,
+            "visible_if": "{{ section.settings.carousel }}"
+        },		
+		{
+            "type": "checkbox",
+            "id": "dot",
+            "label": "Show dots on desktop?",
+            "default": false,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+		{
+            "type": "checkbox",
+            "id": "dotm",
+            "label": "Show dots on mobile?",
+            "default": false,
+            "visible_if": "{{ section.settings.carousel }}"
+        },
+		{
+            "type": "header",
+            "content": "Section Design ==="
+        },
+       {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        },	
+        {
+            "type":"checkbox",
+            "id":"npd",
+            "label":"No padding?",
+            "default": true,
+            "info":"Remove left/right padding for fullwidth",
+            "visible_if": "{{ section.settings.sw }}"
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default":"#fff"	
+        },
+        {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },	
+        {
+            "type": "image_picker",
+            "id": "bgimg",
+            "label": "Background image"
+          }, 
+        {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#3d4246"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0
+        },
+       {
+            "type": "color",
+            "id": "headings_cl",
+            "label": "Text"
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom",
+			"unit": "px",
+			"default":40
+        },		
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing top (mobile)",
+			"unit": "px",
+			"default":15
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Spacing bottom (mobile)",
+			"unit": "px",
+			"default":15
+        },
+         {
+            "type": "checkbox",
+            "id": "hidem",
+            "label": "Hide on mobile?",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "hided",
+            "label": "Hide on desktop?",
+            "default": false
+        }	 
+    ],
+    "presets": [
+      {
+        "name": "Sub Collections"
+      }
+    ]
+}
+{% endschema %}

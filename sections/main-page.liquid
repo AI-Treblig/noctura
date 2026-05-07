@@ -1,0 +1,96 @@
+{% assign section_st = section.settings %}
+{%- if section_st.hide_hdft -%}
+  <style>
+    #shopify-section-top-header,
+    #shopify-section-header-1,
+    #shopify-section-header-2,
+    #shopify-section-header-3
+    #shopify-section-header-4,
+    .shopify-section-group-footer-group, .at_footer  { display:none; }
+</style>
+{%- endif -%} 
+<div class="sec_cov{% if section_st.hidem %} hide-sm{% endif %}" style="--sbg:{{ section_st.bg }};--sst:{{ section_st.sst }}px;--ssb:{{ section_st.ssb }}px;--sstm:{{ section_st.sstm }}px;--ssbm:{{ section_st.ssbm }}px">  
+	 <div class="{% if section_st.sw %}fw-sec{% else %}page-width{% endif %}">
+	  {% unless section_st.hidettl %}<h1 class="page-title {{ settings.title_align }}">{{ page.title }}</h1>{% endunless %}
+	  {% unless page.content == blank %}<div class="rte">{{ page.content }}</div>{% endunless %}
+	</div>
+</div>
+{% schema %}
+{
+  "name": "Page", 
+  "settings": [   		  
+	    {
+            "type": "checkbox",
+            "id": "hidettl",
+            "label": "Hide Page Title?",
+            "default": false            
+        },	
+        {
+      	"type": "checkbox",
+        "id": "hide_hdft",
+        "label": "Hide Header and Footer?",
+        "default": false,
+		"info": "You can use this option when creating a landing page without a header or footer."
+       },
+		{
+            "type": "paragraph",
+            "content": "Section Spacing ===="
+        },
+		{
+			"type": "range",
+			"id": "sst",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":40
+        },
+		{
+			"type": "range",
+			"id": "ssb",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":40
+        },
+		{
+            "type": "paragraph",
+            "content": "Spacing (mobile) ===="
+        },
+		{
+			"type": "range",
+			"id": "sstm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Top",
+			"unit": "px",
+			"default":20
+        },
+		{
+			"type": "range",
+			"id": "ssbm",
+			"min": 0,
+			"max": 100,
+			"step": 5,
+			"label": "Bottom",
+			"unit": "px",
+			"default":20
+        },       
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background"        
+        },	
+        {
+            "type":"checkbox",
+            "id":"sw",
+            "label":"Fullwidth?",
+            "default": false           
+        }       
+  ] 
+}
+{% endschema %}
