@@ -1,0 +1,236 @@
+{
+  "sections": {
+    "banner": {
+      "type": "collection-banner",
+      "blocks": {
+        "bc_9H67hE": {
+          "type": "bc",
+          "settings": {
+            "hidemb": true,
+            "fs": 11,
+            "fsm": 12,
+            "cl": "#ffffff",
+            "mb": 30,
+            "mbm": 20
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h2",
+            "tff": "ft2",
+            "fs": 28,
+            "fsm": 20,
+            "fw": "500",
+            "tuu": false,
+            "cl": "#ffffff",
+            "mb": 5,
+            "mbm": 5
+          }
+        },
+        "text_X4RCn9": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "Banner short description",
+            "hidemb": true,
+            "fs": 14,
+            "fsm": 14,
+            "lh": 1.5,
+            "cl": "#111111",
+            "mb": 20,
+            "mbm": 5
+          }
+        },
+        "countdown_b8Amfb": {
+          "type": "countdown",
+          "disabled": true,
+          "settings": {
+            "date": "12\/12\/2025",
+            "bg": "#000000",
+            "cl": "#eeeeee",
+            "bdr": "#000000",
+            "fs": 18,
+            "fsl": 12,
+            "radius": 5,
+            "mb": 20,
+            "mbm": 5
+          }
+        }
+      },
+      "block_order": ["bc_9H67hE", "title", "text_X4RCn9", "countdown_b8Amfb"],
+      "settings": {
+        "hit": 180,
+        "hitt": 160,
+        "hitm": 100,
+        "bg": "#9e9e9e",
+        "bgg": "",
+        "image": "",
+        "overlay": "#000000",
+        "overlay_op": 0.5,
+        "cntwd": 1300,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "disabled": true,
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "sub-collections": {
+      "type": "sub-collections",
+      "settings": {
+        "collection": ["women", "fashion", "men", "shoes", "kids", "deal-zone", "accessories"],
+        "style": "2",
+        "ratio": "100",
+        "gspace": 45,
+        "gspacem": 20,
+        "grid": 7,
+        "gridtb": 5,
+        "gridmb": 3,
+        "count": false,
+        "zoom": true,
+        "irad": 100,
+        "btn-style": "btn1",
+        "btn-size": "btn-sm",
+        "ft": "ft1",
+        "fs": 14,
+        "fsm": 14,
+        "fw": "500",
+        "cl": "#000000",
+        "tbg": "#ffffff",
+        "tbg_op": 0.3,
+        "drad": 100,
+        "tbp": 18,
+        "carousel": true,
+        "loop": true,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": false,
+        "sw": false,
+        "npd": false,
+        "bg": "rgba(0,0,0,0)",
+        "bgg": "",
+        "overlay": "#000000",
+        "overlay_op": 0.4,
+        "headings_cl": "#111111",
+        "sst": 40,
+        "ssb": 20,
+        "sstm": 20,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "collection": {
+      "type": "main-collection",
+      "blocks": {
+        "b1cf9b1d-3efd-4bb6-9db0-423fe4896457": {
+          "type": "categories",
+          "settings": {
+            "title": "Categories",
+            "side_categories": "category-menu"
+          }
+        },
+        "fe1f3e3a-2385-4c5b-b338-ed0c295ba47a": {
+          "type": "filter_by",
+          "settings": {
+            "title": "",
+            "flpcnt": true
+          }
+        },
+        "c48c56f1-0620-4109-aef0-490223599f1d": {
+          "type": "image_bnr",
+          "settings": {
+            "img": "shopify:\/\/shop_images\/sale-banner-sidebar.jpg",
+            "overlay": "#023f7c",
+            "overlay_op": 0.3,
+            "prehead": "MOST AWAITED SALE",
+            "pfs": "body",
+            "title": "Get Flat 70% OFF",
+            "fs": "h2",
+            "tff": "ft3",
+            "cl": "#ffffff",
+            "btn_txt": "Shop Collection",
+            "btn-style": "btn5",
+            "link": "shopify:\/\/collections\/women",
+            "rad": 10
+          }
+        },
+        "products_P9y6t8": {
+          "type": "products",
+          "settings": {
+            "title": "Popular Products",
+            "sd_prod": "fashion",
+            "num_pr": "3",
+            "btn_txt": ""
+          }
+        }
+      },
+      "block_order": ["b1cf9b1d-3efd-4bb6-9db0-423fe4896457", "fe1f3e3a-2385-4c5b-b338-ed0c295ba47a", "c48c56f1-0620-4109-aef0-490223599f1d", "products_P9y6t8"],
+      "settings": {
+        "clttl": false,
+        "climg": false,
+        "des_pos": "2",
+        "talign": false,
+        "pcount": true,
+        "gridicn": true,
+        "sortby": true,
+        "grid": 3,
+        "gridtb": 3,
+        "gridmb": 2,
+        "prpp": 12,
+        "pagination": "infinite",
+        "filters": true,
+        "sbpos": "left",
+        "tbg": true,
+        "filter_bg": "#ffffff",
+        "flbdr": "#f5f5f5",
+        "flshadow": false,
+        "sbg": false,
+        "sidebar_bg": "#ffffff",
+        "sidebar_bdr": "#eeeeee",
+        "tff": "ft1",
+        "ttl_fs": 16,
+        "bx_ttlw": "fwm",
+        "bx_tcase": "ttn",
+        "ttl_cl": "#222222",
+        "dis_botbdr": true,
+        "flbtmbdr": "#eeeeee",
+        "tglico": false,
+        "opt_fs": 13,
+        "optcase": "ttn",
+        "opt_cl": "#000000",
+        "opt_cl_hov": "#89ceb5",
+        "swatch_size": 18,
+        "swatch_rounded": 30,
+        "filter_bdr": "#000000",
+        "act_filter_cl": "#ffffff",
+        "act_filter_bg": "#222222",
+        "bar": "#eeeeee",
+        "bara": "#111111",
+        "flcolumn": "Brand, Size",
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#111111",
+        "overlay_op": 0.9,
+        "sst": 40,
+        "ssb": 40,
+        "sstm": 20,
+        "ssbm": 20,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": ["banner", "breadcrumb", "sub-collections", "collection"]
+}

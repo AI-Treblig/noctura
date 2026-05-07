@@ -1,0 +1,183 @@
+{
+  "sections": {
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h1",
+            "tff": "ft2",
+            "fts": 28,
+            "ftsm": 20,
+            "fw": "500",
+            "tuu": false,
+            "cl": "#ffffff",
+            "mb": 0,
+            "mbm": 0
+          }
+        },
+        "7d39aadc-e397-4d6e-8712-9d03bbd06afc": {
+          "type": "text",
+          "settings": {
+            "title": "<p>We're here to help you.<\/p>",
+            "hidemb": true,
+            "fs": 16,
+            "fsm": 14,
+            "lh": 1.5,
+            "cl": "#ffffff",
+            "mb": 0,
+            "mbm": 0
+          }
+        }
+      },
+      "block_order": ["title", "7d39aadc-e397-4d6e-8712-9d03bbd06afc"],
+      "settings": {
+        "hit": 180,
+        "hitt": 160,
+        "hitm": 100,
+        "bg": "#f4f4f4",
+        "bgg": "",
+        "image": "",
+        "overlay": "#000",
+        "overlay_op": 0.4,
+        "cntwd": 1000,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "disabled": true,
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "hidettl": true,
+        "hide_hdft": false,
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 15,
+        "ssbm": 15,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "e86450d5-2162-4811-b569-aa07bffc8e6a": {
+      "type": "contact-form",
+      "settings": {
+        "title": "Drop us a line",
+        "details": "Our products draw inspiration from the wonderful people and experiences around us. We create beautiful, high-quality items made just for you",
+        "page_width": 700,
+        "layout": "2",
+        "show_phone": false,
+        "show_subject": false,
+        "btn-style": "btn1",
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "headings_cl": "",
+        "sst": 80,
+        "ssb": 80,
+        "sstm": 30,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "text_with_icons_WTymXi": {
+      "type": "text-with-icons",
+      "blocks": {
+        "text_block_zgbYnK": {
+          "type": "text_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/email_d8164153-fa64-4a28-8444-a94e54b49ea7.svg",
+            "title": "ORDER STATUS",
+            "text": "orders@orderstatus.com",
+            "url": "mailto:orders@orderstatus.com"
+          }
+        },
+        "text_block_7bf6xj": {
+          "type": "text_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/return3.svg",
+            "title": "START A RETURN",
+            "text": "returns@returnorder.com",
+            "url": "mailto:returns@returnorder.com"
+          }
+        },
+        "text_block_8cfyPT": {
+          "type": "text_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/ruler.svg",
+            "title": "SIZING AND PRODUCT INFO",
+            "text": "products@findsize.com",
+            "url": ""
+          }
+        }
+      },
+      "block_order": ["text_block_zgbYnK", "text_block_7bf6xj", "text_block_8cfyPT"],
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "style": "stl1",
+        "grid": 3,
+        "gridtb": 3,
+        "gridmb": 1,
+        "col-gap": 60,
+        "row-gap": 30,
+        "showicn": true,
+        "icns": 30,
+        "icnsm": 30,
+        "htag": "h3",
+        "tff": "ft2",
+        "tfs": 16,
+        "tfsm": 15,
+        "tfw": "600",
+        "fs": 14,
+        "fsm": 13,
+        "cl": "#333333",
+        "box": true,
+        "boxbg": "#ffffff",
+        "bdr": "#eeeeee",
+        "brad": 5,
+        "autoplay": true,
+        "speed": 5,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "headings_cl": "",
+        "sst": 40,
+        "ssb": 40,
+        "sstm": 0,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "map_kaPkYB": {
+      "type": "map",
+      "settings": {
+        "gmap": "<iframe src=\"https:\/\/www.google.com\/maps\/embed?pb=!1m18!1m12!1m3!1d2886.770354898041!2d-79.38028419999999!3d43.652946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb334cdb4437%3A0x200442ecde048a5!2s220%20Yonge%20St%2C%20Toronto%2C%20ON%20M5B%202H1%2C%20Canada!5e0!3m2!1sen!2sin!4v1743650996565!5m2!1sen!2sin\" width=\"100%\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"><\/iframe>",
+        "sw": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "sst": 40,
+        "ssb": 0,
+        "sstm": 25,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": ["banner", "breadcrumb", "main", "e86450d5-2162-4811-b569-aa07bffc8e6a", "text_with_icons_WTymXi", "map_kaPkYB"]
+}

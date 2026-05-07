@@ -1,0 +1,116 @@
+{
+  "sections": {
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h1",
+            "tff": "ft2",
+            "fts": 22,
+            "ftsm": 20,
+            "fw": "600",
+            "tuu": false,
+            "cl": "#ffffff",
+            "mb": 5,
+            "mbm": 5
+          }
+        }
+      },
+      "block_order": ["title"],
+      "settings": {
+        "hit": 200,
+        "hitt": 200,
+        "hitm": 150,
+        "bg": "#f4f4f4",
+        "bgg": "",
+        "image": "",
+        "overlay": "#000",
+        "overlay_op": 0.6,
+        "cntwd": 1600,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "hidettl": true,
+        "hide_hdft": false,
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 15,
+        "ssbm": 15,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "blog_list_rNe7Et": {
+      "type": "blog-list",
+      "settings": {
+        "title": "Inspiring post",
+        "subtitle": "Fresh from blogs",
+        "blog": "fashion",
+        "grids": "1",
+        "img_ratio": "60",
+        "bbrad": 0,
+        "limit": 3,
+        "grid": 3,
+        "gridtb": 3,
+        "gridmb": 1,
+        "gspace": 30,
+        "gspacem": 15,
+        "blog_align": "f-jcc tc",
+        "blog_alignv": "f-ais",
+        "htag": "h2",
+        "tff": "ft2",
+        "fs": 18,
+        "fsm": 16,
+        "lh": 1.5,
+        "fw": "500",
+        "tcase": false,
+        "author": false,
+        "date": false,
+        "comment": false,
+        "tags": false,
+        "post_sep": "1",
+        "post_case": false,
+        "desc": true,
+        "dwords": 15,
+        "more": false,
+        "viewall": "",
+        "btn-style": "btn1",
+        "btn-size": "btn-sm",
+        "carousel": true,
+        "loop": false,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": false,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "headings_cl": "#111111",
+        "sst": 50,
+        "ssb": 50,
+        "sstm": 30,
+        "ssbm": 10,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": ["banner", "breadcrumb", "main", "blog_list_rNe7Et"]
+}

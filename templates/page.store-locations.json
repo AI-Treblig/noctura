@@ -1,0 +1,337 @@
+{
+  "sections": {
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h1",
+            "tff": "ft2",
+            "fts": 28,
+            "ftsm": 20,
+            "fw": "500",
+            "tuu": false,
+            "cl": "#f9f9f9",
+            "mb": 0,
+            "mbm": 0
+          }
+        }
+      },
+      "block_order": ["title"],
+      "settings": {
+        "hit": 180,
+        "hitt": 160,
+        "hitm": 100,
+        "bg": "#f5f5f5",
+        "bgg": "",
+        "image": "",
+        "overlay": "#000",
+        "overlay_op": 0.4,
+        "cntwd": 1000,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "hidettl": false,
+        "hide_hdft": false,
+        "sst": 40,
+        "ssb": 0,
+        "sstm": 20,
+        "ssbm": 0,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "20051063-7350-4b09-bdd4-a46ff94c9d14": {
+      "type": "featured-banner",
+      "blocks": {
+        "template--17787177173281__20051063-7350-4b09-bdd4-a46ff94c9d14-167551743061b6106f-0": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/maps.svg",
+            "title": "Address",
+            "text": "<p>7329 North Avenue,<br\/> Laguna Niguel, CA 92677<\/p>"
+          }
+        },
+        "template--17787177173281__20051063-7350-4b09-bdd4-a46ff94c9d14-167551743061b6106f-1": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/email.svg",
+            "title": "Message",
+            "text": "<p>Contact us on <a href=\"mailto:contact@company.com\" target=\"_blank\" title=\"mailto:contact@company.com\"><strong>contact@company.com<\/strong><\/a><br\/>  Or Call on <a href=\"tel:(+1)-644-333-0101\" target=\"_blank\" title=\"tel:(+1)-644-333-0101\"><strong>(+1)-644-333-0101<\/strong><\/a><\/p>"
+          }
+        },
+        "template--17787177173281__20051063-7350-4b09-bdd4-a46ff94c9d14-167551743061b6106f-2": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/shop2.svg",
+            "title": "We're Open",
+            "text": "<p>Mon - Fri : 10:00am - 4:00pm,<br\/>Sat - Sun : 10:00am - 5:00pm<\/p>"
+          }
+        }
+      },
+      "block_order": ["template--17787177173281__20051063-7350-4b09-bdd4-a46ff94c9d14-167551743061b6106f-0", "template--17787177173281__20051063-7350-4b09-bdd4-a46ff94c9d14-167551743061b6106f-1", "template--17787177173281__20051063-7350-4b09-bdd4-a46ff94c9d14-167551743061b6106f-2"],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/dubai-shop.jpg",
+        "layout": "left",
+        "tbg": "#ffffff",
+        "tbgg": "",
+        "talign": "tl",
+        "talignv": "f-aic",
+        "maxwd": 90,
+        "txtpd": false,
+        "title": "Dubai Mall Shop",
+        "tff": "ft1",
+        "fs": 25,
+        "fsm": 22,
+        "fw": "500",
+        "lh": 1.6,
+        "text": "<p><\/p><p><\/p>",
+        "tfs": 24,
+        "tfsm": 20,
+        "tlh": 1.3,
+        "style": "stl2",
+        "showicn": true,
+        "icns": 18,
+        "icnsm": 18,
+        "fttfs": 16,
+        "fttfsm": 15,
+        "ftfw": "500",
+        "ftlh": 1,
+        "ftfs": 13,
+        "ftfsm": 13,
+        "cl": "#444444",
+        "grid": 1,
+        "gridtb": 1,
+        "gridmb": 1,
+        "btn": "GET DIRECTION",
+        "link": "\/",
+        "btn-style": "btn4",
+        "btn-size": "btn-md",
+        "sbrad": 0,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "sst": 70,
+        "ssb": 30,
+        "sstm": 30,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "6591a39c-66ff-4b38-bafe-f21b8cabcfe8": {
+      "type": "devider",
+      "settings": {
+        "isbdr": true,
+        "lns": "solid",
+        "lht": 1,
+        "bdr": "#eeeeee",
+        "sw": false,
+        "npd": false,
+        "bg": "",
+        "bgg": "",
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 5,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "featured_banner_ACbAiE": {
+      "type": "featured-banner",
+      "blocks": {
+        "feature_jem6Wn": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/maps.svg",
+            "title": "Address",
+            "text": "<p>1778 Beeghley Street, <br\/>Stephenville, Texas 76401<\/p>"
+          }
+        },
+        "feature_RVC8xw": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/email.svg",
+            "title": "Message",
+            "text": "<p>Contact us on contact@company.com<br\/>  Or Call on (+1)-644-333-0101<\/p>"
+          }
+        },
+        "feature_KeiUpJ": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/shop2.svg",
+            "title": "We're Open",
+            "text": "<p>Mon - Fri : 10:00am - 4:00pm,<br\/>Sat - Sun : 10:00am - 5:00pm<\/p>"
+          }
+        }
+      },
+      "block_order": ["feature_jem6Wn", "feature_RVC8xw", "feature_KeiUpJ"],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/newyork.jpg",
+        "layout": "right",
+        "tbg": "#ffffff",
+        "tbgg": "",
+        "talign": "tl",
+        "talignv": "f-aic",
+        "maxwd": 90,
+        "txtpd": false,
+        "title": "Fifth Avenue New York",
+        "tff": "ft1",
+        "fs": 25,
+        "fsm": 22,
+        "fw": "500",
+        "lh": 1.6,
+        "text": "<p><\/p><p><\/p>",
+        "tfs": 24,
+        "tfsm": 20,
+        "tlh": 1.3,
+        "style": "stl2",
+        "showicn": true,
+        "icns": 18,
+        "icnsm": 18,
+        "fttfs": 16,
+        "fttfsm": 15,
+        "ftfw": "500",
+        "ftlh": 1,
+        "ftfs": 13,
+        "ftfsm": 13,
+        "cl": "#444444",
+        "grid": 1,
+        "gridtb": 1,
+        "gridmb": 1,
+        "btn": "GET DIRECTION",
+        "link": "\/",
+        "btn-style": "btn4",
+        "btn-size": "btn-md",
+        "sbrad": 0,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 20,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "devider_gUDcNm": {
+      "type": "devider",
+      "settings": {
+        "isbdr": true,
+        "lns": "solid",
+        "lht": 1,
+        "bdr": "#eeeeee",
+        "sw": false,
+        "npd": false,
+        "bg": "",
+        "bgg": "",
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 5,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "featured_banner_mgfzdQ": {
+      "type": "featured-banner",
+      "blocks": {
+        "feature_gycnB3": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/maps.svg",
+            "title": "Address",
+            "text": "<p>1778 Beeghley Street, <br\/>Stephenville, Texas 76401<\/p>"
+          }
+        },
+        "feature_KRkQLe": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/email.svg",
+            "title": "Message",
+            "text": "<p>Contact us on contact@company.com<br\/>  Or Call on (+1)-644-333-0101<\/p>"
+          }
+        },
+        "feature_zJkJYa": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/shop2.svg",
+            "title": "We're Open",
+            "text": "<p>Mon - Fri : 10:00am - 4:00pm,<br\/>Sat - Sun : 10:00am - 5:00pm<\/p>"
+          }
+        }
+      },
+      "block_order": ["feature_gycnB3", "feature_KRkQLe", "feature_zJkJYa"],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/clothing-shop.jpg",
+        "layout": "left",
+        "tbg": "#ffffff",
+        "tbgg": "",
+        "talign": "tl",
+        "talignv": "f-aic",
+        "maxwd": 90,
+        "txtpd": false,
+        "title": "Bloomington USA",
+        "tff": "ft1",
+        "fs": 25,
+        "fsm": 22,
+        "fw": "500",
+        "lh": 1.6,
+        "text": "<p><\/p><p><\/p>",
+        "tfs": 24,
+        "tfsm": 20,
+        "tlh": 1.3,
+        "style": "stl2",
+        "showicn": true,
+        "icns": 18,
+        "icnsm": 18,
+        "fttfs": 16,
+        "fttfsm": 15,
+        "ftfw": "500",
+        "ftlh": 1,
+        "ftfs": 13,
+        "ftfsm": 13,
+        "cl": "#444444",
+        "grid": 1,
+        "gridtb": 1,
+        "gridmb": 1,
+        "btn": "GET DIRECTION",
+        "link": "\/",
+        "btn-style": "btn4",
+        "btn-size": "btn-md",
+        "sbrad": 0,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "sst": 30,
+        "ssb": 70,
+        "sstm": 10,
+        "ssbm": 10,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": ["banner", "breadcrumb", "main", "20051063-7350-4b09-bdd4-a46ff94c9d14", "6591a39c-66ff-4b38-bafe-f21b8cabcfe8", "featured_banner_ACbAiE", "devider_gUDcNm", "featured_banner_mgfzdQ"]
+}

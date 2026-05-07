@@ -1,0 +1,221 @@
+{
+  "sections": {
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h1",
+            "tff": "ft2",
+            "fts": 28,
+            "ftsm": 20,
+            "fw": "500",
+            "tuu": false,
+            "cl": "#ffffff",
+            "mb": 5,
+            "mbm": 5
+          }
+        }
+      },
+      "block_order": ["title"],
+      "settings": {
+        "hit": 180,
+        "hitt": 160,
+        "hitm": 100,
+        "bg": "#f4f4f4",
+        "bgg": "",
+        "image": "",
+        "overlay": "#000",
+        "overlay_op": 0.4,
+        "cntwd": 1000,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "hidettl": false,
+        "hide_hdft": false,
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 15,
+        "ssbm": 15,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "image_gallery_q9jdCx": {
+      "type": "image-gallery",
+      "blocks": {
+        "lookbook1_VtALxm": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb1.jpg",
+            "title": "Let’s Fashion Talks",
+            "txt": "Get the best outfit of your life",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_JGV6NU": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/LB2.jpg",
+            "title": "Bold Style for Her",
+            "txt": "Get the best outfit of your life",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_NhYHiy": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb3.jpg",
+            "title": "Winter Edit",
+            "txt": "",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_RPa6Ec": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb5.jpg",
+            "title": "Do well, Dress really well",
+            "txt": "Great Summer Clearance Sale",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_Lrp9Xx": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb4.jpg",
+            "title": "Street Style Wear",
+            "txt": "Great Summer Clearance Sale",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_enG9QJ": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb8.jpg",
+            "title": "Shine with Confidence",
+            "txt": "Collections never like before",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_rwBtFj": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb7.jpg",
+            "title": "Bold Style for Her",
+            "txt": "GREAT SUMMER CLEARANCE SALES",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_DQDKCn": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb6.jpg",
+            "title": "Little Fashion",
+            "txt": "Big Smile",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_LjGtdr": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb9.jpg",
+            "title": "Look Famous",
+            "txt": "Great Summer Clearance Sale",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_NGzeE4": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb10.jpg",
+            "title": "Effortless Fashion",
+            "txt": "Great Summer Clearance Sale",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_aUb8zF": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb11.jpg",
+            "title": "Casual, Cool, Confident",
+            "txt": "",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        },
+        "lookbook1_XKxXVN": {
+          "type": "lookbook1",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/lb13.jpg",
+            "title": "Great Summer Clearance Sale",
+            "txt": "",
+            "imgurl": "",
+            "width": "wd33"
+          }
+        }
+      },
+      "block_order": ["lookbook1_VtALxm", "lookbook1_JGV6NU", "lookbook1_NhYHiy", "lookbook1_RPa6Ec", "lookbook1_Lrp9Xx", "lookbook1_enG9QJ", "lookbook1_rwBtFj", "lookbook1_DQDKCn", "lookbook1_LjGtdr", "lookbook1_NGzeE4", "lookbook1_aUb8zF", "lookbook1_XKxXVN"],
+      "settings": {
+        "title": "Summer Essentials",
+        "subtitle": "A good portfolio page is perfect way to showcase<br>  your work to potential clients <br>",
+        "gspace": 30,
+        "gspacem": 15,
+        "col": 3,
+        "style": "1",
+        "imgclick": "1",
+        "icony": true,
+        "icon": "2",
+        "iconcl": "#ffffff",
+        "fs": 15,
+        "fsm": 14,
+        "fw": "600",
+        "lh": 1.5,
+        "tfs": 13,
+        "tfsm": 13,
+        "tfw": "400",
+        "tlh": 1.5,
+        "cl": "#ffffff",
+        "txtbg": "#ffffff",
+        "imgbg": "#000000",
+        "ttl_opa": 0.4,
+        "radius": 8,
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "",
+        "sst": 40,
+        "ssb": 30,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": ["banner", "breadcrumb", "main", "image_gallery_q9jdCx"]
+}

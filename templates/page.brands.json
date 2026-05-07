@@ -1,0 +1,60 @@
+{
+  "sections": {
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h2",
+            "tff": "ft3",
+            "fts": 28,
+            "ftsm": 20,
+            "fw": "500",
+            "tuu": false,
+            "cl": "#ffffff",
+            "mb": 5,
+            "mbm": 5
+          }
+        }
+      },
+      "block_order": ["title"],
+      "settings": {
+        "hit": 180,
+        "hitt": 160,
+        "hitm": 100,
+        "bg": "#f4f4f4",
+        "bgg": "",
+        "image": "",
+        "overlay": "#000",
+        "overlay_op": 0.4,
+        "cntwd": 1000,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "main": {
+      "type": "main-brand-list",
+      "settings": {
+        "pgttl": false,
+        "navigation": true,
+        "alpha": "#111111",
+        "alphabg": "#f3f3f3",
+        "bdr": "#eeeeee",
+        "sw": false,
+        "sst": 60,
+        "ssb": 60,
+        "sstm": 30,
+        "ssbm": 30
+      }
+    }
+  },
+  "order": ["banner", "breadcrumb", "main"]
+}

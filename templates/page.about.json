@@ -1,0 +1,602 @@
+{
+  "sections": {
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h2",
+            "tff": "ft2",
+            "fts": 28,
+            "ftsm": 20,
+            "fw": "500",
+            "tuu": false,
+            "cl": "#ffffff",
+            "mb": 0,
+            "mbm": 0
+          }
+        },
+        "text_GVAD8a": {
+          "type": "text",
+          "settings": {
+            "title": "<p>Simple, stylish and locally-crafted apparel since 2000<\/p>",
+            "hidemb": true,
+            "fs": 16,
+            "fsm": 14,
+            "lh": 1.5,
+            "cl": "#ffffff",
+            "mb": 30,
+            "mbm": 20
+          }
+        }
+      },
+      "block_order": ["title", "text_GVAD8a"],
+      "settings": {
+        "hit": 180,
+        "hitt": 160,
+        "hitm": 100,
+        "bg": "#dddddd",
+        "bgg": "",
+        "image": "",
+        "overlay": "#000",
+        "overlay_op": 0.4,
+        "cntwd": 1000,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "hidettl": true,
+        "hide_hdft": false,
+        "sst": 0,
+        "ssb": 0,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "richtext_cY66d8": {
+      "type": "richtext",
+      "blocks": {
+        "text_J8Ua7m": {
+          "type": "text",
+          "settings": {
+            "ttl": "<p>We’re passionate about quality, care, and crafting unique products for everyone to enjoy. Our items are vibrant, imaginative, and drawn from the beauty we encounter daily. Each product reflects our love for the world around us, and we hope they spark inspiration in you as well!<\/p>",
+            "tff": "ft3",
+            "fs": 22,
+            "fsm": 18,
+            "fw": "500",
+            "lh": 1.7,
+            "cl": "#000000",
+            "mb": 25
+          }
+        }
+      },
+      "block_order": ["text_J8Ua7m"],
+      "settings": {
+        "maxwd": 1000,
+        "lefta": false,
+        "sw": false,
+        "npd": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "ganim": false,
+        "animsp": 15,
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "sst": 80,
+        "ssb": 0,
+        "sstm": 25,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "richtext_HFHF9d": {
+      "type": "richtext",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/about-banner.jpg",
+        "maxwd": 900,
+        "lefta": false,
+        "sw": false,
+        "npd": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "ganim": false,
+        "animsp": 15,
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "sst": 55,
+        "ssb": 0,
+        "sstm": 20,
+        "ssbm": 20,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "richtext_d9MF8f": {
+      "type": "richtext",
+      "blocks": {
+        "text_Eh3QQL": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "ttl": "<p>QUALITY IS OUR PRIORITY<\/p>",
+            "tff": "ft1",
+            "fs": 25,
+            "fsm": 18,
+            "fw": "600",
+            "lh": 1.7,
+            "cl": "#000000",
+            "mb": 15
+          }
+        },
+        "text_mLEnDe": {
+          "type": "text",
+          "settings": {
+            "ttl": "<p>Our talented stylists have put together outfits that are perfect for the season. They've variety of ways to inspire your next fashion-forward look.<\/p>",
+            "tff": "ft3",
+            "fs": 25,
+            "fsm": 18,
+            "fw": "500",
+            "lh": 1.5,
+            "cl": "#000000",
+            "mb": 20
+          }
+        }
+      },
+      "block_order": ["text_Eh3QQL", "text_mLEnDe"],
+      "settings": {
+        "maxwd": 900,
+        "lefta": false,
+        "sw": false,
+        "npd": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "ganim": false,
+        "animsp": 15,
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "sst": 80,
+        "ssb": 20,
+        "sstm": 20,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "image_scrolling_NKhtJw": {
+      "type": "image-scrolling",
+      "blocks": {
+        "row_iFPfQT": {
+          "type": "row",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/ICON-DESIGN.jpg",
+            "layout": "left",
+            "bnrwd": 50,
+            "cwd": 500,
+            "txtbg": "#fafaf2",
+            "bgg": "",
+            "talign": "tl",
+            "txtpd": false,
+            "titles": "SINCE 2000",
+            "scl": "#000000",
+            "sfs": 12,
+            "sfw": "500",
+            "title": "High-Quality Materials",
+            "htag": "h2",
+            "tff": "ft3",
+            "fs": 24,
+            "fsm": 18,
+            "fw": "500",
+            "lh": 1.3,
+            "cl": "#000000",
+            "tmb": 15,
+            "tmbm": 10,
+            "text": "<p>Embrace your unique fashion identity with our diverse collections, thoughtfully designed to inspire and elevate your wardrobe. Join us on a journey of sartorial excellence, as we redefine fashion one stitch at a time.<\/p>",
+            "tfs": 15,
+            "tfsm": 13,
+            "tlh": 1.6,
+            "tcl": "#333333",
+            "txtmb": 25,
+            "txtmbm": 20,
+            "btn": "",
+            "link": "",
+            "btn-style": "btn1",
+            "btn-size": "btn-md"
+          }
+        },
+        "row_JYjHYE": {
+          "type": "row",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/MATERIAL.jpg",
+            "layout": "left",
+            "bnrwd": 50,
+            "cwd": 500,
+            "txtbg": "#fff9fb",
+            "bgg": "",
+            "talign": "tl",
+            "txtpd": false,
+            "titles": "",
+            "scl": "#000000",
+            "sfs": 12,
+            "sfw": "500",
+            "title": "Iconic Design",
+            "htag": "h2",
+            "tff": "ft3",
+            "fs": 24,
+            "fsm": 18,
+            "fw": "500",
+            "lh": 1.3,
+            "cl": "#000000",
+            "tmb": 15,
+            "tmbm": 10,
+            "text": "<p>Embracing sustainable practices and conscious design, we strive to lead the industry towards a more eco-friendly and inclusive future.<\/p>",
+            "tfs": 15,
+            "tfsm": 13,
+            "tlh": 1.6,
+            "tcl": "#333333",
+            "txtmb": 25,
+            "txtmbm": 20,
+            "btn": "",
+            "link": "",
+            "btn-style": "btn1",
+            "btn-size": "btn-md"
+          }
+        },
+        "row_cGH7am": {
+          "type": "row",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/PLUS-SIZE_862e5071-735a-4860-9ce9-f4278c5d9c77.jpg",
+            "layout": "left",
+            "bnrwd": 50,
+            "cwd": 500,
+            "txtbg": "#f2f9f9",
+            "bgg": "",
+            "talign": "tl",
+            "txtpd": false,
+            "titles": "",
+            "scl": "#000000",
+            "sfs": 12,
+            "sfw": "500",
+            "title": "Various Sizes",
+            "htag": "h2",
+            "tff": "ft3",
+            "fs": 24,
+            "fsm": 18,
+            "fw": "500",
+            "lh": 1.3,
+            "cl": "#000000",
+            "tmb": 15,
+            "tmbm": 10,
+            "text": "<p>We believe that fashion should be stylish, affordable and accessible to everyone. Body positivity and inclusivity are values that are at the heart of our brand.<\/p>",
+            "tfs": 15,
+            "tfsm": 13,
+            "tlh": 1.6,
+            "tcl": "#333333",
+            "txtmb": 25,
+            "txtmbm": 20,
+            "btn": "",
+            "link": "",
+            "btn-style": "btn1",
+            "btn-size": "btn-md"
+          }
+        }
+      },
+      "block_order": ["row_iFPfQT", "row_JYjHYE", "row_cGH7am"],
+      "settings": {
+        "brad": 0,
+        "sw": false,
+        "npd": true,
+        "sst": 40,
+        "ssb": 20,
+        "sstm": 15,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "logo_list_P9kdAn": {
+      "type": "logo-list",
+      "blocks": {
+        "logo_image_ViE8FA": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/brand7.webp",
+            "link": "shopify:\/\/products\/long-sleeve-button-top",
+            "newtab": false
+          }
+        },
+        "logo_image_bEnF3V": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/brand6.webp",
+            "link": "shopify:\/\/products\/canvas-low-top-lace-up-sneakers",
+            "newtab": false
+          }
+        },
+        "logo_image_hqGJtt": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/brand5.webp",
+            "link": "",
+            "newtab": false
+          }
+        },
+        "logo_image_7Qrq7z": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/brand3.webp",
+            "link": "",
+            "newtab": false
+          }
+        },
+        "logo_image_4enBRt": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/brand4.webp",
+            "link": "",
+            "newtab": false
+          }
+        },
+        "logo_image_VnYtLz": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/brand2.webp",
+            "link": "",
+            "newtab": false
+          }
+        },
+        "logo_image_bqcEfE": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/brand1.webp",
+            "link": "",
+            "newtab": false
+          }
+        }
+      },
+      "block_order": ["logo_image_ViE8FA", "logo_image_bEnF3V", "logo_image_hqGJtt", "logo_image_7Qrq7z", "logo_image_4enBRt", "logo_image_VnYtLz", "logo_image_bqcEfE"],
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "gspace": 15,
+        "gspacem": 10,
+        "grid": 7,
+        "gridtb": 5,
+        "gridmb": 3,
+        "logopa": 1,
+        "carousel": true,
+        "loop": true,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": false,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "",
+        "sst": 30,
+        "ssb": 40,
+        "sstm": 0,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "e3f6eb34-c5b2-45a2-9fd9-7032573fec53": {
+      "type": "custom-block",
+      "blocks": {
+        "template--17818058752289__e3f6eb34-c5b2-45a2-9fd9-7032573fec53-16756767145d0ca90c-0": {
+          "type": "text",
+          "settings": {
+            "hidem": false,
+            "dis_img": true,
+            "image": "shopify:\/\/shop_images\/team-men1.jpg",
+            "title": "DYLAN LEE",
+            "fs": 14,
+            "fsm": 14,
+            "ff": "ft1",
+            "fw": "600",
+            "lh": 1.2,
+            "tbm": 0,
+            "text": "<p>CEO<\/p>",
+            "btntxt": "",
+            "btnurl": "",
+            "btn-style": "btn1",
+            "btn-size": "btn-md",
+            "bg": false,
+            "clbg": "#f5f5f5",
+            "cl": "#444444",
+            "boxrad": 0,
+            "brad": 0,
+            "align_text": "tc",
+            "alignment": "f-ass",
+            "width": "wd25"
+          }
+        },
+        "template--17818058752289__e3f6eb34-c5b2-45a2-9fd9-7032573fec53-16756767145d0ca90c-1": {
+          "type": "text",
+          "settings": {
+            "hidem": false,
+            "dis_img": true,
+            "image": "shopify:\/\/shop_images\/team-women1.jpg",
+            "title": "MELISSA SMITH",
+            "fs": 14,
+            "fsm": 14,
+            "ff": "ft1",
+            "fw": "600",
+            "lh": 1.2,
+            "tbm": 0,
+            "text": "<p>Director<\/p>",
+            "btntxt": "",
+            "btnurl": "",
+            "btn-style": "btn1",
+            "btn-size": "btn-md",
+            "bg": false,
+            "clbg": "#f5f5f5",
+            "cl": "#444444",
+            "boxrad": 0,
+            "brad": 0,
+            "align_text": "tc",
+            "alignment": "f-ass",
+            "width": "wd25"
+          }
+        },
+        "265fd6b3-8934-4558-b2c4-ff63f60b9be5": {
+          "type": "text",
+          "settings": {
+            "hidem": false,
+            "dis_img": true,
+            "image": "shopify:\/\/shop_images\/team-women2.jpg",
+            "title": "ASHER REBECA",
+            "fs": 14,
+            "fsm": 14,
+            "ff": "ft1",
+            "fw": "600",
+            "lh": 1.2,
+            "tbm": 0,
+            "text": "<p>Sale Executive<\/p>",
+            "btntxt": "",
+            "btnurl": "",
+            "btn-style": "btn1",
+            "btn-size": "btn-md",
+            "bg": false,
+            "clbg": "#f5f5f5",
+            "cl": "#444444",
+            "boxrad": 0,
+            "brad": 0,
+            "align_text": "tc",
+            "alignment": "f-ass",
+            "width": "wd25"
+          }
+        },
+        "9a840797-8db0-4f51-a030-f2832260defc": {
+          "type": "text",
+          "settings": {
+            "hidem": false,
+            "dis_img": true,
+            "image": "shopify:\/\/shop_images\/team-men2.jpg",
+            "title": "DANIEL MARTINE",
+            "fs": 14,
+            "fsm": 14,
+            "ff": "ft1",
+            "fw": "600",
+            "lh": 1.2,
+            "tbm": 0,
+            "text": "<p>Sale Support<\/p>",
+            "btntxt": "",
+            "btnurl": "",
+            "btn-style": "btn1",
+            "btn-size": "btn-md",
+            "bg": false,
+            "clbg": "#f5f5f5",
+            "cl": "#444444",
+            "boxrad": 0,
+            "brad": 0,
+            "align_text": "tc",
+            "alignment": "f-ass",
+            "width": "wd25"
+          }
+        }
+      },
+      "block_order": ["template--17818058752289__e3f6eb34-c5b2-45a2-9fd9-7032573fec53-16756767145d0ca90c-0", "template--17818058752289__e3f6eb34-c5b2-45a2-9fd9-7032573fec53-16756767145d0ca90c-1", "265fd6b3-8934-4558-b2c4-ff63f60b9be5", "9a840797-8db0-4f51-a030-f2832260defc"],
+      "settings": {
+        "title": "The Team Behind The Brand",
+        "subtitle": "",
+        "gspace": 30,
+        "gspacem": 15,
+        "prbox_style": "grid_1",
+        "sw": false,
+        "bg": "",
+        "bgg": "",
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "headings_cl": "#111111",
+        "sst": 40,
+        "ssb": 80,
+        "sstm": 30,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "product_review2_pwaNWX": {
+      "type": "product-review2",
+      "blocks": {
+        "quote_aPcbJX": {
+          "type": "quote",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/review.jpg",
+            "title": "At the Revone store we just have to say, WOW!  The materials feels & fits amazingly. It is by far the best work out outfit, the textiles are very good, lasting and resistant. Very sexy!",
+            "text": "",
+            "author": "<p>- Natasha, Ontario<\/p>",
+            "rat": true,
+            "rating": 5,
+            "product": ""
+          }
+        }
+      },
+      "block_order": ["quote_aPcbJX"],
+      "settings": {
+        "gspace": 15,
+        "style": "wd100-lg",
+        "style-t": "wd100-md",
+        "style-m": "wd100",
+        "bnrwd": 50,
+        "twidth": 80,
+        "alignment": "f-jcc",
+        "title": "",
+        "hfs": 15,
+        "tff": "ft3",
+        "fs": 18,
+        "fsm": 18,
+        "fw": "500",
+        "lh": 1.6,
+        "tfs": 15,
+        "tfsm": 15,
+        "tlh": 1.5,
+        "cl": "#444444",
+        "bbg": "",
+        "bpd": 30,
+        "br": 0,
+        "icon_size": 14,
+        "icon_cl": "#ebb868",
+        "rating": "1",
+        "carousel": false,
+        "loop": true,
+        "autoplay": false,
+        "speed": 5,
+        "dot": false,
+        "dotm": true,
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#3d4246",
+        "overlay_op": 0,
+        "headings_cl": "",
+        "sst": 30,
+        "ssb": 80,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": ["banner", "breadcrumb", "main", "richtext_cY66d8", "richtext_HFHF9d", "richtext_d9MF8f", "image_scrolling_NKhtJw", "logo_list_P9kdAn", "e3f6eb34-c5b2-45a2-9fd9-7032573fec53", "product_review2_pwaNWX"]
+}
