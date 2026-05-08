@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "breadcrumb": {
@@ -16,7 +25,7 @@
           "settings": {
             "cl": "#111111",
             "tff": "ft2",
-            "fs": 25,
+            "fs": 28,
             "fsm": 22,
             "fw": "600",
             "lh": 1.3,
@@ -51,7 +60,8 @@
             "salebg": "#e95144",
             "fw": "fwr",
             "brad": 30,
-            "taxship": false,
+            "tax_msg": false,
+            "ship_msg": false,
             "bm": 20
           }
         },
@@ -195,7 +205,7 @@
           "type": "shiptime",
           "settings": {
             "shipmsg_ico": true,
-            "estimate_ship": "4\/10",
+            "estimate_ship": "4/10",
             "estimate_shipping_msg": "Estimated delivery time : [startdate] - [enddate].",
             "bm": 30
           }
@@ -227,7 +237,6 @@
           "type": "img",
           "settings": {
             "title": "Guarantee Safe Checkout",
-            "pimg": "shopify:\/\/shop_images\/payment-approve.png",
             "imgwd": 320,
             "img_align": true,
             "cl": "#222222",
@@ -239,7 +248,26 @@
           }
         }
       },
-      "block_order": ["d3ad6ba3-0eeb-40b7-baa2-e58f0c1e9537", "sku_DHQA7t", "rating_RBWrFJ", "fa9c66a2-d2aa-4d30-974e-61bb044bb59d", "d3f45ea4-ab08-46d0-ab08-3771d2eb15d3", "f1d46c9f-2b72-405e-a1e8-4bfab6ac6a8c", "visitor_KGMfe8", "6d3abe0f-70e1-4941-a738-c7121359069a", "text_9kPwFi", "variants_e43NdX", "ccd4e61d-1477-4664-bd33-351a9aa1ec00", "f3aed949-c526-4cd5-affb-f209a0499d89", "addons_3DKyxX", "hr_zDHmMw", "68994def-e552-45b0-bd90-20cf81d0255c", "72e2acab-2fcd-4a7a-8088-123a653bf7f5", "complementary_PwPWxA", "img_Vgftba"],
+      "block_order": [
+        "d3ad6ba3-0eeb-40b7-baa2-e58f0c1e9537",
+        "sku_DHQA7t",
+        "rating_RBWrFJ",
+        "fa9c66a2-d2aa-4d30-974e-61bb044bb59d",
+        "d3f45ea4-ab08-46d0-ab08-3771d2eb15d3",
+        "f1d46c9f-2b72-405e-a1e8-4bfab6ac6a8c",
+        "visitor_KGMfe8",
+        "6d3abe0f-70e1-4941-a738-c7121359069a",
+        "text_9kPwFi",
+        "variants_e43NdX",
+        "ccd4e61d-1477-4664-bd33-351a9aa1ec00",
+        "f3aed949-c526-4cd5-affb-f209a0499d89",
+        "addons_3DKyxX",
+        "hr_zDHmMw",
+        "68994def-e552-45b0-bd90-20cf81d0255c",
+        "72e2acab-2fcd-4a7a-8088-123a653bf7f5",
+        "complementary_PwPWxA",
+        "img_Vgftba"
+      ],
       "settings": {
         "image-col": "lg",
         "prstyle": "1",
@@ -294,7 +322,8 @@
       "disabled": true,
       "settings": {
         "title": "Frequently Bought Together",
-        "subtitle": "",        
+        "subtitle": "",
+        "products": [],
         "sw": false,
         "bg": "#fafafa",
         "bgg": "",
@@ -330,9 +359,9 @@
         },
         "review_gFFTDF": {
           "type": "review",
+          "disabled": true,
           "settings": {
-            "title": "Reviews",
-            "otherapp": ""
+            "title": "Reviews"
           }
         },
         "faq_9jQ4EE": {
@@ -350,21 +379,27 @@
           "type": "extra",
           "settings": {
             "title": "Shipping & Returns",
-            "content": "<h5><strong>DELIVERY<\/strong><\/h5><ul><li>Dispatch: Within 24 Hours<\/li><li>Free shipping across all products on a minimum purchase of $50.<\/li><li>International delivery time - 7-10 business days<\/li><li>Cash on delivery might be available<\/li><li>Easy 30 days returns and exchanges<\/li><\/ul><h5><strong>RETURNS<\/strong><\/h5><p>If you do not like the product you can return it within 15 days - no questions asked. This excludes bodysuits, swimwear and clearance sale items. <br\/>We have an easy and hassle free return policy. Please look at our Delivery & Returns section for further information.<\/p>",
+            "content": "<h5><strong>DELIVERY</strong></h5><ul><li>Dispatch: Within 24 Hours</li><li>Free shipping across all products on a minimum purchase of $50.</li><li>International delivery time - 7-10 business days</li><li>Cash on delivery might be available</li><li>Easy 30 days returns and exchanges</li></ul><h5><strong>RETURNS</strong></h5><p>If you do not like the product you can return it within 15 days - no questions asked. This excludes bodysuits, swimwear and clearance sale items. <br/>We have an easy and hassle free return policy. Please look at our Delivery & Returns section for further information.</p>",
             "liquid": ""
           }
         },
         "extra_3Hp4gw": {
           "type": "extra",
-          "disabled": true,
           "settings": {
-            "title": "Custom Tab",
-            "content": "<p>This tab is a useful tool that allows store to display different product details for each individual product. This feature provides a more comprehensive and tailored approach as it enables companies to showcase specific information related to their products. <\/p><p>It is an excellent way to provide customers with in-depth details such as ingredients, materials used, dimensions, and other specifications that are unique to each product. By using the product custom tab, businesses can ensure transparency and accuracy in providing product information, which builds trust and credibility among consumers. This feature also gives customers the opportunity to make informed decisions based on their preferences and needs.<\/p>",
+            "title": "Wash Instructions",
+            "content": "<ul><li>Machine wash cold, inside out</li><li>Use a mild detergent</li><li>Do not bleach</li><li>Do not tumble dry</li><li>Dry flat or hang  in shade </li><li>Do not dry clean </li></ul>",
             "liquid": ""
           }
         }
       },
-      "block_order": ["612c9c15-e72e-45af-8f23-6e5da8137791", "spec_qLrJqk", "review_gFFTDF", "faq_9jQ4EE", "extra_YG9Qf4", "extra_3Hp4gw"],
+      "block_order": [
+        "612c9c15-e72e-45af-8f23-6e5da8137791",
+        "spec_qLrJqk",
+        "review_gFFTDF",
+        "faq_9jQ4EE",
+        "extra_YG9Qf4",
+        "extra_3Hp4gw"
+      ],
       "settings": {
         "tab_style": "1",
         "acc": true,
@@ -501,5 +536,15 @@
       }
     }
   },
-  "order": ["breadcrumb", "main", "quick_order_list_erKtgp", "upsell", "tabs", "devider_ywr3VC", "related", "recommanded", "recentviewed"]
+  "order": [
+    "breadcrumb",
+    "main",
+    "quick_order_list_erKtgp",
+    "upsell",
+    "tabs",
+    "devider_ywr3VC",
+    "related",
+    "recommanded",
+    "recentviewed"
+  ]
 }
