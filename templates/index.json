@@ -54,7 +54,7 @@
             "btn-style": "btn5",
             "btn-size": "btn-lg",
             "newtab": false,
-            "display_btn": false,
+            "display_btn": true,
             "btn2": "Explore All",
             "link2": "shopify://collections/all",
             "btn-style1": "btn3",
