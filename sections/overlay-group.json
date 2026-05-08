@@ -260,8 +260,9 @@
     },
     "someone_purchased_f78FmY": {
       "type": "someone-purchased",
+      "disabled": true,
       "settings": {
-        "hide_mb": true,
+        "hide_mb": false,
         "products": [
           "crew-neck-pullover-full-sleeve",
           "deep-neck-ribbon-sweater",
