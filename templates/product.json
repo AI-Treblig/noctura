@@ -120,10 +120,18 @@
             "bm": 15
           }
         },
+        "shortdes_AGgbKQ": {
+          "type": "shortdes",
+          "settings": {
+            "des_type": "shortd",
+            "bm": 20
+          }
+        },
         "text_9kPwFi": {
           "type": "text",
+          "disabled": true,
           "settings": {
-            "text": "",
+            "text": "<p>sdfsdf</p>",
             "cl": "#333333",
             "fs": 14,
             "fsm": 14,
@@ -257,6 +265,7 @@
         "f1d46c9f-2b72-405e-a1e8-4bfab6ac6a8c",
         "visitor_KGMfe8",
         "6d3abe0f-70e1-4941-a738-c7121359069a",
+        "shortdes_AGgbKQ",
         "text_9kPwFi",
         "variants_e43NdX",
         "ccd4e61d-1477-4664-bd33-351a9aa1ec00",
@@ -289,7 +298,7 @@
         "ssb": 30,
         "sstm": 0,
         "ssbm": 0,
-        "bg": "#fff",
+        "bg": "#ffffff",
         "sw": false
       }
     },
