@@ -49,6 +49,7 @@
         "text_NocLab1",
         "text_NocLab2"
       ],
+      "disabled": true,
       "settings": {
         "ff": "ft1",
         "fs": 14,
