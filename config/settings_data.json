@@ -190,6 +190,7 @@
     "bg": "#ffffff",
     "sbdr": "#dddddd",
     "sbdra": "#111111",
+    "sizeOpt": "Size",
     "sizechart_type": "type",
     "sizechart_page": "size-chart",
     "mlcurrency": true,
