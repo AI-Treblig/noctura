@@ -195,6 +195,7 @@
     "mlcurrency": true,
     "curOpt": "shopify",
     "auto_currencies": true,
+    "spcurrencies": "INR",
     "curfl": false,
     "mlLang": true,
     "mlLangfl": true,

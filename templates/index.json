@@ -16,7 +16,6 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/noctura-hero-1.webp",
-            "imagem": "shopify://shop_images/noctura-hero-1-mb.webp",
             "ovr": "#000000",
             "ovropt": 0,
             "hd1": "NEW DROP",
@@ -36,6 +35,7 @@
             "tfw": "700",
             "tlh": 1.1,
             "to": 1,
+            "ls": 1,
             "tcl": "#ffffff",
             "tmb": 25,
             "tmbm": 20,
@@ -73,9 +73,8 @@
         },
         "image_p7rTTR": {
           "type": "image",
+          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/noctura-hero-2.jpg",
-            "imagem": "shopify://shop_images/noctura-hero-2-mb.jpg",
             "ovr": "#000000",
             "ovropt": 0,
             "hd1": "AFTER DARK",
@@ -95,6 +94,7 @@
             "tfw": "700",
             "tlh": 1.1,
             "to": 1,
+            "ls": 1,
             "tcl": "#ffffff",
             "tmb": 25,
             "tmbm": 20,
@@ -157,6 +157,7 @@
         "animation-style": "st1",
         "sw": true,
         "npd": true,
+        "bg": "#ffffff",
         "sst": 0,
         "ssb": 40,
         "sstm": 0,
@@ -254,7 +255,6 @@
             "width": "wd50",
             "widthm": "wd100",
             "hidem": false,
-            "image": "shopify://shop_images/noctura-cat-tshirts.jpg",
             "collection": "t-shirts",
             "url": "",
             "title": "T-Shirts",
@@ -283,7 +283,7 @@
             "btnh": "#dc2626",
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
-            "bg": "rgba(0,0,0,0.6)",
+            "bg": "#00000099",
             "bg_op": 1,
             "box_padding_side": 25,
             "box_padding_tb": 15,
@@ -296,7 +296,6 @@
             "width": "wd25",
             "widthm": "wd50",
             "hidem": false,
-            "image": "shopify://shop_images/noctura-cat-acidwash.jpg",
             "collection": "acid-wash",
             "url": "",
             "title": "Acid Wash",
@@ -325,7 +324,7 @@
             "btnh": "#dc2626",
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
-            "bg": "rgba(0,0,0,0.6)",
+            "bg": "#00000099",
             "bg_op": 1,
             "box_padding_side": 25,
             "box_padding_tb": 15,
@@ -338,7 +337,6 @@
             "width": "wd25",
             "widthm": "wd50",
             "hidem": false,
-            "image": "shopify://shop_images/noctura-cat-sleeveless.jpg",
             "collection": "sleeveless",
             "url": "",
             "title": "Sleeveless",
@@ -367,7 +365,7 @@
             "btnh": "#dc2626",
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
-            "bg": "rgba(0,0,0,0.6)",
+            "bg": "#00000099",
             "bg_op": 1,
             "box_padding_side": 25,
             "box_padding_tb": 15,
@@ -380,7 +378,6 @@
             "width": "wd50",
             "widthm": "wd100",
             "hidem": false,
-            "image": "shopify://shop_images/noctura-cat-shirts.jpg",
             "collection": "shirts",
             "url": "",
             "title": "Shirts",
@@ -409,7 +406,7 @@
             "btnh": "#dc2626",
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
-            "bg": "rgba(0,0,0,0.6)",
+            "bg": "#00000099",
             "bg_op": 1,
             "box_padding_side": 25,
             "box_padding_tb": 15,
@@ -422,7 +419,6 @@
             "width": "wd50",
             "widthm": "wd50",
             "hidem": true,
-            "image": "shopify://shop_images/noctura-cat-thedrop.jpg",
             "collection": "the-drop",
             "url": "",
             "title": "Latest Drop",
@@ -451,7 +447,7 @@
             "btnh": "#dc2626",
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
-            "bg": "rgba(0,0,0,0.6)",
+            "bg": "#00000099",
             "bg_op": 1,
             "box_padding_side": 25,
             "box_padding_tb": 15,
@@ -500,7 +496,6 @@
           "type": "text_block",
           "settings": {
             "icon": "none",
-            "image": "shopify://shop_images/truck.svg",
             "title": "PAN-INDIA SHIPPING",
             "text": "Free shipping on orders over ₹2999",
             "url": "/policies/shipping-policy",
@@ -511,7 +506,6 @@
           "type": "text_block",
           "settings": {
             "icon": "none",
-            "image": "shopify://shop_images/dollar_3133888e-cd19-4356-ab72-43661a5516bf.svg",
             "title": "EASY EXCHANGES",
             "text": "7-day exchanges on unworn pieces",
             "url": "/policies/refund-policy",
@@ -522,7 +516,6 @@
           "type": "text_block",
           "settings": {
             "icon": "none",
-            "image": "shopify://shop_images/email_d8164153-fa64-4a28-8444-a94e54b49ea7.svg",
             "title": "DM THE DROP",
             "text": "WhatsApp us anytime",
             "url": "https://wa.me/919334501717",
@@ -533,7 +526,6 @@
           "type": "text_block",
           "settings": {
             "icon": "none",
-            "image": "shopify://shop_images/secure_80x_07cf0305-abfe-44f1-8097-1b346da1b2c3.svg",
             "title": "SECURE PAYMENTS",
             "text": "UPI, cards & net banking via Razorpay",
             "url": "",
@@ -640,9 +632,6 @@
         "button_BMicaK"
       ],
       "settings": {
-        "image1": "shopify://shop_images/noctura-brand-1.jpg",
-        "image2": "shopify://shop_images/noctura-brand-2.jpg",
-        "image3": "shopify://shop_images/noctura-brand-3.jpg",
         "style": "4",
         "brad": 3,
         "img_width": 50,
@@ -670,7 +659,6 @@
         "quote_ix9DH7": {
           "type": "quote",
           "settings": {
-            "image": "shopify://shop_images/noctura-review-1.jpg",
             "title": "The fit, the fabric, the way it moves under the lights — NOCTURA gets it. Walked into the club and the room shifted.",
             "text": "",
             "author": "<p><br/>- Aarav, Mumbai</p>",
@@ -682,7 +670,6 @@
         "quote_TRYpdt": {
           "type": "quote",
           "settings": {
-            "image": "shopify://shop_images/noctura-review-2.jpg",
             "title": "Heavyweight cotton, oversized fit, the print stays sharp wash after wash. This isn't basic. It's a statement.",
             "text": "",
             "author": "<p>- Riya, Bandra</p>",
@@ -694,7 +681,6 @@
         "quote_zB4wac": {
           "type": "quote",
           "settings": {
-            "image": "shopify://shop_images/noctura-review-3.jpg",
             "title": "The acid wash hits different. Every piece is one-of-one. Got compliments all night.",
             "text": "",
             "author": "<p><br/>- Kabir, Delhi</p>",
@@ -820,7 +806,6 @@
           "type": "lookbook1",
           "settings": {
             "width": "wd20",
-            "image": "shopify://shop_images/noctura-insta-1.jpg",
             "title": "After Dark",
             "imgurl": "https://www.instagram.com/nocturalabels/",
             "newtab": true
@@ -830,7 +815,6 @@
           "type": "lookbook1",
           "settings": {
             "width": "wd20",
-            "image": "shopify://shop_images/noctura-insta-2.jpg",
             "title": "Acid Wash Drop",
             "imgurl": "https://www.instagram.com/nocturalabels/",
             "newtab": true
@@ -840,7 +824,6 @@
           "type": "lookbook1",
           "settings": {
             "width": "wd20",
-            "image": "shopify://shop_images/noctura-insta-3.jpg",
             "title": "Sneaker Cafe",
             "imgurl": "https://www.instagram.com/nocturalabels/",
             "newtab": true
@@ -850,7 +833,6 @@
           "type": "lookbook1",
           "settings": {
             "width": "wd20",
-            "image": "shopify://shop_images/noctura-insta-4.jpg",
             "title": "Studio Nights",
             "imgurl": "https://www.instagram.com/nocturalabels/",
             "newtab": true
@@ -860,7 +842,6 @@
           "type": "lookbook1",
           "settings": {
             "width": "wd20",
-            "image": "shopify://shop_images/noctura-insta-5.jpg",
             "title": "The Drop",
             "imgurl": "https://www.instagram.com/nocturalabels/",
             "newtab": true
