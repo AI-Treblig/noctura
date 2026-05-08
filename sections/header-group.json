@@ -136,7 +136,7 @@
           "type": "slink",
           "settings": {
             "title": "Contact Us",
-            "url": "/pages/contact-us"
+            "url": "shopify://pages/contact"
           }
         }
       },
