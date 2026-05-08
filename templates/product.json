@@ -276,7 +276,7 @@
         "thumb_bdr": "#888888",
         "przoom": true,
         "prlightbox": true,
-        "arrow_mobile": false,
+        "arrow_mobile": true,
         "sprnav": false,
         "sprnavm": true,
         "scart": true,
