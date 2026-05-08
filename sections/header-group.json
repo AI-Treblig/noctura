@@ -90,39 +90,11 @@
             "url": "/pages/about-us"
           }
         },
-        "m2_NocShop": {
-          "type": "m2",
+        "slink_FqFgkW": {
+          "type": "slink",
           "settings": {
-            "title": "Shop",
-            "url": "/collections/the-drop",
-            "menu": "",
-            "lgrid": 4,
-            "pttl": "WEEKLY BEST SELLER",
-            "products": [
-              "sakura-black-t-shirt",
-              "electric-love-shirt"
-            ],
-            "grid": 1,
-            "pcolWd": 20,
-            "prodall": "",
-            "btn-style": "btn1",
-            "ftcl": false,
-            "colWd": 30,
-            "icnbr": 0,
-            "ft_ttl": "",
-            "ft_ttls": 30,
-            "ft_sttl": "",
-            "ft_sttls": 15,
-            "ft_btn": "",
-            "link": "",
-            "btn-style2": "btn1",
-            "txtcl": "#ffffff",
-            "ft_bg": "#111111",
-            "ft_opt": 0.4,
-            "cwd": false,
-            "bxwd": "600",
-            "mmal": "center",
-            "bxsz": false
+            "title": "SHOP",
+            "url": "shopify://collections/all"
           }
         },
         "slink_PtNtUM": {
@@ -143,7 +115,7 @@
       "block_order": [
         "slink_NocHome",
         "slink_NocAbout",
-        "m2_NocShop",
+        "slink_FqFgkW",
         "slink_PtNtUM",
         "slink_NocContact"
       ],
