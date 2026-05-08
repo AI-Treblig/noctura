@@ -132,7 +132,7 @@
           "settings": {
             "icon": "shopify://shop_images/ruler.svg",
             "text": "Size Chart",
-            "opt": "richtext",
+            "opt": "page",
             "page": "size-chart",
             "poptext": "",
             "lstyle": "none",
