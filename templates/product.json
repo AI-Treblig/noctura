@@ -127,6 +127,24 @@
             "bm": 20
           }
         },
+        "link_popup_Eanr3U": {
+          "type": "link-popup",
+          "settings": {
+            "icon": "shopify://shop_images/ruler.svg",
+            "text": "Size Chart",
+            "opt": "richtext",
+            "page": "size-chart",
+            "poptext": "",
+            "lstyle": "none",
+            "fs": 12,
+            "fw": "400",
+            "cl": "#333333",
+            "clbg": "#f5f5f5",
+            "bdr": "rgba(0,0,0,0)",
+            "brad": 0,
+            "bm": 15
+          }
+        },
         "text_9kPwFi": {
           "type": "text",
           "disabled": true,
@@ -266,6 +284,7 @@
         "visitor_KGMfe8",
         "6d3abe0f-70e1-4941-a738-c7121359069a",
         "shortdes_AGgbKQ",
+        "link_popup_Eanr3U",
         "text_9kPwFi",
         "variants_e43NdX",
         "ccd4e61d-1477-4664-bd33-351a9aa1ec00",
