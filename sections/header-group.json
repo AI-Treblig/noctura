@@ -95,15 +95,13 @@
             "title": "Collections",
             "url": "/collections",
             "newtab": false,
-            "menu": "noctura-collections",
+            "menu": "",
             "mcol": 2,
             "callPos": "right",
             "colWd": 50,
             "icol": 2,
-            "image1": "shopify://shop_images/noctura-mm-tshirts.jpg",
             "iTtl1": "T-SHIRTS",
             "imgurl1": "shopify://collections/t-shirts",
-            "image2": "shopify://shop_images/noctura-mm-shirts.jpg",
             "iTtl2": "SHIRTS",
             "imgurl2": "shopify://collections/shirts",
             "iTtl3": "",
@@ -128,7 +126,7 @@
           "settings": {
             "title": "Shop",
             "url": "/collections/the-drop",
-            "menu": "noctura-shop",
+            "menu": "",
             "lgrid": 4,
             "pttl": "WEEKLY BEST SELLER",
             "products": [
@@ -163,7 +161,7 @@
           "settings": {
             "title": "Journal",
             "url": "/blogs/journal",
-            "menu": "journal-categories"
+            "menu": ""
           }
         },
         "slink_NocContact": {
@@ -185,14 +183,13 @@
       "settings": {
         "ht": 80,
         "logo": "shopify://shop_images/noctura-logo-b.svg",
-        "logowd": 120,
+        "logowd": 225,
         "icntyp": "1",
         "icon": 16,
         "fs": 12,
         "cl": "#111111",
         "clh": "#dc2626",
-        "leftcol": "2",
-        "prico": "shopify://shop_images/email_d8164153-fa64-4a28-8444-a94e54b49ea7.svg",
+        "leftcol": "3",
         "prisz": 30,
         "promo_head": "DM the Drop",
         "prtcl": "#111111",
@@ -213,9 +210,9 @@
         "cntlogo": true,
         "htm": 60,
         "spnav": false,
-        "mbmenu": "noctura-mobile",
+        "mbmenu": "",
         "catnav": false,
-        "catmenu": "noctura-collections",
+        "catmenu": "",
         "sicnm": true,
         "icnm": 30,
         "icnrad": 30,
@@ -236,4 +233,3 @@
     "header_menu_bottom_LFbcyD"
   ]
 }
-
