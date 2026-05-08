@@ -695,6 +695,7 @@
         "quote_TRYpdt",
         "quote_zB4wac"
       ],
+      "disabled": true,
       "settings": {
         "gspace": 15,
         "style": "wd100-lg",
@@ -743,6 +744,7 @@
     },
     "blog_list_QRA87g": {
       "type": "blog-list",
+      "disabled": true,
       "settings": {
         "title": "From the Journal",
         "subtitle": "Stories. Drops. Nights.",
@@ -855,6 +857,7 @@
         "lookbook1_WjeYeH",
         "lookbook1_pHhijt"
       ],
+      "disabled": true,
       "settings": {
         "title": "Follow @nocturalabels",
         "subtitle": "Tag #WearTheNight to be featured",
