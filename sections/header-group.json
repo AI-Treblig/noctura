@@ -90,38 +90,6 @@
             "url": "/pages/about-us"
           }
         },
-        "m1_NocCollections": {
-          "type": "m1",
-          "settings": {
-            "title": "Collections",
-            "url": "/collections",
-            "newtab": false,
-            "menu": "",
-            "mcol": 2,
-            "callPos": "right",
-            "colWd": 50,
-            "icol": 2,
-            "iTtl1": "T-SHIRTS",
-            "imgurl1": "shopify://collections/t-shirts",
-            "iTtl2": "SHIRTS",
-            "imgurl2": "shopify://collections/shirts",
-            "iTtl3": "",
-            "imgurl3": "",
-            "iTtl4": "",
-            "imgurl4": "",
-            "icnbr": 8,
-            "overlay_lbl": true,
-            "ttcl": "#ffffff",
-            "ttbg": "#111111",
-            "ttfs": 13,
-            "ttfw": "600",
-            "ttla": "tc",
-            "cwd": false,
-            "bxwd": "600",
-            "mmal": "left",
-            "bxsz": false
-          }
-        },
         "m2_NocShop": {
           "type": "m2",
           "settings": {
@@ -157,12 +125,11 @@
             "bxsz": false
           }
         },
-        "dd_NocJournal": {
-          "type": "dd",
+        "slink_PtNtUM": {
+          "type": "slink",
           "settings": {
-            "title": "Journal",
-            "url": "/blogs/journal",
-            "menu": ""
+            "title": "JOURNAL",
+            "url": "shopify://blogs/news"
           }
         },
         "slink_NocContact": {
@@ -176,9 +143,8 @@
       "block_order": [
         "slink_NocHome",
         "slink_NocAbout",
-        "m1_NocCollections",
         "m2_NocShop",
-        "dd_NocJournal",
+        "slink_PtNtUM",
         "slink_NocContact"
       ],
       "settings": {
