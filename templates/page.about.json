@@ -29,7 +29,7 @@
         "text_GVAD8a": {
           "type": "text",
           "settings": {
-            "title": "<p>Simple, stylish and locally-crafted apparel since 2000</p>",
+            "title": "<p><strong>A Gen Z streetwear brand born out of Mumbai </strong></p>",
             "hidemb": true,
             "fs": 16,
             "fsm": 14,
@@ -48,7 +48,7 @@
         "hit": 180,
         "hitt": 160,
         "hitm": 100,
-        "bg": "#dddddd",
+        "bg": "#111",
         "bgg": "",
         "overlay": "#000",
         "overlay_op": 0.4,
@@ -217,7 +217,7 @@
             "cl": "#000000",
             "tmb": 15,
             "tmbm": 10,
-            "text": "<p>Not everyone<br/>gets it. Not everyone should.</p><p><strong>NOCTURA is a Gen Z streetwear brand born out of Mumbai </strong>- its nights, its music, its energy, and the kind of people who live loudly without asking for permission. Every piece we drop is built for the moment you walk in and the room shifts. Bold graphics. Premium cuts.</p><p>Oversized silhouettes. A fearless aesthetic that hits harder after dark. This isn't the fashion you follow. This is the fashion you feel.</p><p>From Electric Love shirts that come alive under flash, to There Are No Saints sleeveless cuts that own a room - every NOCTURA drop tells a story. Inspired by nightlife, rebellion, street culture, and the raw energy of youth, our collections are designed for the ones chasing nights out, club fits, city streets, and every moment in between.</p>",
+            "text": "<p>Not everyone gets it. Not everyone should.</p><p><strong>NOCTURA is a Gen Z streetwear brand born out of Mumbai </strong>- its nights, its music, its energy, and the kind of people who live loudly without asking for permission. Every piece we drop is built for the moment you walk in and the room shifts. Bold graphics. Premium cuts.</p><p>Oversized silhouettes. A fearless aesthetic that hits harder after dark. This isn't the fashion you follow. This is the fashion you feel.</p><p>From Electric Love shirts that come alive under flash, to There Are No Saints sleeveless cuts that own a room - every NOCTURA drop tells a story. Inspired by nightlife, rebellion, street culture, and the raw energy of youth, our collections are designed for the ones chasing nights out, club fits, city streets, and every moment in between.</p>",
             "tfs": 15,
             "tfsm": 13,
             "tlh": 1.6,
