@@ -29,7 +29,7 @@
         "text_GVAD8a": {
           "type": "text",
           "settings": {
-            "title": "<p><strong>A Gen Z streetwear brand born out of Mumbai </strong></p>",
+            "title": "<p>Born in Mumbai. Built for the Night!</p>",
             "hidemb": true,
             "fs": 16,
             "fsm": 14,
@@ -48,7 +48,7 @@
         "hit": 180,
         "hitt": 160,
         "hitm": 100,
-        "bg": "#111",
+        "bg": "#111111",
         "bgg": "",
         "overlay": "#000",
         "overlay_op": 0.4,
