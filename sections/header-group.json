@@ -17,14 +17,14 @@
         "text_4GMfWq": {
           "type": "text",
           "settings": {
-            "text": "Free shipping on orders over ₹2999",
+            "text": "Free shipping on all orders",
             "outline": false
           }
         },
         "text_FcMPUE": {
           "type": "text",
           "settings": {
-            "text": "Subscribe and get 10% off your first drop",
+            "text": "Subscribe and us coupon code NOCTURA25 get 25% off your first drop",
             "outline": false
           }
         },
@@ -49,7 +49,6 @@
         "text_NocLab1",
         "text_NocLab2"
       ],
-      "disabled": true,
       "settings": {
         "ff": "ft1",
         "fs": 14,
