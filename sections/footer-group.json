@@ -31,8 +31,19 @@
             "width": "wd30"
           }
         },
+        "menu_6nazNP": {
+          "type": "menu",
+          "settings": {
+            "hidem": false,
+            "hide_desk": false,
+            "title": "Informations",
+            "menu": "customer-account-main-menu",
+            "width": "wd25"
+          }
+        },
         "noc_information_menu": {
           "type": "menu",
+          "disabled": true,
           "settings": {
             "hidem": false,
             "hide_desk": false,
@@ -43,12 +54,29 @@
         },
         "noc_customer_menu": {
           "type": "menu",
+          "disabled": true,
           "settings": {
             "hidem": false,
             "hide_desk": false,
             "title": "Customer Care",
             "menu": "",
             "width": "wd20"
+          }
+        },
+        "contact_jaDEhJ": {
+          "type": "contact",
+          "settings": {
+            "hidem": false,
+            "hide_desk": false,
+            "title": "Contact Us",
+            "logo-wd": 200,
+            "address": "Store House,<br> Mumbai, IN",
+            "phone": "+91 9334 501 717",
+            "email": "shop@nocturalabel.com",
+            "icons": true,
+            "socials": false,
+            "socttl": "Stay Connected",
+            "width": "wd25"
           }
         },
         "noc_newsletter_block": {
@@ -73,8 +101,10 @@
       },
       "block_order": [
         "noc_brand_block",
+        "menu_6nazNP",
         "noc_information_menu",
         "noc_customer_menu",
+        "contact_jaDEhJ",
         "noc_newsletter_block"
       ],
       "settings": {
