@@ -29,7 +29,7 @@
         "7d39aadc-e397-4d6e-8712-9d03bbd06afc": {
           "type": "text",
           "settings": {
-            "title": "<p>We're here to help you.</p>",
+            "title": "<p><em>DM us. WhatsApp us. Or use the form below.</em></p>",
             "hidemb": true,
             "fs": 16,
             "fsm": 14,
@@ -83,7 +83,7 @@
       "type": "contact-form",
       "settings": {
         "title": "Drop us a line",
-        "details": "Our products draw inspiration from the wonderful people and experiences around us. We create beautiful, high-quality items made just for you",
+        "details": "The fastest way to reach us is Instagram @nocturalabels or WhatsApp +91 93345 01717. Or fill in the form. Either way, you're talking to a real person - usually within a day.",
         "page_width": 700,
         "layout": "2",
         "show_phone": false,
