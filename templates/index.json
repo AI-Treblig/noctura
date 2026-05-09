@@ -496,7 +496,7 @@
         "text_block_VcqNPr": {
           "type": "text_block",
           "settings": {
-            "icon": "none",
+            "icon": "package",
             "title": "PAN-INDIA SHIPPING",
             "text": "Free shipping on all orders",
             "url": "/policies/shipping-policy",
@@ -506,7 +506,7 @@
         "text_block_iVzCEa": {
           "type": "text_block",
           "settings": {
-            "icon": "none",
+            "icon": "return",
             "title": "EASY EXCHANGES",
             "text": "7-day exchanges on unworn pieces",
             "url": "/policies/refund-policy",
@@ -516,7 +516,7 @@
         "text_block_XtMbeb": {
           "type": "text_block",
           "settings": {
-            "icon": "none",
+            "icon": "support",
             "title": "DM THE DROP",
             "text": "WhatsApp us anytime",
             "url": "https://wa.me/919334501717",
@@ -526,7 +526,7 @@
         "text_block_wimK9z": {
           "type": "text_block",
           "settings": {
-            "icon": "none",
+            "icon": "payment",
             "title": "SECURE PAYMENTS",
             "text": "UPI, cards & net banking via Razorpay",
             "url": "",
