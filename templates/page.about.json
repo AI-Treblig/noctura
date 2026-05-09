@@ -230,6 +230,41 @@
             "btn-size": "btn-md"
           }
         },
+        "row_HMBCRH": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "cwd": 500,
+            "txtbg": "#f5f5f5",
+            "bgg": "",
+            "talign": "tl",
+            "titles": "ADD A TAGLINE",
+            "scl": "#000000",
+            "sfs": 12,
+            "sfw": "500",
+            "title": "Spring Summer New Arrival",
+            "htag": "h2",
+            "tff": "ft1",
+            "fs": 24,
+            "fsm": 20,
+            "fw": "500",
+            "lh": 1.3,
+            "cl": "#000000",
+            "tmb": 15,
+            "tmbm": 10,
+            "text": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "tfs": 14,
+            "tfsm": 13,
+            "tlh": 1.6,
+            "tcl": "#666666",
+            "txtmb": 25,
+            "txtmbm": 20,
+            "btn": "SHOP NOW",
+            "link": "/",
+            "btn-style": "btn1",
+            "btn-size": "btn-md"
+          }
+        },
         "row_JYjHYE": {
           "type": "row",
           "settings": {
@@ -251,7 +286,7 @@
             "cl": "#000000",
             "tmb": 15,
             "tmbm": 10,
-            "text": "<p>Embracing sustainable practices and conscious design, we strive to lead the industry towards a more eco-friendly and inclusive future.</p>",
+            "text": "<p>NOCTURA isn't just something you wear - it's something you belong to. We host events, build communities, shoot nights that look like films, and create spaces where fashion lovers actually connect. <strong>If you're part of NOCTURA, you already know. If you're not yet - you will be.</strong><br/><br/>We are not driven by trends. We are driven by culture.</p>",
             "tfs": 15,
             "tfsm": 13,
             "tlh": 1.6,
@@ -301,6 +336,7 @@
       },
       "block_order": [
         "row_iFPfQT",
+        "row_HMBCRH",
         "row_JYjHYE",
         "row_cGH7am"
       ],
