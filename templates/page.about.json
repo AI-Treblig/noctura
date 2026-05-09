@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "banner": {
@@ -20,7 +29,7 @@
         "text_GVAD8a": {
           "type": "text",
           "settings": {
-            "title": "<p>Simple, stylish and locally-crafted apparel since 2000<\/p>",
+            "title": "<p>Simple, stylish and locally-crafted apparel since 2000</p>",
             "hidemb": true,
             "fs": 16,
             "fsm": 14,
@@ -31,14 +40,16 @@
           }
         }
       },
-      "block_order": ["title", "text_GVAD8a"],
+      "block_order": [
+        "title",
+        "text_GVAD8a"
+      ],
       "settings": {
         "hit": 180,
         "hitt": 160,
         "hitm": 100,
         "bg": "#dddddd",
         "bgg": "",
-        "image": "",
         "overlay": "#000",
         "overlay_op": 0.4,
         "cntwd": 1000,
@@ -72,7 +83,7 @@
         "text_J8Ua7m": {
           "type": "text",
           "settings": {
-            "ttl": "<p>We’re passionate about quality, care, and crafting unique products for everyone to enjoy. Our items are vibrant, imaginative, and drawn from the beauty we encounter daily. Each product reflects our love for the world around us, and we hope they spark inspiration in you as well!<\/p>",
+            "ttl": "<p>We’re passionate about quality, care, and crafting unique products for everyone to enjoy. Our items are vibrant, imaginative, and drawn from the beauty we encounter daily. Each product reflects our love for the world around us, and we hope they spark inspiration in you as well!</p>",
             "tff": "ft3",
             "fs": 22,
             "fsm": 18,
@@ -83,7 +94,10 @@
           }
         }
       },
-      "block_order": ["text_J8Ua7m"],
+      "block_order": [
+        "text_J8Ua7m"
+      ],
+      "disabled": true,
       "settings": {
         "maxwd": 1000,
         "lefta": false,
@@ -105,8 +119,8 @@
     },
     "richtext_HFHF9d": {
       "type": "richtext",
+      "disabled": true,
       "settings": {
-        "image": "shopify:\/\/shop_images\/about-banner.jpg",
         "maxwd": 900,
         "lefta": false,
         "sw": false,
@@ -132,7 +146,7 @@
           "type": "text",
           "disabled": true,
           "settings": {
-            "ttl": "<p>QUALITY IS OUR PRIORITY<\/p>",
+            "ttl": "<p>QUALITY IS OUR PRIORITY</p>",
             "tff": "ft1",
             "fs": 25,
             "fsm": 18,
@@ -145,7 +159,7 @@
         "text_mLEnDe": {
           "type": "text",
           "settings": {
-            "ttl": "<p>Our talented stylists have put together outfits that are perfect for the season. They've variety of ways to inspire your next fashion-forward look.<\/p>",
+            "ttl": "<p>NOCTURA® - Wear the Night. Own<br/>the Room. We didn't make clothes for everyone.<br/><br/>We made them for you - the ones who show up differently, dress differently, and don't need a reason to stand out.</p>",
             "tff": "ft3",
             "fs": 25,
             "fsm": 18,
@@ -156,7 +170,10 @@
           }
         }
       },
-      "block_order": ["text_Eh3QQL", "text_mLEnDe"],
+      "block_order": [
+        "text_Eh3QQL",
+        "text_mLEnDe"
+      ],
       "settings": {
         "maxwd": 900,
         "lefta": false,
@@ -182,19 +199,15 @@
         "row_iFPfQT": {
           "type": "row",
           "settings": {
-            "image": "shopify:\/\/shop_images\/ICON-DESIGN.jpg",
-            "layout": "left",
-            "bnrwd": 50,
             "cwd": 500,
             "txtbg": "#fafaf2",
             "bgg": "",
             "talign": "tl",
-            "txtpd": false,
-            "titles": "SINCE 2000",
+            "titles": "NOCTURA®",
             "scl": "#000000",
             "sfs": 12,
             "sfw": "500",
-            "title": "High-Quality Materials",
+            "title": "The Night Has a Dress Code.",
             "htag": "h2",
             "tff": "ft3",
             "fs": 24,
@@ -204,7 +217,7 @@
             "cl": "#000000",
             "tmb": 15,
             "tmbm": 10,
-            "text": "<p>Embrace your unique fashion identity with our diverse collections, thoughtfully designed to inspire and elevate your wardrobe. Join us on a journey of sartorial excellence, as we redefine fashion one stitch at a time.<\/p>",
+            "text": "<p>Not everyone<br/>gets it. Not everyone should.</p><p><strong>NOCTURA is a Gen Z streetwear brand born out of Mumbai </strong>- its nights, its music, its energy, and the kind of people who live loudly without asking for permission. Every piece we drop is built for the moment you walk in and the room shifts. Bold graphics. Premium cuts.</p><p>Oversized silhouettes. A fearless aesthetic that hits harder after dark. This isn't the fashion you follow. This is the fashion you feel.</p><p>From Electric Love shirts that come alive under flash, to There Are No Saints sleeveless cuts that own a room - every NOCTURA drop tells a story. Inspired by nightlife, rebellion, street culture, and the raw energy of youth, our collections are designed for the ones chasing nights out, club fits, city streets, and every moment in between.</p>",
             "tfs": 15,
             "tfsm": 13,
             "tlh": 1.6,
@@ -220,14 +233,10 @@
         "row_JYjHYE": {
           "type": "row",
           "settings": {
-            "image": "shopify:\/\/shop_images\/MATERIAL.jpg",
-            "layout": "left",
-            "bnrwd": 50,
             "cwd": 500,
             "txtbg": "#fff9fb",
             "bgg": "",
             "talign": "tl",
-            "txtpd": false,
             "titles": "",
             "scl": "#000000",
             "sfs": 12,
@@ -242,7 +251,7 @@
             "cl": "#000000",
             "tmb": 15,
             "tmbm": 10,
-            "text": "<p>Embracing sustainable practices and conscious design, we strive to lead the industry towards a more eco-friendly and inclusive future.<\/p>",
+            "text": "<p>Embracing sustainable practices and conscious design, we strive to lead the industry towards a more eco-friendly and inclusive future.</p>",
             "tfs": 15,
             "tfsm": 13,
             "tlh": 1.6,
@@ -257,15 +266,12 @@
         },
         "row_cGH7am": {
           "type": "row",
+          "disabled": true,
           "settings": {
-            "image": "shopify:\/\/shop_images\/PLUS-SIZE_862e5071-735a-4860-9ce9-f4278c5d9c77.jpg",
-            "layout": "left",
-            "bnrwd": 50,
             "cwd": 500,
             "txtbg": "#f2f9f9",
             "bgg": "",
             "talign": "tl",
-            "txtpd": false,
             "titles": "",
             "scl": "#000000",
             "sfs": 12,
@@ -280,7 +286,7 @@
             "cl": "#000000",
             "tmb": 15,
             "tmbm": 10,
-            "text": "<p>We believe that fashion should be stylish, affordable and accessible to everyone. Body positivity and inclusivity are values that are at the heart of our brand.<\/p>",
+            "text": "<p>We believe that fashion should be stylish, affordable and accessible to everyone. Body positivity and inclusivity are values that are at the heart of our brand.</p>",
             "tfs": 15,
             "tfsm": 13,
             "tlh": 1.6,
@@ -294,7 +300,11 @@
           }
         }
       },
-      "block_order": ["row_iFPfQT", "row_JYjHYE", "row_cGH7am"],
+      "block_order": [
+        "row_iFPfQT",
+        "row_JYjHYE",
+        "row_cGH7am"
+      ],
       "settings": {
         "brad": 0,
         "sw": false,
@@ -313,23 +323,20 @@
         "logo_image_ViE8FA": {
           "type": "logo_image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/brand7.webp",
-            "link": "shopify:\/\/products\/long-sleeve-button-top",
+            "link": "shopify://products/long-sleeve-button-top",
             "newtab": false
           }
         },
         "logo_image_bEnF3V": {
           "type": "logo_image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/brand6.webp",
-            "link": "shopify:\/\/products\/canvas-low-top-lace-up-sneakers",
+            "link": "shopify://products/canvas-low-top-lace-up-sneakers",
             "newtab": false
           }
         },
         "logo_image_hqGJtt": {
           "type": "logo_image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/brand5.webp",
             "link": "",
             "newtab": false
           }
@@ -337,7 +344,6 @@
         "logo_image_7Qrq7z": {
           "type": "logo_image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/brand3.webp",
             "link": "",
             "newtab": false
           }
@@ -345,7 +351,6 @@
         "logo_image_4enBRt": {
           "type": "logo_image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/brand4.webp",
             "link": "",
             "newtab": false
           }
@@ -353,7 +358,6 @@
         "logo_image_VnYtLz": {
           "type": "logo_image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/brand2.webp",
             "link": "",
             "newtab": false
           }
@@ -361,16 +365,25 @@
         "logo_image_bqcEfE": {
           "type": "logo_image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/brand1.webp",
             "link": "",
             "newtab": false
           }
         }
       },
-      "block_order": ["logo_image_ViE8FA", "logo_image_bEnF3V", "logo_image_hqGJtt", "logo_image_7Qrq7z", "logo_image_4enBRt", "logo_image_VnYtLz", "logo_image_bqcEfE"],
+      "block_order": [
+        "logo_image_ViE8FA",
+        "logo_image_bEnF3V",
+        "logo_image_hqGJtt",
+        "logo_image_7Qrq7z",
+        "logo_image_4enBRt",
+        "logo_image_VnYtLz",
+        "logo_image_bqcEfE"
+      ],
+      "disabled": true,
       "settings": {
         "title": "",
         "subtitle": "",
+        "grid_design": "1",
         "gspace": 15,
         "gspacem": 10,
         "grid": 7,
@@ -405,7 +418,7 @@
           "settings": {
             "hidem": false,
             "dis_img": true,
-            "image": "shopify:\/\/shop_images\/team-men1.jpg",
+            "brad": 0,
             "title": "DYLAN LEE",
             "fs": 14,
             "fsm": 14,
@@ -413,7 +426,11 @@
             "fw": "600",
             "lh": 1.2,
             "tbm": 0,
-            "text": "<p>CEO<\/p>",
+            "text": "<p>CEO</p>",
+            "date": "",
+            "cd_fs": 22,
+            "cd_fsl": 12,
+            "cd_fw": "400",
             "btntxt": "",
             "btnurl": "",
             "btn-style": "btn1",
@@ -422,7 +439,6 @@
             "clbg": "#f5f5f5",
             "cl": "#444444",
             "boxrad": 0,
-            "brad": 0,
             "align_text": "tc",
             "alignment": "f-ass",
             "width": "wd25"
@@ -433,7 +449,7 @@
           "settings": {
             "hidem": false,
             "dis_img": true,
-            "image": "shopify:\/\/shop_images\/team-women1.jpg",
+            "brad": 0,
             "title": "MELISSA SMITH",
             "fs": 14,
             "fsm": 14,
@@ -441,7 +457,11 @@
             "fw": "600",
             "lh": 1.2,
             "tbm": 0,
-            "text": "<p>Director<\/p>",
+            "text": "<p>Director</p>",
+            "date": "",
+            "cd_fs": 22,
+            "cd_fsl": 12,
+            "cd_fw": "400",
             "btntxt": "",
             "btnurl": "",
             "btn-style": "btn1",
@@ -450,7 +470,6 @@
             "clbg": "#f5f5f5",
             "cl": "#444444",
             "boxrad": 0,
-            "brad": 0,
             "align_text": "tc",
             "alignment": "f-ass",
             "width": "wd25"
@@ -461,7 +480,7 @@
           "settings": {
             "hidem": false,
             "dis_img": true,
-            "image": "shopify:\/\/shop_images\/team-women2.jpg",
+            "brad": 0,
             "title": "ASHER REBECA",
             "fs": 14,
             "fsm": 14,
@@ -469,7 +488,11 @@
             "fw": "600",
             "lh": 1.2,
             "tbm": 0,
-            "text": "<p>Sale Executive<\/p>",
+            "text": "<p>Sale Executive</p>",
+            "date": "",
+            "cd_fs": 22,
+            "cd_fsl": 12,
+            "cd_fw": "400",
             "btntxt": "",
             "btnurl": "",
             "btn-style": "btn1",
@@ -478,7 +501,6 @@
             "clbg": "#f5f5f5",
             "cl": "#444444",
             "boxrad": 0,
-            "brad": 0,
             "align_text": "tc",
             "alignment": "f-ass",
             "width": "wd25"
@@ -489,7 +511,7 @@
           "settings": {
             "hidem": false,
             "dis_img": true,
-            "image": "shopify:\/\/shop_images\/team-men2.jpg",
+            "brad": 0,
             "title": "DANIEL MARTINE",
             "fs": 14,
             "fsm": 14,
@@ -497,7 +519,11 @@
             "fw": "600",
             "lh": 1.2,
             "tbm": 0,
-            "text": "<p>Sale Support<\/p>",
+            "text": "<p>Sale Support</p>",
+            "date": "",
+            "cd_fs": 22,
+            "cd_fsl": 12,
+            "cd_fw": "400",
             "btntxt": "",
             "btnurl": "",
             "btn-style": "btn1",
@@ -506,14 +532,19 @@
             "clbg": "#f5f5f5",
             "cl": "#444444",
             "boxrad": 0,
-            "brad": 0,
             "align_text": "tc",
             "alignment": "f-ass",
             "width": "wd25"
           }
         }
       },
-      "block_order": ["template--17818058752289__e3f6eb34-c5b2-45a2-9fd9-7032573fec53-16756767145d0ca90c-0", "template--17818058752289__e3f6eb34-c5b2-45a2-9fd9-7032573fec53-16756767145d0ca90c-1", "265fd6b3-8934-4558-b2c4-ff63f60b9be5", "9a840797-8db0-4f51-a030-f2832260defc"],
+      "block_order": [
+        "template--17818058752289__e3f6eb34-c5b2-45a2-9fd9-7032573fec53-16756767145d0ca90c-0",
+        "template--17818058752289__e3f6eb34-c5b2-45a2-9fd9-7032573fec53-16756767145d0ca90c-1",
+        "265fd6b3-8934-4558-b2c4-ff63f60b9be5",
+        "9a840797-8db0-4f51-a030-f2832260defc"
+      ],
+      "disabled": true,
       "settings": {
         "title": "The Team Behind The Brand",
         "subtitle": "",
@@ -540,17 +571,19 @@
         "quote_aPcbJX": {
           "type": "quote",
           "settings": {
-            "image": "shopify:\/\/shop_images\/review.jpg",
             "title": "At the Revone store we just have to say, WOW!  The materials feels & fits amazingly. It is by far the best work out outfit, the textiles are very good, lasting and resistant. Very sexy!",
             "text": "",
-            "author": "<p>- Natasha, Ontario<\/p>",
+            "author": "<p>- Natasha, Ontario</p>",
             "rat": true,
             "rating": 5,
             "product": ""
           }
         }
       },
-      "block_order": ["quote_aPcbJX"],
+      "block_order": [
+        "quote_aPcbJX"
+      ],
+      "disabled": true,
       "settings": {
         "gspace": 15,
         "style": "wd100-lg",
@@ -598,5 +631,16 @@
       }
     }
   },
-  "order": ["banner", "breadcrumb", "main", "richtext_cY66d8", "richtext_HFHF9d", "richtext_d9MF8f", "image_scrolling_NKhtJw", "logo_list_P9kdAn", "e3f6eb34-c5b2-45a2-9fd9-7032573fec53", "product_review2_pwaNWX"]
+  "order": [
+    "banner",
+    "breadcrumb",
+    "main",
+    "richtext_cY66d8",
+    "richtext_HFHF9d",
+    "richtext_d9MF8f",
+    "image_scrolling_NKhtJw",
+    "logo_list_P9kdAn",
+    "e3f6eb34-c5b2-45a2-9fd9-7032573fec53",
+    "product_review2_pwaNWX"
+  ]
 }
