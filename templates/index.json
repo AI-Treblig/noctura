@@ -409,7 +409,7 @@
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
             "bg": "#00000099",
-            "bg_op": 1,
+            "bg_op": 0.6,
             "box_padding_side": 25,
             "box_padding_tb": 15,
             "radius": 5
@@ -419,8 +419,8 @@
           "type": "featured_collection",
           "settings": {
             "width": "wd50",
-            "widthm": "wd50",
-            "hidem": true,
+            "widthm": "wd100",
+            "hidem": false,
             "collection": "the-drop",
             "url": "",
             "title": "Latest Drop",
@@ -450,7 +450,7 @@
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
             "bg": "#00000099",
-            "bg_op": 1,
+            "bg_op": 0.6,
             "box_padding_side": 25,
             "box_padding_tb": 15,
             "radius": 5
