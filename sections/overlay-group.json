@@ -111,7 +111,7 @@
         "text_8LJ3jc": {
           "type": "text",
           "settings": {
-            "text": "Enter the code below at checkout to get 20% off your first order",
+            "text": "Enter the code below at checkout to get 25% off your first order",
             "hidem": true,
             "cl": "#ffffff",
             "addbg": false,
@@ -127,7 +127,7 @@
         "text_ErBWeL": {
           "type": "text",
           "settings": {
-            "text": "<strong>FIRST10OFF</strong>",
+            "text": "<strong>NOCTURA25 OFF</strong>",
             "hidem": true,
             "cl": "#ef1818",
             "addbg": true,
