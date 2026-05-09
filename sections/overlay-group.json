@@ -24,22 +24,30 @@
             "title": "Home"
           }
         },
-        "menu": {
-          "type": "menu",
-          "settings": {
-            "title": "Menu"
-          }
-        },
-        "src": {
-          "type": "src",
-          "settings": {
-            "title": "Search"
-          }
-        },
         "act": {
           "type": "act",
           "settings": {
             "title": "Account"
+          }
+        },
+        "shop_9xYtEz": {
+          "type": "shop",
+          "settings": {
+            "title": "Shop",
+            "collection": "accessories"
+          }
+        },
+        "src": {
+          "type": "src",
+          "disabled": true,
+          "settings": {
+            "title": "Search"
+          }
+        },
+        "menu": {
+          "type": "menu",
+          "settings": {
+            "title": "Menu"
           }
         },
         "cart": {
@@ -61,25 +69,17 @@
           "settings": {
             "title": "Wishlist"
           }
-        },
-        "shop_9xYtEz": {
-          "type": "shop",
-          "disabled": true,
-          "settings": {
-            "title": "Shop",
-            "collection": "accessories"
-          }
         }
       },
       "block_order": [
         "home",
-        "menu",
-        "src",
         "act",
+        "shop_9xYtEz",
+        "src",
+        "menu",
         "cart",
         "filter_TWzMWP",
-        "wish_3zmTKz",
-        "shop_9xYtEz"
+        "wish_3zmTKz"
       ],
       "settings": {
         "hdtxt": false,
