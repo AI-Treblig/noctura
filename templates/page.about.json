@@ -305,7 +305,7 @@
           "type": "row",
           "settings": {
             "cwd": 500,
-            "txtbg": "#f2f9f9",
+            "txtbg": "#ffffff",
             "bgg": "",
             "talign": "tl",
             "titles": "",
