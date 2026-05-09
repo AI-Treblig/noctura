@@ -286,9 +286,9 @@
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
             "bg": "#00000099",
-            "bg_op": 1,
+            "bg_op": 0.6,
             "box_padding_side": 25,
-            "box_padding_tb": 15,
+            "box_padding_tb": 8,
             "radius": 5
           }
         },
@@ -296,7 +296,7 @@
           "type": "featured_collection",
           "settings": {
             "width": "wd25",
-            "widthm": "wd50",
+            "widthm": "wd100",
             "hidem": false,
             "collection": "acid-wash",
             "url": "",
@@ -327,7 +327,7 @@
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
             "bg": "#00000099",
-            "bg_op": 1,
+            "bg_op": 0.6,
             "box_padding_side": 25,
             "box_padding_tb": 15,
             "radius": 5
@@ -337,7 +337,7 @@
           "type": "featured_collection",
           "settings": {
             "width": "wd25",
-            "widthm": "wd50",
+            "widthm": "wd100",
             "hidem": false,
             "collection": "sleeveless",
             "url": "",
@@ -368,7 +368,7 @@
             "text-align": "tl",
             "text_pos": "f-jcs f-aie",
             "bg": "#00000099",
-            "bg_op": 1,
+            "bg_op": 0.6,
             "box_padding_side": 25,
             "box_padding_tb": 15,
             "radius": 5
@@ -862,7 +862,7 @@
       ],
       "disabled": true,
       "settings": {
-        "title": "Follow @nocturalabels",
+        "title": "Follow @noctura.co",
         "subtitle": "Tag #WearTheNight to be featured",
         "grid_design": "1",
         "gspace": 20,
