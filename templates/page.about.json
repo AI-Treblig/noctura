@@ -304,6 +304,7 @@
         "row_cGH7am": {
           "type": "row",
           "settings": {
+            "image": "shopify://shop_images/about-founders.webp",
             "cwd": 500,
             "txtbg": "#ffffff",
             "bgg": "",
@@ -343,7 +344,7 @@
         "row_cGH7am"
       ],
       "settings": {
-        "brad": 0,
+        "brad": 8,
         "sw": false,
         "npd": true,
         "sst": 40,
