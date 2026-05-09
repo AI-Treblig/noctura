@@ -34,7 +34,7 @@
           "type": "shop",
           "settings": {
             "title": "Shop",
-            "collection": "accessories"
+            "collection": "frontpage"
           }
         },
         "src": {
