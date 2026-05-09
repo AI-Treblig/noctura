@@ -269,6 +269,7 @@
         "row_JYjHYE": {
           "type": "row",
           "settings": {
+            "image": "shopify://shop_images/about-us2-community.webp",
             "cwd": 500,
             "txtbg": "#fff9fb",
             "bgg": "",
