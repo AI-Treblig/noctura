@@ -199,8 +199,9 @@
         "row_iFPfQT": {
           "type": "row",
           "settings": {
+            "image": "shopify://shop_images/About-us-banner.webp",
             "cwd": 500,
-            "txtbg": "#fafaf2",
+            "txtbg": "#f5f5f5",
             "bgg": "",
             "talign": "tl",
             "titles": "NOCTURA®",
