@@ -99,6 +99,7 @@
         },
         "slink_PtNtUM": {
           "type": "slink",
+          "disabled": true,
           "settings": {
             "title": "JOURNAL",
             "url": "shopify://blogs/news"
