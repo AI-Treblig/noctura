@@ -266,7 +266,6 @@
         },
         "row_cGH7am": {
           "type": "row",
-          "disabled": true,
           "settings": {
             "cwd": 500,
             "txtbg": "#f2f9f9",

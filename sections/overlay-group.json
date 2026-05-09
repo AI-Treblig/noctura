@@ -146,6 +146,7 @@
         "text_8LJ3jc",
         "text_ErBWeL"
       ],
+      "disabled": true,
       "settings": {
         "sty": "2",
         "iconc": "#ffffff",
@@ -241,6 +242,7 @@
         "form_PRBYMb",
         "social_cTzLi8"
       ],
+      "disabled": true,
       "settings": {
         "seconds": 7,
         "hide_img": true,
