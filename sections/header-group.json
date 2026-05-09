@@ -68,7 +68,7 @@
         "ssb": 10,
         "sstm": 5,
         "ssbm": 5,
-        "hidem": false,
+        "hidem": true,
         "hided": false
       }
     },
