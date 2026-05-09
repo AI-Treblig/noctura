@@ -498,7 +498,7 @@
           "settings": {
             "icon": "none",
             "title": "PAN-INDIA SHIPPING",
-            "text": "Free shipping on orders over ₹2999",
+            "text": "Free shipping on all orders",
             "url": "/policies/shipping-policy",
             "newtab": false
           }
@@ -632,6 +632,7 @@
         "countdown_WBah6D",
         "button_BMicaK"
       ],
+      "disabled": true,
       "settings": {
         "style": "4",
         "brad": 3,
